@@ -2,9 +2,9 @@ import React, { useState, useEffect, useRef } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlay, faPause, faStop, faArrowRotateLeft, faArrowRotateRight, faCalendarDays, faVolumeLow } from '@fortawesome/free-solid-svg-icons';
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
-import TopHeader from "./../../../Common/TopHeader";
-import Header from "./../../../Common/Header";
-import Footer from "./../../../Common/Footer";
+import TopHeader from "../../../Common/TopHeader";
+import Header from "../../../Common/Header";
+import Footer from "../../../Common/Footer";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 
@@ -14,70 +14,6 @@ import { BrowserRouter } from "react-router-dom";
 
 const Audio = ({ onSearch }) => {
 
-    const audioRef = useRef(null);
-    const [isPlaying, setIsPlaying] = useState(false);
-    const [currentTime, setCurrentTime] = useState(0);
-    const [duration, setDuration] = useState(0);
-
-
-    const audioUrl =
-        'https://taqwa.nauthemes.net/wp-content/uploads/2021/02/surah-fateh.mp3';
-
-    const handlePlayPause = () => {
-        if (audioRef.current.paused) {
-            audioRef.current.play();
-            setIsPlaying(true);
-        } else {
-            audioRef.current.pause();
-            setIsPlaying(false);
-        }
-    };
-
-    const handleSeekBackward = () => {
-        audioRef.current.currentTime -= 15; // Adjust the seek duration as needed
-    };
-
-    const handleSeekForward = () => {
-        audioRef.current.currentTime += 15; // Adjust the seek duration as needed
-    };
-
-    const handleStop = () => {
-        audioRef.current.pause();
-        audioRef.current.currentTime = 0;
-        setIsPlaying(false);
-    };
-
-    const handleSeek = (e) => {
-        const newTime = (e.target.value / 100) * duration;
-        audioRef.current.currentTime = newTime;
-        setCurrentTime(newTime);
-    };
-
-    const handleTimeUpdate = () => {
-        setCurrentTime(audioRef.current.currentTime);
-    };
-
-    const handleLoadedData = () => {
-        setDuration(audioRef.current.duration);
-    };
-
-    useEffect(() => {
-        const audioElement = audioRef.current;
-
-        audioElement.addEventListener('timeupdate', handleTimeUpdate);
-        audioElement.addEventListener('loadeddata', handleLoadedData);
-
-        return () => {
-            audioElement.removeEventListener('timeupdate', handleTimeUpdate);
-            audioElement.removeEventListener('loadeddata', handleLoadedData);
-        };
-    }, []);
-
-    const formatTime = (timeInSeconds) => {
-        const minutes = Math.floor(timeInSeconds / 60);
-        const seconds = Math.floor(timeInSeconds % 60);
-        return `${minutes}:${String(seconds).padStart(2, '0')}`;
-    };
 
     const [query, setQuery] = useState('');
 
@@ -270,57 +206,23 @@ const Audio = ({ onSearch }) => {
                                 </form>
                             </div>
                         </div>
-                        <div className="audio-player audio-new">
-                            <div className="major-picture major-picture-new">
-                                <div className='image-div image-div-new'>
-                                    <img className='image-border-new' src="https://static.vecteezy.com/system/resources/thumbnails/023/342/638/small_2x/3d-holy-quran-free-vector.jpg" />
-                                    <p className='border-new-p'>Surah Surah Surah Surah Surah Surah Surah Surah  SurahSurahSurah SurahSurahSurah SurahSurahSurah SurahSurahSurahSurahSurahSurah </p>
+                        <div className="audio-player">
+                            <div className="major-picture">
+                                <div className='image-div'>
+                                    <img className='image-border' src="https://static.vecteezy.com/system/resources/thumbnails/023/342/638/small_2x/3d-holy-quran-free-vector.jpg" />
                                 </div>
-                                <div className="major-content-new">
-                                    <div className="audio-players-new">
-                                        <div className="audio-controls-new">
-                                        <div className="audio-progress-new">
-                                                <input
-                                                    type="range"
-                                                    min="0"
-                                                    max="100"
-                                                    value={(currentTime / duration) * 100 || 0}
-                                                    onChange={handleSeek}
-                                                />
-                                                <div className="audio-time-new">
-                                                    <div className=''>
-                                                        {formatTime(currentTime)}
-                                                    </div>
-                                                    <div className=''>
-                                                        {formatTime(duration)}
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div className="audio-buttons audio-buttons-new">
-                                                <button className='cls cls-new' onClick={handleSeekBackward}>
-                                                    <FontAwesomeIcon icon={faArrowRotateLeft} />
-                                                </button>
-                                                <button className='cls cls-new' onClick={handlePlayPause}>
-                                                    {isPlaying ? (
-                                                        <FontAwesomeIcon icon={faPause} />
-                                                    ) : (
-                                                        <FontAwesomeIcon icon={faPlay} />
-                                                    )}
-                                                </button>
-                                                <button className='cls cls-new' onClick={handleSeekForward}>
-                                                    <FontAwesomeIcon icon={faArrowRotateRight} />
-                                                </button>
-                                                <button className='cls cls-new' onClick={handleStop}>
-                                                    <FontAwesomeIcon icon={faStop} />
-                                                </button>
-                                            </div>
-                                            
+                                <div className="major-content">
+                                    <h2 className='surah-heading'>Surah</h2>
+                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit egestas id gravida.Lorem ipsum dolor sit amet, consectetur adipiscing elit egestas id gravida.
+                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit egestas id gravida.Lorem ipsum dolor sit amet, consectetur adipiscing elit egestas id gravida.
+                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit egestas id gravida.Lorem ipsum dolor sit amet, consectetur adipiscing elit egestas id gravida.
+                                    </p>
+                                    <div className='p-last'>
+                                        <p className='publish'> <a className='qw colo'><FontAwesomeIcon icon={faCalendarDays} /></a>Date:&nbsp;01-01-2000</p>
+                                        <div className='P-button'>
+                                            <button className='download-button'>View PDF</button>
+                                            <button className='download-button'>Download</button>
                                         </div>
-                                        <audio ref={audioRef} src={audioUrl}></audio>
-                                    </div>
-                                    <div className='p-last-new'>
-                                        <p className='publish-new'> <a className='qw colo'><FontAwesomeIcon icon={faCalendarDays} /></a>Date:&nbsp;01-01-2000</p>
-                                        <button className='download-button download-button-new'>Download</button>
                                     </div>
 
 
@@ -370,6 +272,7 @@ const Audio = ({ onSearch }) => {
                     
                 </div>
             </section>
+            <Footer  />
         </>
     );
 };

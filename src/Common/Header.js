@@ -111,7 +111,7 @@ const Header = () => {
                   </ul>
                 </li>
                 <li className="menu-item">
-                  <a>VIDEOS</a>
+                  <Link to="/videos">VIDEOS</Link>
                   <ul className="sub-menu">
                     <li className="menu-item">
                       <a href="">Videos on Vimeo</a>
@@ -122,7 +122,7 @@ const Header = () => {
                   </ul>
                 </li>
                 <li className="menu-item">
-                  <a href="">PDF</a>
+                  <Link to="/pdf">PDF</Link>
                 </li>
                 <li className="menu-item">
                   <Link to="/contact-us">CONTACT US</Link>

@@ -6,6 +6,8 @@ import Home from "./../Pages/Home/Index";
 import AboutUs from "./../Pages/Home/About/AboutUs";
 import ContactUs from "./../Pages/Home/About/ContactUs";
 import AUDIOS from "../Pages/Home/About/Audio";
+import VIDEOS from "../Pages/Home/About/Videos";
+import PDF from "../Pages/Home/About/PDF";
 import useAuth from "../hooks/useAuth";
 
 function Router() {
@@ -24,6 +26,8 @@ function Router() {
       {path: "/about-us", element: <AboutUs/>},
       {path: "/contact-us", element: <ContactUs/>},
       {path: "/audios", element: <AUDIOS/>},
+      {path: "/videos", element: <VIDEOS/>},
+      {path: "/pdf", element: <PDF/>},
       {path: "*", element: <Home/>}
     ];
 
