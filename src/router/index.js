@@ -8,6 +8,8 @@ import ContactUs from "./../Pages/Home/About/ContactUs";
 import AUDIOS from "../Pages/Home/About/Audio";
 import VIDEOS from "../Pages/Home/About/Videos";
 import PDF from "../Pages/Home/About/PDF";
+import View_pdf from "../Pages/Home/About/View_pdf";
+import Donate from "../Pages/Home/About/Donate"
 import useAuth from "../hooks/useAuth";
 
 function Router() {
@@ -28,6 +30,8 @@ function Router() {
       {path: "/audios", element: <AUDIOS/>},
       {path: "/videos", element: <VIDEOS/>},
       {path: "/pdf", element: <PDF/>},
+      {path: "/view-pdf", element: <View_pdf/>},
+      {path: "/donate", element: <Donate/>},
       {path: "*", element: <Home/>}
     ];
 

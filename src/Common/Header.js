@@ -55,9 +55,9 @@ const Header = () => {
                   </div>
                 </li>
               </ul>
-              <a className="theme-btn theme-bg brd-rd5" href="#" itemprop="url">
+              <Link className="theme-btn theme-bg brd-rd5" to="/donate" itemprop="url">
                 Make Donation
-              </a>
+              </Link>
             </div>
           </div>
         </div>

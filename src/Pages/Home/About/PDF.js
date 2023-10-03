@@ -6,7 +6,7 @@ import TopHeader from "../../../Common/TopHeader";
 import Header from "../../../Common/Header";
 import Footer from "../../../Common/Footer";
 import ReactDOM from "react-dom/client";
-import { BrowserRouter } from "react-router-dom";
+import { BrowserRouter, Link } from "react-router-dom";
 
 
 
@@ -221,7 +221,7 @@ const Audio = ({ onSearch }) => {
                                         <div className='p-last'>
                                             <p className='publish'> <a className='qw colo'><FontAwesomeIcon icon={faCalendarDays} /></a>Date:&nbsp;01-01-2000</p>
                                             <div className='P-button'>
-                                                <button className='download-button'>View PDF</button>
+                                                <Link to="/view-pdf"><button className='download-button'>View PDF</button></Link>
                                                 <button className='download-button'>Download</button>
                                             </div>
                                         </div>
