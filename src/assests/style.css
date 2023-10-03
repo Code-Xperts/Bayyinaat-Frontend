@@ -1396,11 +1396,11 @@ span.not {
 /* SearchBar */
 
 .searc{
-  margin-right: 80px;
   display: flex;
   justify-content: end;
   align-items: center;
   padding-top: 50px ;
+  margin-bottom: 20px;
 }
 .search-bar {
   display: flex;
@@ -1412,7 +1412,7 @@ span.not {
   background-color: #fff;
 }
 
-[type="text"] {
+[type="se"] {
   flex: 1;
   border: none;
   outline: none;
@@ -1443,16 +1443,15 @@ button:hover {
   box-shadow:-5px -2px 21px 0px rgba(0, 0, 0, 0.1);
   padding: 5px;
 }
+
+
 /* content */
 
 .main-col{
   display: flex;
-  padding-left: 80px;
-  padding-right: 80px;
-  padding-bottom: 80px;
-  padding-top: 30px;
-  margin-bottom: 150px;
+  margin-bottom: 230px;
   align-items: flex-start;
+  gap: 20px;
 }
 
 ul li{
@@ -1521,7 +1520,6 @@ li a{
 
 .main-right{
   width: 80%;
-  padding-left: 35px;
 }
 
 
@@ -1535,7 +1533,7 @@ li a{
   border-radius: 10px;
   padding: 25px;
   font-size: 18px;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
   border: 1px solid #e4e4e4;
 }
 
@@ -1759,6 +1757,87 @@ li a{
 .major li {
   margin-bottom: 10px;
 }
+.p-last-new{
+  display: flex;
+  flex-direction: column;
+}
+
+/* Add this at the end of your existing CSS */
+
+@media only screen and (max-width: 768px) {
+  .container{
+    width: 90%;
+  }
+  .search-bar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+  }
+  .main-col{
+    flex-direction: column;
+  }
+  .col-cont-main{
+    width: 100%;
+  }
+  .column-right{
+    flex-direction: column;
+    width: 100%;
+  }
+  .bar{
+    flex-direction: column;
+  }
+  .texttt{
+    font-size: 16px;
+    margin-bottom: 15px;
+  }
+  .major-picture{
+    flex-direction: column;
+  }
+  .image-div-new{
+    width: 100% !important;
+    padding-bottom: 20px !important;
+  }
+  .image-border-new{
+    width: 100% !important;
+  }
+  .major-content-new{
+    flex-direction: column;
+    width: 100% !important;
+  }
+  .audio-players-new{
+    width: 100% !important;
+  }
+  .audio-time-new{
+    width: 100% !important;
+  }
+  .p-last-new{
+    flex-direction: row !important;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+  }
+  .publish-new{
+    padding-bottom: 0px !important;
+  }
+  .customs-tags{
+    width: 100%;
+    margin: 0 !important;
+  }
+  .major-content{
+    padding: 0 !important;
+  }
+  .p-last{
+    flex-direction: column;
+  }
+  .publish{
+    float: left;
+  }
+  .P-button{
+    justify-content: space-between !important;
+  }
+  }
+  
 
 
 
@@ -1804,6 +1883,8 @@ li a{
 .publish-new{
   margin: 0;
   padding-bottom: 25px;
+  font-size: 11px;
+  text-align: right;
 }
 
 .audio-progress-new{
@@ -1821,4 +1902,9 @@ input[type="range" i] {
 
 .download-button-new{
   float: right;
+}
+
+.P-button{
+  display: flex;
+  flex-direction: row;
 }
