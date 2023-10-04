@@ -5,7 +5,13 @@ import { faBackward, faPlay, faPause, faForward, faStop, faVolumeMute, faVolumeU
 import { faTwitter, faFacebook, faWhatsapp } from "@fortawesome/free-brands-svg-icons";
 import { faMap, faClock, faCalendarDays, faEnvelope } from "@fortawesome/free-regular-svg-icons";
 
+import i18n from './../../i18n';
+import { useTranslation } from 'react-i18next';
+
 function AboutSection() {
+  const { t, i18n } = useTranslation();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  
   return (
     <section
       className="about-section"
@@ -23,8 +29,8 @@ function AboutSection() {
             />
           </div>
           <div className="content-column">
-            <span className="history-label">Our History</span>
-            <h2 className="center-heading">About Our foundation</h2>
+            <span className="history-label">{t('ourhistory')}</span>
+            <h2 className="center-heading">{t('aboutourfoundation')}</h2>
             <img
               src="https://taqwa.nauthemes.net/wp-content/uploads/2020/06/prayer-head-shp.png"
               alt="Prayer"
@@ -40,7 +46,7 @@ function AboutSection() {
               Visit our premises sit amet, consectetur adipisicing elit, sed do
               eiusmod tempor incididunt ut labore et dolore magna aliqua.
             </p>
-            <button className="read-more-button">Read More</button>
+            <button className="read-more-button">{t('readmore')}</button>
           </div>
         </div>
       </div>

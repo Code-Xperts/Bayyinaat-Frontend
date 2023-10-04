@@ -4,8 +4,11 @@ import { faBars, faCalendarDays, faPhoneVolume, faMagnifyingGlass, faEnvelope } 
 import logo from "./../assests/images/logo.png";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Link } from "react-router-dom";
+import i18n from '../i18n';
+import { useTranslation } from 'react-i18next';
 
 const Header = () => {
+  const { t, i18n } = useTranslation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const toggleMobileMenu = () => {
@@ -32,7 +35,7 @@ const Header = () => {
                     <FontAwesomeIcon className="ico" icon={faCalendarDays} />
                   </i>
                   <div className="ss">
-                    Info: <span className="theme-clr">Starts 10th May</span>
+                    {t('info')}: <span className="theme-clr">Starts 10th May</span>
                   </div>
                 </li>
                 <li>
@@ -40,7 +43,7 @@ const Header = () => {
                     <FontAwesomeIcon icon={faPhoneVolume} />
                   </i>
                   <div className="ss">
-                    Call Us: <span className="theme-clr">+(00) 123-345-11</span>
+                    {t('callus')}:<span className="theme-clr"> +00 123-345-11</span>
                   </div>
                 </li>
                 <li>
@@ -48,7 +51,7 @@ const Header = () => {
                     <FontAwesomeIcon icon={faEnvelope} />
                   </i>
                   <div className="ss">
-                    Email:{" "}
+                    {t('email')}:{" "}
                     <a className="theme-clr" href="#" itemprop="url">
                       help@example.com
                     </a>
@@ -56,7 +59,7 @@ const Header = () => {
                 </li>
               </ul>
               <Link className="theme-btn theme-bg brd-rd5" to="/donate" itemprop="url">
-                Make Donation
+                {t('makedonation')}
               </Link>
             </div>
           </div>
@@ -70,13 +73,13 @@ const Header = () => {
             <div className="fl">
               <ul id="menu-main-menu" className="menu-item">
                 <li className="menu-item">
-                  <Link to="/Home">HOME</Link>
+                  <Link to="/Home">{t('home')}</Link>
                 </li>
                 <li className="menu-item">
-                  <Link to="/about-us">ABOUT US</Link>
+                  <Link to="/about-us">{t('aboutus')}</Link>
                 </li>
                 <li className="menu-item">
-                  <Link to="/audios">AUDIOS </Link>
+                  <Link to="/audios">{t('audios')}</Link>
                   <ul className="sub-menu">
                     <li className="menu-item">
                       <a href="">Al-Qur'an</a>
@@ -111,7 +114,7 @@ const Header = () => {
                   </ul>
                 </li>
                 <li className="menu-item">
-                  <Link to="/videos">VIDEOS</Link>
+                  <Link to="/videos">{t('videos')}</Link>
                   <ul className="sub-menu">
                     <li className="menu-item">
                       <a href="">Videos on Vimeo</a>
@@ -122,13 +125,13 @@ const Header = () => {
                   </ul>
                 </li>
                 <li className="menu-item">
-                  <Link to="/pdf">PDF</Link>
+                  <Link to="/pdf">{t('pdf')}</Link>
                 </li>
                 <li className="menu-item">
-                  <Link to="/contact-us">CONTACT US</Link>
+                  <Link to="/contact-us">{t('contactus')}</Link>
                 </li>
                 <li className="menu-item ">
-                  <a href="">UP COMMING EVENTS</a>
+                  <Link to="">{t('upcomingevent')}</Link>
                 </li>
               </ul>
               <div className="hdr-srch">
@@ -137,11 +140,9 @@ const Header = () => {
                     name="s"
                     type="text"
                     required=""
-                    placeholder="Enter Your Keywords..."
+                    placeholder={t('enterakeyword')}
                     value=""
-                    onFocus={(e) => e.target.value === "" && (e.target.value = "")}
-                    onBlur={(e) => e.target.value === "" &&
-                      (e.target.value = "Enter Your Keywords...")} />
+                     />
                   <button type="submit">
                     <FontAwesomeIcon icon={faMagnifyingGlass} />
                   </button>

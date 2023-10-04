@@ -7,8 +7,13 @@ import { BrowserRouter } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope, faPhoneVolume, faLocationDot, faFax } from "@fortawesome/free-solid-svg-icons";
 
+import i18n from '../../../i18n';
+import { useTranslation } from 'react-i18next';
 
 const ContactUs = () => {
+    const { t, i18n } = useTranslation();
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+    
     const [formData, setFormData] = useState({
         name: "",
         email: "",
@@ -34,7 +39,7 @@ const ContactUs = () => {
             <TopHeader />
             <Header />
             <div className="about-us-container">
-                <h1 className="about-us-heading">Contact Us</h1>
+                <h1 className="about-us-heading">{t("contactus")}</h1>
                 <img
                     src="https://taqwa.nauthemes.net/wp-content/themes/taqwa/assets/images/prayer-head-shp.png"
                     alt="About Us Image"
@@ -43,8 +48,8 @@ const ContactUs = () => {
             </div>
             <section className="junk">
                 <div className="a">
-                    <span className="b">Have any Questions...!</span>
-                    <h2 className="c">Get In Touch</h2>
+                    <span className="b">{t('haveanyquestion')}</span>
+                    <h2 className="c">{t('getintouch')}</h2>
                     <img
                         src="https://taqwa.nauthemes.net/wp-content/uploads/2020/06/prayer-head-shp.png"
                     />
@@ -59,7 +64,7 @@ const ContactUs = () => {
                                             <input
                                                 className="llll"
                                                 type="text"
-                                                placeholder="Name"
+                                                placeholder={t('name')}
                                                 name="name"
                                                 value={formData.name}
                                                 onChange={handleInputChange}
@@ -70,7 +75,7 @@ const ContactUs = () => {
                                             <input
                                                 className="llll"
                                                 type="email"
-                                                placeholder="Email"
+                                                placeholder={t('email')}
                                                 name="email"
                                                 value={formData.email}
                                                 onChange={handleInputChange}
@@ -81,7 +86,7 @@ const ContactUs = () => {
                                     <div className="i">
                                         <input
                                             className="llll"
-                                            placeholder="Enter phone number"
+                                            placeholder={t('enteryourphoneno')}
                                             name="phone"
                                             value={formData.phone}
                                             onChange={handleInputChange}
@@ -90,7 +95,7 @@ const ContactUs = () => {
                                     </div>
                                     <div className="i">
                                         <textarea className="llll"
-                                            placeholder="Message"
+                                            placeholder={t('message')}
                                             name="message"
                                             value={formData.message}
                                             onChange={handleInputChange}
@@ -98,7 +103,7 @@ const ContactUs = () => {
                                         ></textarea>
                                     </div>
                                     <div className="i">
-                                        <button className="ccnn" type="submit">Submit</button>
+                                        <button className="ccnn" type="submit">{t('submit')}</button>
                                     </div>
                                 </form>
                             </div>
@@ -109,7 +114,7 @@ const ContactUs = () => {
                                     <div className="m">
                                         <li>
                                             <a className="bye lef"><FontAwesomeIcon icon={faEnvelope} /></a>
-                                            <strong>Email</strong>
+                                            <strong>{t("email")}</strong>
                                             <div className="content co se ">
                                                 <span className="not">help@taqwa.com</span>
                                                 <span className="not">support@taqwa.com</span>
@@ -117,7 +122,7 @@ const ContactUs = () => {
                                         </li>
                                         <li>
                                         <a className="bye lef"><FontAwesomeIcon icon={faPhoneVolume} /></a>
-                                            <strong>Phone</strong>
+                                            <strong>{t('phone')}</strong>
                                             <div className="content co se ">
                                                 <span className="not">001 2565 2565 25</span>
                                                 <span className="not">001 2565 2565 26</span>
@@ -127,7 +132,7 @@ const ContactUs = () => {
                                     <div className="n">
                                         <li>
                                         <a className="bye rig"><FontAwesomeIcon icon={faLocationDot} /></a>
-                                            <strong>Address</strong>
+                                            <strong>{t('address')}</strong>
                                             <div className="content co se ">
                                                 <span className="not">19-J David Road H Block,</span>
                                                 <span className="not">Orlando, USA</span>
@@ -135,7 +140,7 @@ const ContactUs = () => {
                                         </li>
                                         <li>
                                         <a className="bye rig"><FontAwesomeIcon icon={faFax} /></a>
-                                            <strong>Fax</strong>
+                                            <strong>{t("fax")}</strong>
                                             <div className="content co se ">
                                                 <span className="not">0044 55 25 26 23</span>
                                                 <span className="not">0044 55 25 26 25</span>
@@ -151,8 +156,8 @@ const ContactUs = () => {
 
             <section>
                 <div className="a">
-                    <span className="b">Our Location</span>
-                    <h2 className="c">Get Information</h2>
+                    <span className="b">{t('ourlocation')}</span>
+                    <h2 className="c">{t('getinformation')}</h2>
                     <img
                         src="https://taqwa.nauthemes.net/wp-content/uploads/2020/06/prayer-head-shp.png"
                     />

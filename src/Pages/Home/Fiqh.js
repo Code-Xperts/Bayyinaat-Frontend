@@ -8,7 +8,13 @@ import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
 import './slider.css'; 
 
+import i18n from './../../i18n';
+import { useTranslation } from 'react-i18next';
+
 const Fiqh = () => {
+  const { t, i18n } = useTranslation();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
   const [swiperSlides, setSwiperSlides] = useState(1);
 
   useEffect(() => {
@@ -36,7 +42,7 @@ const Fiqh = () => {
   return (
     <div className="al-hadith-container">
       <div className="head">
-        <h2 className="heading">Fiqh</h2>
+        <h2 className="heading">{t('fiqh')}</h2>
         <img
           decoding="async"
           src="https://taqwa.nauthemes.net/wp-content/uploads/2020/06/prayer-head-shp.png"

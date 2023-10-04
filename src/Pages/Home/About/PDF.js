@@ -8,12 +8,14 @@ import Footer from "../../../Common/Footer";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Link } from "react-router-dom";
 
-
+import i18n from '../../../i18n';
+import { useTranslation } from 'react-i18next';
 
 
 
 const Audio = ({ onSearch }) => {
-
+    const { t, i18n } = useTranslation();
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
     const [query, setQuery] = useState('');
 
@@ -41,7 +43,7 @@ const Audio = ({ onSearch }) => {
                         <div className="search-bar">
                             <input
                                 type="se"
-                                placeholder="Search..."
+                                placeholder={t('search')}
                                 value={query}
                                 onChange={handleInputChange}
                             />
@@ -56,7 +58,7 @@ const Audio = ({ onSearch }) => {
 
                         <div className="col-cont-main">
                             <div className="column-left main-left game">
-                                <h3 className='main-left-heading'>All Categories</h3>
+                                <h3 className='main-left-heading'>{t('allcategories')}</h3>
                             </div>
                             <ul className="major">
                                 <li>
@@ -64,15 +66,15 @@ const Audio = ({ onSearch }) => {
                                         className={`drop-down-button ${isOpen == 1 ? 'active' : 'inactive'}`}
                                         onClick={() => toggleDropdown(1)}
                                     ></span>
-                                    <a className='yes-bold' href="#"><a><FontAwesomeIcon className='qw colo' icon={faVolumeLow} /></a>Al-Quran</a>
+                                    <a className='yes-bold' href="#"><a><FontAwesomeIcon className='qw colo' icon={faVolumeLow} /></a>{t('alquran')}</a>
                                     {isOpen == 1 && (
                                         <ul className={`col-cont-main-dropdown ${isOpen == 1 ? 'active' : ''}`}>
-                                            <li><a href="#">Recitation</a></li>
-                                            <li><a href="#">Tajweed</a></li>
-                                            <li><a href="#">Hifiz</a></li>
-                                            <li><a href="#">Uloom Al-Quran</a></li>
-                                            <li><a href="#">Takmeel</a></li>
-                                            <li><a href="#">Quran Awr Ihsan</a></li>
+                                            <li><a href="#">{t('recitation')}</a></li>
+                                            <li><a href="#">{t('tajweed')}</a></li>
+                                            <li><a href="#">{t('hifiz')}</a></li>
+                                            <li><a href="#">{t('uloomalquran')}</a></li>
+                                            <li><a href="#">{t('takmeel')}</a></li>
+                                            <li><a href="#">{t('quranawrihsan')}</a></li>
                                         </ul>
                                     )}
                                 </li>
@@ -81,15 +83,15 @@ const Audio = ({ onSearch }) => {
                                         className={`drop-down-button ${isOpen == 2 ? 'active' : 'inactive'}`}
                                         onClick={() => toggleDropdown(2)}
                                     ></span>
-                                    <a className='yes-bold' href="#"><a><FontAwesomeIcon className='qw colo' icon={faVolumeLow} /></a>Al-Quran</a>
+                                    <a className='yes-bold' href="#"><a><FontAwesomeIcon className='qw colo' icon={faVolumeLow} /></a>{t('alquran')}</a>
                                     {isOpen == 2 && (
                                         <ul className={`col-cont-main-dropdown ${isOpen == 2 ? 'active' : ''}`}>
-                                            <li><a href="#">Recitation</a></li>
-                                            <li><a href="#">Tajweed</a></li>
-                                            <li><a href="#">Hifiz</a></li>
-                                            <li><a href="#">Uloom Al-Quran</a></li>
-                                            <li><a href="#">Takmeel</a></li>
-                                            <li><a href="#">Quran Awr Ihsan</a></li>
+                                            <li><a href="#">{t('recitation')}</a></li>
+                                            <li><a href="#">{t('tajweed')}</a></li>
+                                            <li><a href="#">{t('hifiz')}</a></li>
+                                            <li><a href="#">{t('uloomalquran')}</a></li>
+                                            <li><a href="#">{t('takmeel')}</a></li>
+                                            <li><a href="#">{t('quranawrihsan')}</a></li>
                                         </ul>
                                     )}
                                 </li>
@@ -98,15 +100,15 @@ const Audio = ({ onSearch }) => {
                                         className={`drop-down-button ${isOpen == 3 ? 'active' : 'inactive'}`}
                                         onClick={() => toggleDropdown(3)}
                                     ></span>
-                                    <a className='yes-bold' href="#"><a><FontAwesomeIcon className='qw colo' icon={faVolumeLow} /></a>Al-Quran</a>
+                                    <a className='yes-bold' href="#"><a><FontAwesomeIcon className='qw colo' icon={faVolumeLow} /></a>{t('alquran')}</a>
                                     {isOpen == 3 && (
                                         <ul className={`col-cont-main-dropdown ${isOpen == 3 ? 'active' : ''}`}>
-                                            <li><a href="#">Recitation</a></li>
-                                            <li><a href="#">Tajweed</a></li>
-                                            <li><a href="#">Hifiz</a></li>
-                                            <li><a href="#">Uloom Al-Quran</a></li>
-                                            <li><a href="#">Takmeel</a></li>
-                                            <li><a href="#">Quran Awr Ihsan</a></li>
+                                            <li><a href="#">{t('recitation')}</a></li>
+                                            <li><a href="#">{t('tajweed')}</a></li>
+                                            <li><a href="#">{t('hifiz')}</a></li>
+                                            <li><a href="#">{t('uloomalquran')}</a></li>
+                                            <li><a href="#">{t('takmeel')}</a></li>
+                                            <li><a href="#">{t('quranawrihsan')}</a></li>
                                         </ul>
                                     )}
                                 </li>
@@ -115,15 +117,15 @@ const Audio = ({ onSearch }) => {
                                         className={`drop-down-button ${isOpen == 4 ? 'active' : 'inactive'}`}
                                         onClick={() => toggleDropdown(4)}
                                     ></span>
-                                    <a className='yes-bold' href="#"><a><FontAwesomeIcon className='qw colo' icon={faVolumeLow} /></a>Al-Quran</a>
+                                    <a className='yes-bold' href="#"><a><FontAwesomeIcon className='qw colo' icon={faVolumeLow} /></a>{t('alquran')}</a>
                                     {isOpen == 4 && (
                                         <ul className={`col-cont-main-dropdown ${isOpen == 4 ? 'active' : ''}`}>
-                                            <li><a href="#">Recitation</a></li>
-                                            <li><a href="#">Tajweed</a></li>
-                                            <li><a href="#">Hifiz</a></li>
-                                            <li><a href="#">Uloom Al-Quran</a></li>
-                                            <li><a href="#">Takmeel</a></li>
-                                            <li><a href="#">Quran Awr Ihsan</a></li>
+                                            <li><a href="#">{t('recitation')}</a></li>
+                                            <li><a href="#">{t('tajweed')}</a></li>
+                                            <li><a href="#">{t('hifiz')}</a></li>
+                                            <li><a href="#">{t('uloomalquran')}</a></li>
+                                            <li><a href="#">{t('takmeel')}</a></li>
+                                            <li><a href="#">{t('quranawrihsan')}</a></li>
                                         </ul>
                                     )}
                                 </li>
@@ -132,15 +134,15 @@ const Audio = ({ onSearch }) => {
                                         className={`drop-down-button ${isOpen == 5 ? 'active' : 'inactive'}`}
                                         onClick={() => toggleDropdown(5)}
                                     ></span>
-                                    <a className='yes-bold' href="#"><a><FontAwesomeIcon className='qw colo' icon={faVolumeLow} /></a>Al-Quran</a>
+                                    <a className='yes-bold' href="#"><a><FontAwesomeIcon className='qw colo' icon={faVolumeLow} /></a>{t('alquran')}</a>
                                     {isOpen == 5 && (
                                         <ul className={`col-cont-main-dropdown ${isOpen == 5 ? 'active' : ''}`}>
-                                            <li><a href="#">Recitation</a></li>
-                                            <li><a href="#">Tajweed</a></li>
-                                            <li><a href="#">Hifiz</a></li>
-                                            <li><a href="#">Uloom Al-Quran</a></li>
-                                            <li><a href="#">Takmeel</a></li>
-                                            <li><a href="#">Quran Awr Ihsan</a></li>
+                                            <li><a href="#">{t('recitation')}</a></li>
+                                            <li><a href="#">{t('tajweed')}</a></li>
+                                            <li><a href="#">{t('hifiz')}</a></li>
+                                            <li><a href="#">{t('uloomalquran')}</a></li>
+                                            <li><a href="#">{t('takmeel')}</a></li>
+                                            <li><a href="#">{t('quranawrihsan')}</a></li>
                                         </ul>
                                     )}
                                 </li>
@@ -149,15 +151,15 @@ const Audio = ({ onSearch }) => {
                                         className={`drop-down-button ${isOpen == 6 ? 'active' : 'inactive'}`}
                                         onClick={() => toggleDropdown(6)}
                                     ></span>
-                                    <a className='yes-bold' href="#"><a><FontAwesomeIcon className='qw colo' icon={faVolumeLow} /></a>Al-Quran</a>
+                                    <a className='yes-bold' href="#"><a><FontAwesomeIcon className='qw colo' icon={faVolumeLow} /></a>{t('alquran')}</a>
                                     {isOpen == 6 && (
                                         <ul className={`col-cont-main-dropdown ${isOpen == 6 ? 'active' : ''}`}>
-                                            <li><a href="#">Recitation</a></li>
-                                            <li><a href="#">Tajweed</a></li>
-                                            <li><a href="#">Hifiz</a></li>
-                                            <li><a href="#">Uloom Al-Quran</a></li>
-                                            <li><a href="#">Takmeel</a></li>
-                                            <li><a href="#">Quran Awr Ihsan</a></li>
+                                            <li><a href="#">{t('recitation')}</a></li>
+                                            <li><a href="#">{t('tajweed')}</a></li>
+                                            <li><a href="#">{t('hifiz')}</a></li>
+                                            <li><a href="#">{t('uloomalquran')}</a></li>
+                                            <li><a href="#">{t('takmeel')}</a></li>
+                                            <li><a href="#">{t('quranawrihsan')}</a></li>
                                         </ul>
                                     )}
                                 </li>
@@ -166,15 +168,15 @@ const Audio = ({ onSearch }) => {
                                         className={`drop-down-button ${isOpen == 7 ? 'active' : 'inactive'}`}
                                         onClick={() => toggleDropdown(7)}
                                     ></span>
-                                    <a className='yes-bold' href="#"><a><FontAwesomeIcon className='qw colo' icon={faVolumeLow} /></a>Al-Quran</a>
+                                    <a className='yes-bold' href="#"><a><FontAwesomeIcon className='qw colo' icon={faVolumeLow} /></a>{t('alquran')}</a>
                                     {isOpen == 7 && (
                                         <ul className={`col-cont-main-dropdown ${isOpen == 7 ? 'active' : ''}`}>
-                                            <li><a href="#">Recitation</a></li>
-                                            <li><a href="#">Tajweed</a></li>
-                                            <li><a href="#">Hifiz</a></li>
-                                            <li><a href="#">Uloom Al-Quran</a></li>
-                                            <li><a href="#">Takmeel</a></li>
-                                            <li><a href="#">Quran Awr Ihsan</a></li>
+                                            <li><a href="#">{t('recitation')}</a></li>
+                                            <li><a href="#">{t('tajweed')}</a></li>
+                                            <li><a href="#">{t('hifiz')}</a></li>
+                                            <li><a href="#">{t('uloomalquran')}</a></li>
+                                            <li><a href="#">{t('takmeel')}</a></li>
+                                            <li><a href="#">{t('quranawrihsan')}</a></li>
                                         </ul>
                                     )}
                                 </li>
@@ -213,7 +215,7 @@ const Audio = ({ onSearch }) => {
                                         <img className='image-border' src="https://static.vecteezy.com/system/resources/thumbnails/023/342/638/small_2x/3d-holy-quran-free-vector.jpg" />
                                     </div>
                                     <div className="major-content">
-                                        <h2 className='surah-heading'>Surah</h2>
+                                        <h2 className='surah-heading'>{t('surah')}</h2>
                                         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit egestas id gravida.Lorem ipsum dolor sit amet, consectetur adipiscing elit egestas id gravida.
                                             Lorem ipsum dolor sit amet, consectetur adipiscing elit egestas id gravida.Lorem ipsum dolor sit amet, consectetur adipiscing elit egestas id gravida.
                                             Lorem ipsum dolor sit amet, consectetur adipiscing elit egestas id gravida.Lorem ipsum dolor sit amet, consectetur adipiscing elit egestas id gravida.
@@ -221,8 +223,8 @@ const Audio = ({ onSearch }) => {
                                         <div className='p-last'>
                                             <p className='publish'> <a className='qw colo'><FontAwesomeIcon icon={faCalendarDays} /></a>Date:&nbsp;01-01-2000</p>
                                             <div className='P-button'>
-                                                <Link to="/view-pdf"><button className='download-button'>View PDF</button></Link>
-                                                <button className='download-button'>Download</button>
+                                                <Link to="/view-pdf"><button className='download-button'>{t('viewpdf')}</button></Link>
+                                                <button className='download-button'>{t('download')}</button>
                                             </div>
                                         </div>
 

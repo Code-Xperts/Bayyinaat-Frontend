@@ -7,6 +7,8 @@ import React, { useEffect, useRef } from "react";
 // import 'react-toastify/dist/ReactToastify.css';
 // import WOW from 'wowjs';
 // import 'wowjs/css/libs/animate.css';
+import reportWebVitals from './reportWebVitals';
+import i18n from './i18n';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 

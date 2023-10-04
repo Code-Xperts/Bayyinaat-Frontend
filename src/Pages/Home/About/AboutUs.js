@@ -1,17 +1,23 @@
+import React, { useEffect, useState } from 'react';
 import TopHeader from "./../../../Common/TopHeader";
 import Header from "./../../../Common/Header";
 import Footer from "./../../../Common/Footer";
-import React from 'react';
 import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 
+import i18n from '../../../i18n';
+import { useTranslation } from 'react-i18next';
+
 const AboutUs = () => {
+    const { t, i18n } = useTranslation();
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+    
     return (
         <>
             <TopHeader />
             <Header />
             <div className="about-us-container">
-                <h1 className="about-us-heading">About Us</h1>
+                <h1 className="about-us-heading">{t('aboutus')}</h1>
                 <img
                     src="https://taqwa.nauthemes.net/wp-content/themes/taqwa/assets/images/prayer-head-shp.png"
                     alt="About Us Image"
@@ -33,8 +39,8 @@ const AboutUs = () => {
                             />
                         </div>
                         <div className="content-column">
-                            <span className="history-label">Our History</span>
-                            <h2 className="center-heading">About Our foundation
+                            <span className="history-label">{t('ourhistory')}</span>
+                            <h2 className="center-heading">{t('aboutourfoundation')}
                             </h2>
                             <img
                                 src="https://taqwa.nauthemes.net/wp-content/uploads/2020/06/prayer-head-shp.png"
@@ -51,7 +57,7 @@ const AboutUs = () => {
                                 Visit our premises sit amet, consectetur adipisicing elit, sed do
                                 eiusmod tempor incididunt ut labore et dolore magna aliqua.
                             </p>
-                            <button className="read-more-button">Read More</button>
+                            <button className="read-more-button">{t('readmore')}</button>
                         </div>
                     </div>
                 </div>
@@ -59,8 +65,8 @@ const AboutUs = () => {
             <section className="contentt-column">
                 <div className="cs">
                     <div className="hhhh">
-                        <span className="history-label">What We Offer</span>
-                        <h2 className="center-heading">Our Services</h2>
+                        <span className="history-label">{t('whatweoffer')}</span>
+                        <h2 className="center-heading">{t('ourservices')}</h2>
                         <img
                             src="https://taqwa.nauthemes.net/wp-content/uploads/2020/06/prayer-head-shp.png"
                             alt="Prayer"
@@ -96,7 +102,7 @@ const AboutUs = () => {
 78 -91 105 -216 105 l-85 0 0 -1184z"/>
                                     </g>
                                 </svg>
-                                <h2  className="jj">Quran Learning</h2>
+                                <h2  className="jj">{t('quranlearning')}</h2>
                                 <div className="oo">
                                     <p>Learning Quran facility dolor sit amet, consectetur adipisicing elit, sed do eiusmod</p>
                                 </div>
@@ -140,7 +146,7 @@ c0 274 1 272 -145 277 l-70 3 -5 1235 c-3 679 -9 1240 -13 1247 -11 17 -73 33
 -1036 -20z"/>
                                     </g>
                                 </svg>
-                                <h2 className="jj">Funeral Service</h2>
+                                <h2 className="jj">{t('funeralservice')}</h2>
                                 <div className="oo">
                                     <p>Funeral facility dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor</p>
                                 </div>
@@ -187,7 +193,7 @@ c0 274 1 272 -145 277 l-70 3 -5 1235 c-3 679 -9 1240 -13 1247 -11 17 -73 33
 440 -2 494 -17 519 -28 48 -92 64 -142 36z"/>
                                     </g>
                                 </svg>
-                                <h2 className="jj">Mosque Renovation</h2>
+                                <h2 className="jj">{t('mosqurenovation')}</h2>
                                 <div className="oo">
                                     <p>Mosque rebuild facility dol sit amet, consectetur adipisicing elit, sed do eiusmod te</p>
                                 </div>
@@ -232,7 +238,7 @@ c0 274 1 272 -145 277 l-70 3 -5 1235 c-3 679 -9 1240 -13 1247 -11 17 -73 33
 -46 16 -290 19 -245 2 -282 0 -293 -13z"/>
                                     </g>
                                 </svg>  
-                                <h2 className="jj">Help Poor</h2>
+                                <h2 className="jj">{t('helppoor')}</h2>
                                 <div className="oo">
                                     <p className="last">Poor rehab facility dolor sit amet, consectetur adipisicing elit, sed do eiusmod temp</p>
                                 </div>

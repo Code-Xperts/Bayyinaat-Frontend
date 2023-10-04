@@ -9,11 +9,13 @@ import viewpdf from "../../../assests/database.pdf"
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Link } from "react-router-dom";
 
-
-
+import i18n from '../../../i18n';
+import { useTranslation } from 'react-i18next';
 
 
 const Audio = ({ onSearch }) => {
+    const { t, i18n } = useTranslation();
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
 
     const [query, setQuery] = useState('');
@@ -49,12 +51,12 @@ const Audio = ({ onSearch }) => {
                             
                             <div className="mar mar-neww">
                                 <div className="bar bar-neww">
-                                    <h2 className='pdf-heading'>PDF HEADING</h2>
+                                    <h2 className='pdf-heading'>{t('pdfheading')}</h2>
                                     <iframe src={viewpdf + "#toolbar=0"} width="100%" height="100%" onContextMenu={handleContextMenu}>
                                     </iframe>
                                     <div className='P-button P-button-neww'>
-                                        <Link to="/pdf"><button className='download-button'>Close PDF</button></Link>
-                                        <button className='download-button'>Download</button>
+                                        <Link to="/pdf"><button className='download-button'>{t('closepdf')}</button></Link>
+                                        <button className='download-button'>{t('download')}</button>
                                     </div>
                                 </div>
                             </div>

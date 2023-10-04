@@ -1,10 +1,17 @@
 import React, { useState, useRef, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPhone, faMagnifyingGlass, faLocationDot } from "@fortawesome/free-solid-svg-icons";
-import { faTwitter, faFacebook, faWhatsapp } from "@fortawesome/free-brands-svg-icons";
+import { faTwitter, faFacebook, faYoutube } from "@fortawesome/free-brands-svg-icons";
 import { faEnvelope } from "@fortawesome/free-regular-svg-icons";
 import logo from "./../assests/images/logo.png";
+
+import i18n from './../i18n'
+import { useTranslation } from 'react-i18next';
+
 const Footer = () => {
+  const { t, i18n } = useTranslation();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -29,7 +36,7 @@ const Footer = () => {
     <footer className="footer bck">
       <div className="upper">
         <div className="column">
-          <h3>About Us</h3>
+          <h3>{t('aboutus')}</h3>
           <p>
             Lorem ipsum dolor sit amet, conec tetur adipisicing elit, sed do
             eiusd tempor incididunt ut labore.
@@ -43,7 +50,7 @@ const Footer = () => {
         </div>
 
         <div className="column">
-          <h3>Contact Info</h3>
+          <h3>{t('contactinfo')}</h3>
           <div className="contact-info">
             <p className="spp">
               {" "}
@@ -83,21 +90,21 @@ const Footer = () => {
                 rel="noopener noreferrer"
                 className="social-link bb"
               >
-                <FontAwesomeIcon icon={faWhatsapp} />
+                <FontAwesomeIcon icon={faYoutube} />
               </a>
             </div>
           </div>
         </div>
 
         <div className="column">
-          <h3>Quick Form</h3>
+          <h3>{t('quickform')}</h3>
           <div className="form-container"> {/* Container for the form */}
             <form className="quick-form" onSubmit={handleSubmit}>
               <div className="form-group">
                 <input
                   className="ttt"
                   type="text"
-                  placeholder="Name"
+                  placeholder={t('name')}
                   name="name"
                   value={formData.name}
                   onChange={handleInputChange}
@@ -108,7 +115,7 @@ const Footer = () => {
                 <input
                   className="ttt"
                   type="email"
-                  placeholder="Email"
+                  placeholder={t('email')}
                   name="email"
                   value={formData.email}
                   onChange={handleInputChange}
@@ -117,7 +124,7 @@ const Footer = () => {
               </div>
               <div className="form-group">
                 <textarea
-                  placeholder="Message"
+                  placeholder={t('message')}
                   name="message"
                   value={formData.message}
                   onChange={handleInputChange}
@@ -125,7 +132,7 @@ const Footer = () => {
                 ></textarea>
               </div>
               <div className="form-group">
-                <button className="bbnn" type="submit">Submit</button>
+                <button className="bbnn" type="submit">{t('submit')}</button>
               </div>
             </form>
           </div>
