@@ -35,46 +35,46 @@ function NamazTimings() {
                 <li className="pr-tm-bx">
                   <h6>{t('zuhr')}</h6>
                   <span>
-                    <i className="thm-clr">{t('begins')} </i>01:01 PM
+                    <i className="thm-clr">{t('begins')}:</i>01:01 PM
                   </span>
                   <span>
-                    <i className="thm-clr">{t('iqamah')}</i>1:30 PM
+                    <i className="thm-clr">{t('iqamah')}:</i>1:30 PM
                   </span>
                 </li>
                 <li className="pr-tm-bx color">
                   <h6>{t('asr')}</h6>
                   <span>
-                    <i className="thm-clr">{t('begins')}</i>5:17 PM
+                    <i className="thm-clr">{t('begins')}:</i>5:17 PM
                   </span>
                   <span>
-                    <i className="thm-clr">{t('iqamah')}</i>6:00 PM
+                    <i className="thm-clr">{t('iqamah')}:</i>6:00 PM
                   </span>
                 </li>
                 <li className="pr-tm-bx">
                   <h6>{t('magrib')}</h6>
                   <span>
-                    <i className="thm-clr">{t('begins')}</i>7:21 PM
+                    <i className="thm-clr">{t('begins')}:</i>7:21 PM
                   </span>
                   <span>
-                    <i className="thm-clr">{t('iqamah')}</i>7:21 PM
+                    <i className="thm-clr">{t('iqamah')}:</i>7:21 PM
                   </span>
                 </li>
                 <li className="pr-tm-bx color">
                   <h6>{t("isha")}</h6>
                   <span>
-                    <i className="thm-clr">{t('begins')}</i>8:37 PM
+                    <i className="thm-clr">{t('begins')}:</i>8:37 PM
                   </span>
                   <span>
-                    <i className="thm-clr">{t('iqamah')}</i>9:00 PM
+                    <i className="thm-clr">{t('iqamah')}:</i>9:00 PM
                   </span>
                 </li>
                 <li className="pr-tm-bx note spc-pr-tm">
                   <h6>{t("jummah")}</h6>
                   <span>
-                    <i>{t('begins')}</i>01:01 PM
+                    <i>{t('begins')}:</i>01:01 PM
                   </span>
                   <span>
-                    <i>{t('iqamah')}</i>1:30 PM
+                    <i>{t('iqamah')}:</i>1:30 PM
                   </span>
                 </li>
               </ul>

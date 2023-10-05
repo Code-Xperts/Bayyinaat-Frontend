@@ -13,12 +13,18 @@ const TopHeader = () => {
   const { t, i18n } = useTranslation();
   const changeLanguage = (lng) => {
     i18n.changeLanguage(lng);
+    document.body.classList.remove('en');
+    document.body.classList.remove('ur');
+    document.body.classList.remove('ar');
+    document.body.classList.add(lng);
     if(lng=="en"){
       document.documentElement.dir = '';
     } else {
       document.documentElement.dir = 'rtl';
     }
   }
+ 
+   
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const toggleDropdown = () => {
@@ -108,7 +114,7 @@ const TopHeader = () => {
             </div>
           )}
         </div>
-        <p className="follow">{t("followus")}</p>
+        <p className="follow">{t("followus")}:</p>
         <div className="social-links">
           <a
             href="#"

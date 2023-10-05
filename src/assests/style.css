@@ -96,7 +96,6 @@ h6 {
 .jamat-time {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 10px;
 }
 
 .jamat-time th {
@@ -216,6 +215,16 @@ h6 {
     margin-left: 25px; /* Remove any margin if needed */
     z-index: 2;
   }
+  .dropdown-menu{
+    right: -52px;
+  }
+  .switcher_dropdown{
+    top: 35px;
+    background: #fff;
+    padding: 0px;
+    width: 173px;
+    left: -95px;
+  }
 }
 
 /* 2nd header */
@@ -287,7 +296,7 @@ h6 {
   background-color: var(--primary-color);
   color: #ffffff;
   text-decoration: none;
-  border-radius: 50px;
+  border-radius: 10px;
 }
 
 .theme-btn:hover {
@@ -345,9 +354,6 @@ h6 {
   margin-right: 60px;
 }
 
-.menu-sec ul li:last-child {
-  margin-right: 0;
-}
 
 .menu-sec ul li a {
   text-decoration: none;
@@ -647,7 +653,7 @@ h6 {
   padding: 10px 20px;
   font-size: 18px;
   border: none;
-  border-radius: 5px;
+  border-radius: 10px;
   cursor: pointer;
 }
 
@@ -1424,7 +1430,7 @@ button {
   background-color: var(--primary-color);
   color: #fff;
   border: none;
-  border-radius: 20px;
+  border-radius: 10px;
   cursor: pointer;
   padding: 8px 12px;
   font-size: 16px;
@@ -1570,7 +1576,7 @@ li a{
 
 
 .download-button {
-  width: 106px;
+  min-width: 106px;
   height: 40px;
   margin-left: 15px;
   border-radius: 10px;
@@ -2020,4 +2026,152 @@ input[type="range" i] {
     margin: 8px;
     width: 60%; /* Adjust as needed */
   }
+}
+
+
+/* for arabic */
+
+.ar .image-column::before{
+  right: 40px
+}
+
+.ar .theme-btn{
+  margin-right: 30px;
+}
+
+.ar .thm-clr:last-child{
+  margin-left: 5px;
+}
+
+.ar .pr-tm-bx span i{
+  margin-left: 5px;
+}
+
+.ar .follow{
+  margin-left: 20px;
+}
+
+.ar .jamat-time th{
+  text-align: right;
+}
+
+.ar .qw{
+  margin-right: 0px;
+  margin-left: 10px;
+}
+
+.ar .bbnn{
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  padding: 8px 20px;
+  font-size: 16px;
+}
+
+.ar .drop-down-button{
+  float: left;
+}
+
+.ar .main-left-heading::after{
+  right: 0;
+}
+
+.ar .col-cont-main-dropdown.active{
+  margin-left: 0;
+  margin-right: 40px;
+}
+
+.ar .image-div-new{
+  gap: 10px;
+}
+
+.ar .major-picture{
+  gap: 10px;
+}
+
+.ar .bye{
+  margin-right: 0;
+  margin-left: 10px;
+}
+
+.ar .sub-menu:after, .sub-menu:before{
+  right: 0%;
+}
+
+.ar .menu-item .sub-menu li{
+  margin-right: 0 !important;
+}
+
+/* for URDU */
+
+.ur .image-column::before{
+  right: 40px
+}
+
+.ur .theme-btn{
+  margin-right: 30px;
+}
+
+.ur .thm-clr:last-child{
+  margin-left: 5px;
+}
+
+.ur .pr-tm-bx span i{
+  margin-left: 5px;
+}
+
+.ur .follow{
+  margin-left: 20px;
+}
+
+.ur .jamat-time th{
+  text-align: right;
+}
+
+.ur .qw{
+  margin-right: 0px;
+  margin-left: 10px;
+}
+
+.ur .bbnn{
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  padding: 8px 20px;
+  font-size: 16px;
+}
+
+
+.ur .drop-down-button{
+  float: left;
+}
+
+.ur .main-left-heading::after{
+  right: 0;
+}
+
+.ur .col-cont-main-dropdown.active{
+  margin-left: 0;
+  margin-right: 40px;
+}
+
+.ur .image-div-new{
+  gap: 10px;
+}
+
+.ur .major-picture{
+  gap: 10px;
+}
+
+.ur .bye{
+  margin-right: 0;
+  margin-left: 10px;
+}
+
+.ur .menu-item .sub-menu li{
+  margin-right: 0 !important;
+}
+
+.ur .sub-menu:after, .sub-menu:before{
+  right: 0%;
 }

@@ -323,7 +323,7 @@ const Audio = ({ onSearch }) => {
                                             <audio ref={audioRef} src={audioUrl}></audio>
                                         </div>
                                         <div className='p-last-new'>
-                                            <p className='publish-new'> <a className='qw colo'><FontAwesomeIcon icon={faCalendarDays} /></a>Date:&nbsp;01-01-2000</p>
+                                            <p className='publish-new'> <a className='qw colo'><FontAwesomeIcon icon={faCalendarDays} /></a>{t('date')}:&nbsp;01-01-2000</p>
                                             <button className='download-button download-button-new'>{t('download')}</button>
                                         </div>
 

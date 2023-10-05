@@ -188,7 +188,7 @@ const Audio = ({ onSearch }) => {
                             <div className="mar">
                                 <div className="bar">
                                     <div className="texttt">
-                                        Showing 1–9 of 29 results
+                                        {t('showingresults')}
                                     </div>
                                     <form className="rtcl-ordering" method="get">
                                         <select className="isko"
@@ -197,14 +197,14 @@ const Audio = ({ onSearch }) => {
                                             tabIndex="-1"
                                             aria-hidden="true"
                                         >
-                                            <option value="title-asc">A to Z ( title )</option>
-                                            <option value="title-desc">Z to A ( title )</option>
+                                            <option value="title-asc">{t('atoztitle')}</option>
+                                            <option value="title-desc">{t('ztoatitle')}</option>
                                             <option value="date-desc" selected="selected">
-                                                Recently added ( latest )
+                                                {t('recentlyaddedlatest')}
                                             </option>
-                                            <option value="date-asc">Date added ( oldest )</option>
-                                            <option value="views-desc">Most viewed</option>
-                                            <option value="views-asc">Less viewed</option>
+                                            <option value="date-asc">{t('dateaddedoldest')}</option>
+                                            <option value="views-desc">{t('mostviewed')}</option>
+                                            <option value="views-asc">{t('lessviewed')}</option>
                                         </select>
                                     </form>
                                 </div>
@@ -221,7 +221,7 @@ const Audio = ({ onSearch }) => {
                                             Lorem ipsum dolor sit amet, consectetur adipiscing elit egestas id gravida.Lorem ipsum dolor sit amet, consectetur adipiscing elit egestas id gravida.
                                         </p>
                                         <div className='p-last'>
-                                            <p className='publish'> <a className='qw colo'><FontAwesomeIcon icon={faCalendarDays} /></a>Date:&nbsp;01-01-2000</p>
+                                            <p className='publish'> <a className='qw colo'><FontAwesomeIcon icon={faCalendarDays} /></a>{t('date')}:&nbsp;01-01-2000</p>
                                             <button className='download-button'>{t('watchnow')}</button>
                                         </div>
 
