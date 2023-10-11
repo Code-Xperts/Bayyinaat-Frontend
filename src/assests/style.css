@@ -315,14 +315,22 @@ h6 {
 .fas {
   color: var(--Secondary-color);
 }
-
+.hiiiii{
+  display: none;
+}
 /* mobile responsive */
 
 /* Mobile Styles - Hide other elements */
 @media (max-width: 767px) {
-  .inf-lst,
-  .theme-btn {
+  .inf-lst{
     display: none;
+  }
+  .hiiiii{
+    display: block;
+    background-color: var(--text-color);
+    color: var(--primary-color);
+    font-weight: bold;
+    margin-right: 15px;
   }
 }
 
@@ -520,6 +528,7 @@ h6 {
     display: block;
     padding: 10px 0;
     text-align: left;
+    margin-bottom: 6px;
   }
 
   .menu-sec ul li a {
@@ -1245,8 +1254,11 @@ button:hover {
 
 .e{
   display: flex;
-  max-width: 80%;
+  gap: 50px;
+  width: 80%;
   margin: auto;
+  margin-top: 30px;
+  margin-bottom: 30px;
 }
 
 .mmmm{
@@ -1259,10 +1271,8 @@ button:hover {
 }
 
 .hi {
-  width: 80%; 
   max-width: 500px; 
   margin: 0 auto;
-  padding: 50px;
   display: flex;
   flex-direction: column;
 }
@@ -1325,7 +1335,6 @@ span.not {
 }
 
 .j{
-  padding: 50px;
   font-size: 20px;
 }
 
@@ -1395,7 +1404,10 @@ span.not {
   .column.map {
     text-align: center;
   }
-}
+  .l{
+    display: flex;
+    flex-direction: column;
+  }}
 
 /* Audio Page */
 /* SearchBar */
@@ -1628,12 +1640,41 @@ li a{
 
 .audio-buttons button {
   color: var(--primary-color);
-  font-size: 15px;
+  font-size: 16px;
   margin-right: 10px; 
   background-color: #f0f0f0;
   cursor: pointer;
   border-radius: 2px;
+  position: relative;
 }
+
+
+.audio-buttons .clss::after {
+  content: '10';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 18px; /* Adjust the font size as needed */
+  transition: opacity 0.6s ease;
+  color: var(--primary-color); /* Adjust the color as needed */
+  opacity: 0; /* Initially hidden */
+  white-space: nowrap; /* Prevent line break for the number */
+  padding: 5px; /* Add padding for better visibility */
+  background-color: #f0f0f0;
+
+}
+.audio-buttons .clss:hover::after {
+  opacity: 1; /* Show on hover */
+}
+
+/*
+.iiccoon{
+  font-size: 16px;
+  width: 15px;
+  height: 14px;
+  color: var(--primary-color);
+}*/
 
 .audio-progress input[type="range"] {
   width: 247%;
@@ -1841,6 +1882,11 @@ li a{
   .P-button{
     justify-content: space-between !important;
   }
+  .audio-buttons-new{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
   }
   
 
@@ -1860,7 +1906,6 @@ li a{
   width: 50%;
   height: 80px;
   object-fit: cover;
-  overflow: hidden;
   border-radius: 10px;
 }
 
@@ -1903,6 +1948,9 @@ input[type="range" i] {
 .border-new-p{
   margin: 0;
   line-height: 20px;
+  width: 100%;
+  word-break: break-all;
+  margin-right: 10px;
 }
 
 .download-button-new{
@@ -2015,7 +2063,8 @@ input[type="range" i] {
 
 @media screen and (max-width: 768px) {
   .donate-main {
-    width: 90%;
+    width: 80%;
+    margin-bottom: 200px;
   }
 
   .names-account {
@@ -2175,3 +2224,8 @@ input[type="range" i] {
 .ur .sub-menu:after, .sub-menu:before{
   right: 0%;
 }
+
+
+
+
+

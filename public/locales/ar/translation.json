@@ -5,7 +5,7 @@
     "videos": "أشرطة فيديو",
     "pdf": "بي دي إف",
     "contactus": "اتصل بنا",
-    "upcomingevent": "الأحداث القادمة",
+    "futureplans":"خطط مستقبلية",
     "namaztiming": "توقيت نماز",
     "namaz":"نماز",
     "time":"وقت",
@@ -13,7 +13,7 @@
     "fajr":"الفجر",
     "zuhr":"ظهر",
     "asr":"العصر",
-    "magrib":"المغرب",
+    "maghrib":"المغرب",
     "isha":"العشاء",
     "followus": "تابعنا",
     "info":"معلومات",
@@ -90,6 +90,7 @@
     "lessviewed":"أقل مشاهدة",
 
 
+    
     "haveanyquestion":"لديك أي أسئلة...!",
     "getintouch":"ابقى على تواصل",
     "enteryourphoneno":"أدخل رقم هاتفك",

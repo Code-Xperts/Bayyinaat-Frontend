@@ -97,7 +97,7 @@ const TopHeader = () => {
                   </tr>
                   <tr>
                     <td>
-                      <FontAwesomeIcon icon={faMoon} /> {t("magrib")}
+                      <FontAwesomeIcon icon={faMoon} /> {t("maghrib")}
                     </td>
                     <td>7:30 PM</td>
                     <td>7:30 PM</td>

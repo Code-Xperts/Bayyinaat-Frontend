@@ -42,7 +42,7 @@ const AlHadith = () => {
   return (
     <div className="al-hadith-container">
       <div className="head">
-        <h2 className="heading">{t('alhadith')}</h2>
+        <h2 className="heading">{t('videos')}</h2>
         <img
           decoding="async"
           src="https://taqwa.nauthemes.net/wp-content/uploads/2020/06/prayer-head-shp.png"

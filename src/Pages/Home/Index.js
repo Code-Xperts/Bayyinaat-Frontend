@@ -13,7 +13,6 @@ import NamazTimings from "./../../Pages/Home/NamazTimings";
 import AlQuran from "./../../Pages/Home/AlQuran";
 import AlHadith from "./../../Pages/Home/AlHadith";
 import Fiqh from "./../../Pages/Home/Fiqh";
-import Assorted from "./../../Pages/Home/Assorted";
 import Footer from "./../../Common/Footer";
 
 
@@ -28,7 +27,6 @@ export default function App() {
       <AlQuran />
       <AlHadith />
       <Fiqh />
-      <Assorted />
       <Footer />
     </>
   );

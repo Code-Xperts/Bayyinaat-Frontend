@@ -5,7 +5,7 @@
     "videos": "VIDEOS",
     "pdf": "PDF",
     "contactus": "CONTACT US",
-    "upcomingevent": "UP COMMING EVENTS",
+    "futureplans": "FUTURE PLANS",
     "namaztiming": "Namaz Timing",
     "namaz":"Namaz",
     "time":"Time",
@@ -13,7 +13,7 @@
     "fajr":"Fajr",
     "zuhr":"Zuhr",
     "asr":"Asr",
-    "magrib":"Magrib",
+    "maghrib":"Maghrib ",
     "isha":"Isha",
     "followus": "Follow Us",
     "info":"Info",
@@ -23,13 +23,14 @@
     "enterakeyword": "Enter a KeyWords...",
 
 
+
     "ourhistory": "Our History",
     "aboutourfoundation":"About Our foundation",
     "readmore":"Read More",
     "associatedmosque":"Associated Mosque",
     "begins":"Begins",
     "iqamah":"Iqamah",
-    "jummah": "Jummah:",
+    "jummah": "Jummah",
     "whatweoffer":"What We Offer",
     "alquransection":"Al Quran Section",
     "alhadith":"AlHadith",

@@ -117,22 +117,81 @@ const Header = () => {
                   <Link to="/videos">{t('videos')}</Link>
                   <ul className="sub-menu">
                     <li className="menu-item">
-                      <a href="">Videos on Vimeo</a>
+                      <a href="">Al-Qur'an</a>
                     </li>
                     <li className="menu-item">
-                      <a href="">videos on YouTube</a>
+                      <a href="">Al-Hadith al-Nabawi (s.a.w)</a>
+                    </li>
+                    <li className="menu-item">
+                      <a href="">Seerah</a>
+                    </li>
+                    <li className="menu-item">
+                      <a href="">Aqeedah</a>
+                    </li>
+                    <li className="menu-item">
+                      <a href="">Fiqh</a>
+                    </li>
+                    <li className="menu-item">
+                      <a href="">Akhlaqiaat</a>
+                    </li>
+                    <li className="menu-item">
+                      <a href="">Khusoosi Mawaqay</a>
+                    </li>
+                    <li className="menu-item">
+                      <a href="">Tarbiyat o Tazkia</a>
+                    </li>
+                    <li className="menu-item">
+                      <a href="">Learn Arabic</a>
+                    </li>
+                    <li className="menu-item">
+                      <a href="">Subjects</a>
                     </li>
                   </ul>
                 </li>
                 <li className="menu-item">
                   <Link to="/pdf">{t('pdf')}</Link>
+                  <ul className="sub-menu">
+                    <li className="menu-item">
+                      <a href="">Al-Qur'an</a>
+                    </li>
+                    <li className="menu-item">
+                      <a href="">Al-Hadith al-Nabawi (s.a.w)</a>
+                    </li>
+                    <li className="menu-item">
+                      <a href="">Seerah</a>
+                    </li>
+                    <li className="menu-item">
+                      <a href="">Aqeedah</a>
+                    </li>
+                    <li className="menu-item">
+                      <a href="">Fiqh</a>
+                    </li>
+                    <li className="menu-item">
+                      <a href="">Akhlaqiaat</a>
+                    </li>
+                    <li className="menu-item">
+                      <a href="">Khusoosi Mawaqay</a>
+                    </li>
+                    <li className="menu-item">
+                      <a href="">Tarbiyat o Tazkia</a>
+                    </li>
+                    <li className="menu-item">
+                      <a href="">Learn Arabic</a>
+                    </li>
+                    <li className="menu-item">
+                      <a href="">Subjects</a>
+                    </li>
+                  </ul>
                 </li>
                 <li className="menu-item">
                   <Link to="/contact-us">{t('contactus')}</Link>
                 </li>
                 <li className="menu-item ">
-                  <Link to="">{t('upcomingevent')}</Link>
+                  <Link to="">{t('futureplans')}</Link>
                 </li>
+                <Link className="theme-btn hiiiii theme-bg brd-rd5" to="/donate" itemprop="url">
+                  {t('makedonation')}
+                </Link>
               </ul>
               <div className="hdr-srch">
                 <form method="get" className="srch-frm brd-rd5" action="">

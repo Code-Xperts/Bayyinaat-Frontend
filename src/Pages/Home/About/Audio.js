@@ -37,11 +37,11 @@ const Audio = ({ onSearch }) => {
     };
 
     const handleSeekBackward = () => {
-        audioRef.current.currentTime -= 15; // Adjust the seek duration as needed
+        audioRef.current.currentTime -= 10; // Adjust the seek duration as needed
     };
 
     const handleSeekForward = () => {
-        audioRef.current.currentTime += 15; // Adjust the seek duration as needed
+        audioRef.current.currentTime += 10; // Adjust the seek duration as needed
     };
 
     const handleStop = () => {
@@ -253,7 +253,7 @@ const Audio = ({ onSearch }) => {
                             <div className="mar">
                                 <div className="bar">
                                     <div className="texttt">
-                                        Showing 1–9 of 29 results
+                                        {t('showingresults')}
                                     </div>
                                     <form className="rtcl-ordering" method="get">
                                         <select className="isko"
@@ -262,14 +262,12 @@ const Audio = ({ onSearch }) => {
                                             tabIndex="-1"
                                             aria-hidden="true"
                                         >
-                                            <option value="title-asc">A to Z ( title )</option>
-                                            <option value="title-desc">Z to A ( title )</option>
-                                            <option value="date-desc" selected="selected">
-                                                Recently added ( latest )
-                                            </option>
-                                            <option value="date-asc">Date added ( oldest )</option>
-                                            <option value="views-desc">Most viewed</option>
-                                            <option value="views-asc">Less viewed</option>
+                                            <option value="title-asc">{t('atoztitle')}</option>
+                                            <option value="title-desc">{t('ztoatitle')}</option>
+                                            <option value="date-desc" selected="selected">{t('recentlyaddedlatest')}</option>
+                                            <option value="date-asc">{t('dateaddedoldest')}</option>
+                                            <option value="views-desc">{t('mostviewed')}</option>
+                                            <option value="views-asc">{t('lessviewed')}</option>
                                         </select>
                                     </form>
                                 </div>
@@ -301,7 +299,7 @@ const Audio = ({ onSearch }) => {
                                                     </div>
                                                 </div>
                                                 <div className="audio-buttons audio-buttons-new">
-                                                    <button className='cls cls-new' onClick={handleSeekBackward}>
+                                                    <button className='clss cls-new' onClick={handleSeekBackward}>
                                                         <FontAwesomeIcon icon={faArrowRotateLeft} />
                                                     </button>
                                                     <button className='cls cls-new' onClick={handlePlayPause}>
@@ -311,7 +309,7 @@ const Audio = ({ onSearch }) => {
                                                             <FontAwesomeIcon icon={faPlay} />
                                                         )}
                                                     </button>
-                                                    <button className='cls cls-new' onClick={handleSeekForward}>
+                                                    <button className='clss cls-new' onClick={handleSeekForward}>
                                                         <FontAwesomeIcon icon={faArrowRotateRight} />
                                                     </button>
                                                     <button className='cls cls-new' onClick={handleStop}>

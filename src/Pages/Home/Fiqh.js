@@ -40,9 +40,9 @@ const Fiqh = () => {
   }, []);
 
   return (
-    <div className="al-hadith-container">
+    <div className="al-hadith-container c">
       <div className="head">
-        <h2 className="heading">{t('fiqh')}</h2>
+        <h2 className="heading">{t('pdf')}</h2>
         <img
           decoding="async"
           src="https://taqwa.nauthemes.net/wp-content/uploads/2020/06/prayer-head-shp.png"
