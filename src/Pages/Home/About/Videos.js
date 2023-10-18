@@ -11,13 +11,15 @@ import { BrowserRouter } from "react-router-dom";
 import i18n from '../../../i18n';
 import { useTranslation } from 'react-i18next';
 
+import Modal from 'react-modal'; // Import the modal library
 
 
 const Audio = ({ onSearch }) => {
-    const { t, i18n } = useTranslation();
-    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-
+    const { t } = useTranslation();
     const [query, setQuery] = useState('');
+    const [isOpen, setIsOpen] = useState(0);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [videoLink, setVideoLink] = useState("");
 
     const handleInputChange = (e) => {
         setQuery(e.target.value);
@@ -27,12 +29,31 @@ const Audio = ({ onSearch }) => {
         onSearch(query);
     };
 
-    const [isOpen, setIsOpen] = useState(0);
-
     const toggleDropdown = (section) => {
         setIsOpen((prevIsOpen) => (prevIsOpen === section ? 0 : section));
-
     };
+
+    const toggleModal = (link = "") => {
+        setVideoLink(link);
+        setIsModalOpen(!isModalOpen);
+    };
+
+    const modalStyle = {
+        overlay: {
+            backgroundColor: 'rgba(0, 0, 0, 0.8)', // Transparent background
+            zIndex: 10, // Higher z-index
+        },
+        content: {
+            width: '90%',
+            height: '90%',
+            margin: 'auto',
+            background: 'transparent', // Transparent content
+            border: 'none',
+            zIndex: 10, // Higher z-index
+            position: 'fixed',
+        },
+    };
+    
     return (
         <>
             <TopHeader />
@@ -222,7 +243,9 @@ const Audio = ({ onSearch }) => {
                                         </p>
                                         <div className='p-last'>
                                             <p className='publish'> <a className='qw colo'><FontAwesomeIcon icon={faCalendarDays} /></a>{t('date')}:&nbsp;01-01-2000</p>
-                                            <button className='download-button'>{t('watchnow')}</button>
+                                            <button className='download-button' onClick={() => toggleModal("https://www.youtube.com/watch?v=AaS3hnz1D20")}>
+                                                {t('watchnow')}
+                                            </button>
                                         </div>
 
 
@@ -273,6 +296,23 @@ const Audio = ({ onSearch }) => {
                     </div>
                 </section>
             </div>
+            <Modal
+                isOpen={isModalOpen}
+                onRequestClose={toggleModal}
+                contentLabel="Video Modal"
+                style={modalStyle}
+                shouldCloseOnOverlayClick={false}
+            >
+                <iframe
+                    width="100%"
+                    height="100%"
+                    src="https://www.youtube.com/embed/AaS3hnz1D20"
+                    title="Video Title"
+                    frameBorder="0"
+                    allowFullScreen
+                ></iframe>
+                <button className='flooot-rrr' onClick={toggleModal}>Close</button>
+            </Modal>
             <Footer />
         </>
     );

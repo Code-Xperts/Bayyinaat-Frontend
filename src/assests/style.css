@@ -1347,6 +1347,7 @@ span.not {
 /* get Information */
 
 .map{
+  border-radius: 20px;
   border:0;
 }
 
@@ -2229,3 +2230,10 @@ input[type="range" i] {
 
 
 
+.background-content {
+  z-index: 1; /* or any value lower than the modal overlay's z-index */
+}
+
+.flooot-rrr{
+  float: right;
+}
