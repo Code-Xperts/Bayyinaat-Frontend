@@ -98,5 +98,16 @@
     "address":"عنوان",
     "fax":"فاكس",
     "ourlocation":"موقعنا",
-    "getinformation":"احصل على المعلومات"
+    "getinformation":"احصل على المعلومات",
+
+
+
+    "al-hadith-al-nabawi":"الحديث النبوي (صلى الله عليه وسلم)",
+    "seerah":"سيرا",
+    "aqeedah":"عقيدة",
+    "akhlaqiaat":"أخلاقيات",
+    "khusoosi-mawaqay":"خصوصي مواقي",
+    "tarbiyat-o-tazkia":"تربيتات أو تزكية",
+    "learnarabic":"تعلم اللغة العربية",
+    "subjects":"المواضيع"
 }

@@ -17,7 +17,7 @@ import Modal from 'react-modal'; // Import the modal library
 const Audio = ({ onSearch }) => {
     const { t } = useTranslation();
     const [query, setQuery] = useState('');
-    const [isOpen, setIsOpen] = useState(0);
+    const [isOpen, setIsOpen] = useState(0); 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [videoLink, setVideoLink] = useState("");
 

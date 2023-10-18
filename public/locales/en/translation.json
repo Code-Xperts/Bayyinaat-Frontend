@@ -67,7 +67,7 @@
 
     "search":"Search...",
     "allcategories":"All Categories",
-    "alquran":"Al-Quran",
+    "alquran":"Al-Qur'an",
     "recitation":"Recitation",
     "tajweed":"Tajweed",
     "hifiz":"Hifiz",
@@ -95,5 +95,15 @@
     "address":"Address",
     "fax":"Fax",
     "ourlocation":"Our Location",
-    "getinformation":"Get Information"
+    "getinformation":"Get Information",
+
+
+    "al-hadith-al-nabawi":"Al-Hadith al-Nabawi (s.a.w)",
+    "seerah":"Seerah",
+    "aqeedah":"Aqeedah",
+    "akhlaqiaat":"Akhlaqiaat",
+    "khusoosi-mawaqay":"Khusoosi Mawaqay",
+    "tarbiyat-o-tazkia":"Tarbiyat o Tazkia",
+    "learnarabic":"Learn Arabic",
+    "subjects":"Subjects"
 }

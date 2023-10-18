@@ -82,34 +82,34 @@ const Header = () => {
                   <Link to="/audios">{t('audios')}</Link>
                   <ul className="sub-menu">
                     <li className="menu-item">
-                      <a href="">Al-Qur'an</a>
+                      <a href="">{t("alquran")}</a>
                     </li>
                     <li className="menu-item">
-                      <a href="">Al-Hadith al-Nabawi (s.a.w)</a>
+                      <a href="">{t("al-hadith-al-nabawi")}</a>
                     </li>
                     <li className="menu-item">
-                      <a href="">Seerah</a>
+                      <a href="">{t("seerah")}</a>
                     </li>
                     <li className="menu-item">
-                      <a href="">Aqeedah</a>
+                      <a href="">{t("aqeedah")}</a>
                     </li>
                     <li className="menu-item">
-                      <a href="">Fiqh</a>
+                      <a href="">{t("fiqh")}</a>
                     </li>
                     <li className="menu-item">
-                      <a href="">Akhlaqiaat</a>
+                      <a href="">{t("akhlaqiaat")}</a>
                     </li>
                     <li className="menu-item">
-                      <a href="">Khusoosi Mawaqay</a>
+                      <a href="">{t("khusoosi-mawaqay")}</a>
                     </li>
                     <li className="menu-item">
-                      <a href="">Tarbiyat o Tazkia</a>
+                      <a href="">{t("tarbiyat-o-tazkia")}</a>
                     </li>
                     <li className="menu-item">
-                      <a href="">Learn Arabic</a>
+                      <a href="">{t("learnarabic")}</a>
                     </li>
                     <li className="menu-item">
-                      <a href="">Subjects</a>
+                      <a href="">{t("subjects")}</a>
                     </li>
                   </ul>
                 </li>
@@ -117,34 +117,34 @@ const Header = () => {
                   <Link to="/videos">{t('videos')}</Link>
                   <ul className="sub-menu">
                     <li className="menu-item">
-                      <a href="">Al-Qur'an</a>
+                      <a href="">{t("alquran")}</a>
                     </li>
                     <li className="menu-item">
-                      <a href="">Al-Hadith al-Nabawi (s.a.w)</a>
+                      <a href="">{t("al-hadith-al-nabawi")}</a>
                     </li>
                     <li className="menu-item">
-                      <a href="">Seerah</a>
+                      <a href="">{t("seerah")}</a>
                     </li>
                     <li className="menu-item">
-                      <a href="">Aqeedah</a>
+                      <a href="">{t("aqeedah")}</a>
                     </li>
                     <li className="menu-item">
-                      <a href="">Fiqh</a>
+                      <a href="">{t("fiqh")}</a>
                     </li>
                     <li className="menu-item">
-                      <a href="">Akhlaqiaat</a>
+                      <a href="">{t("akhlaqiaat")}</a>
                     </li>
                     <li className="menu-item">
-                      <a href="">Khusoosi Mawaqay</a>
+                      <a href="">{t("khusoosi-mawaqay")}</a>
                     </li>
                     <li className="menu-item">
-                      <a href="">Tarbiyat o Tazkia</a>
+                      <a href="">{t("tarbiyat-o-tazkia")}</a>
                     </li>
                     <li className="menu-item">
-                      <a href="">Learn Arabic</a>
+                      <a href="">{t("learnarabic")}</a>
                     </li>
                     <li className="menu-item">
-                      <a href="">Subjects</a>
+                      <a href="">{t("subjects")}</a>
                     </li>
                   </ul>
                 </li>
@@ -152,34 +152,34 @@ const Header = () => {
                   <Link to="/pdf">{t('pdf')}</Link>
                   <ul className="sub-menu">
                     <li className="menu-item">
-                      <a href="">Al-Qur'an</a>
+                      <a href="">{t("alquran")}</a>
                     </li>
                     <li className="menu-item">
-                      <a href="">Al-Hadith al-Nabawi (s.a.w)</a>
+                      <a href="">{t("al-hadith-al-nabawi")}</a>
                     </li>
                     <li className="menu-item">
-                      <a href="">Seerah</a>
+                      <a href="">{t("seerah")}</a>
                     </li>
                     <li className="menu-item">
-                      <a href="">Aqeedah</a>
+                      <a href="">{t("aqeedah")}</a>
                     </li>
                     <li className="menu-item">
-                      <a href="">Fiqh</a>
+                      <a href="">{t("fiqh")}</a>
                     </li>
                     <li className="menu-item">
-                      <a href="">Akhlaqiaat</a>
+                      <a href="">{t("akhlaqiaat")}</a>
                     </li>
                     <li className="menu-item">
-                      <a href="">Khusoosi Mawaqay</a>
+                      <a href="">{t("khusoosi-mawaqay")}</a>
                     </li>
                     <li className="menu-item">
-                      <a href="">Tarbiyat o Tazkia</a>
+                      <a href="">{t("tarbiyat-o-tazkia")}</a>
                     </li>
                     <li className="menu-item">
-                      <a href="">Learn Arabic</a>
+                      <a href="">{t("learnarabic")}</a>
                     </li>
                     <li className="menu-item">
-                      <a href="">Subjects</a>
+                      <a href="">{t("subjects")}</a>
                     </li>
                   </ul>
                 </li>

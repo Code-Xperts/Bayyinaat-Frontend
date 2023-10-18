@@ -96,5 +96,16 @@
     "address":"پتہ",
     "fax":"فیکس",
     "ourlocation":"ہمارا مقام",
-    "getinformation":"معلومات حاصل کرو"
+    "getinformation":"معلومات حاصل کرو",
+
+
+
+    "al-hadith-al-nabawi":"الحدیث النبوی (صلی اللہ علیہ وسلم)",
+    "seerah":"سیرہ",
+    "aqeedah":"عقیدہ",
+    "akhlaqiaat":"اخلاقیات",
+    "khusoosi-mawaqay":"خصوصی مواقائے",
+    "tarbiyat-o-tazkia":"طربیہ یا تزکیہ",
+    "learnarabic":"عربی سیکھیں۔",
+    "subjects":"مضامین"
 }
