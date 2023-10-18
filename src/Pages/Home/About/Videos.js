@@ -311,7 +311,7 @@ const Audio = ({ onSearch }) => {
                     frameBorder="0"
                     allowFullScreen
                 ></iframe>
-                <button className='flooot-rrr' onClick={toggleModal}>Close</button>
+                <button className='flooot-rrr' onClick={toggleModal}>{t("close")}</button>
             </Modal>
             <Footer />
         </>
