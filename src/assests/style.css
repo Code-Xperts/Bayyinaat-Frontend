@@ -1819,13 +1819,13 @@ li a{
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 100%;
+    width: 100% !important;
   }
   .main-col{
     flex-direction: column;
   }
   .col-cont-main{
-    width: 100%;
+    width: 100% !important;
   }
   .column-right{
     flex-direction: column;
@@ -2236,4 +2236,151 @@ input[type="range" i] {
 
 .flooot-rrr{
   float: right;
+}
+
+
+
+.main-right-q{
+  width: 40%;
+}
+
+.qurie{
+  width: 60%;
+}
+
+
+.queri-heading{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 15px;
+  margin-top: 20px;
+  padding: 10px;
+  font-size: 26px;
+  color: var(--Secondary-color);
+}
+.qure-form{
+  padding: 0px;
+}
+
+.quer-form{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+  padding: 10px;
+  font-size: 26px;
+  color: var(--Secondary-color);
+}
+
+
+.ask-form{
+  padding: 25px;
+  margin-right: 25px;
+
+}
+
+.quer-search{
+  width: 38%;
+}
+.new-ll{
+  height: 70px;
+}
+
+.titit {
+  text-decoration: none;
+  color: var(--Secondary-color);
+}
+
+.tiles-sub-block{
+  background-color: #d4d0d047;
+  border-radius: 10px;
+  padding: 10px;
+  border: 1px solid #e4e4e4;
+  width: 90%;
+  margin-left: 25px;
+  margin-bottom: 12px;
+}
+
+.tiles-sub-block:hover{
+  background-color: var(--text-color);
+}
+
+.major-tiles{
+  display: flex;
+  justify-content: space-between;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.ss-tiles{
+  color: var(--primary-color);
+  text-align: center;
+}
+
+
+.Answer-heading{
+  text-align: center;
+  margin-top: 45px;
+  margin-bottom: 30px;
+}
+
+.an-headi{
+  font-size: 46px;
+  color: var(--primary-color);
+}
+
+.questio-major{
+  display: flex;
+  justify-content: space-between;
+}
+
+.que-cont{
+  box-shadow: -5px -2px 21px 0px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  padding: 25px;
+  font-size: 18px;
+  margin-bottom: 80px;
+  background-color: #f9efc7ed;
+  border-left: 2px solid #093939;
+  border-right: 2px solid #093939;
+}
+
+.ans-main{
+  box-shadow: -5px -2px 21px 0px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  padding: 25px;
+  font-size: 18px;
+  margin-bottom: 220px;
+  background-color: rgb(251,248,239);
+  border-top: 2px solid #093939;
+  border-bottom: 2px solid #093939;
+}
+
+.ans-para{
+  text-align: justify;
+}
+
+.que-para{
+  text-align: justify;
+  margin-bottom: 55px;
+}
+
+.lo-g{
+  margin-bottom: 20px;
+}
+
+
+
+
+
+
+
+@media only screen and (max-width: 768px) {
+  .tiles-main-block{
+    width: 90%;
+  }
+  .main-right-q{
+    width: 100% !important;
+  }
 }

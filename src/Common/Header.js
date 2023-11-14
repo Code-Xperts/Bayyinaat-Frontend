@@ -187,7 +187,7 @@ const Header = () => {
                   <Link to="/contact-us">{t('contactus')}</Link>
                 </li>
                 <li className="menu-item ">
-                  <Link to="">{t('futureplans')}</Link>
+                  <Link to="/queries">{t('queries')}</Link>
                 </li>
                 <Link className="theme-btn hiiiii theme-bg brd-rd5" to="/donate" itemprop="url">
                   {t('makedonation')}
