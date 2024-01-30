@@ -1,30 +1,30 @@
 import React, { useState, useRef, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSun, faMoon, faAngleDown, faPhoneVolume, faPhone, faMagnifyingGlass, faLocationDot } from "@fortawesome/free-solid-svg-icons";
-import { faBackward, faPlay, faPause, faForward, faStop, faVolumeMute, faVolumeUp } from "@fortawesome/free-solid-svg-icons";
-import { faTwitter, faFacebook, faYoutube } from "@fortawesome/free-brands-svg-icons";
-import { faMap, faClock, faCalendarDays, faEnvelope } from "@fortawesome/free-regular-svg-icons";
-import logo from "./../assests/images/logo.png";
-import i18n from '../i18n';
+import { faSun, faMoon, faAngleDown } from "@fortawesome/free-solid-svg-icons";
+import {
+  faTwitter,
+  faFacebook,
+  faYoutube,
+} from "@fortawesome/free-brands-svg-icons";
+import { faMap, faClock } from "@fortawesome/free-regular-svg-icons";
 
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from "react-i18next";
 
 const TopHeader = () => {
   const { t, i18n } = useTranslation();
   const changeLanguage = (lng) => {
     i18n.changeLanguage(lng);
-    document.body.classList.remove('en');
-    document.body.classList.remove('ur');
-    document.body.classList.remove('ar');
+    document.body.classList.remove("en");
+    document.body.classList.remove("ur");
+    document.body.classList.remove("ar");
     document.body.classList.add(lng);
-    if(lng=="en"){
-      document.documentElement.dir = '';
+    if (lng == "en") {
+      document.documentElement.dir = "";
     } else {
-      document.documentElement.dir = 'rtl';
+      document.documentElement.dir = "rtl";
     }
-  }
- 
-   
+  };
+
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const toggleDropdown = () => {
@@ -34,7 +34,7 @@ const TopHeader = () => {
 
   const toggleLanguageDropdown = () => {
     setIsLanguageDropdownOpen(!isLanguageDropdownOpen);
-  }
+  };
 
   return (
     <nav className="top-navbar">
@@ -141,18 +141,25 @@ const TopHeader = () => {
             <FontAwesomeIcon icon={faYoutube} />
           </a>
           <div className="language_switcher" onClick={toggleLanguageDropdown}>
-            <img src="https://dedevelopers.org/devolta/resources/frontend/images/english.png" alt="" />
+            <img
+              src="https://dedevelopers.org/devolta/resources/frontend/images/english.png"
+              alt=""
+            />
             <span>English</span>
-            <div className={`switcher_dropdown ${isLanguageDropdownOpen ? "open" : ""}`}>
-              <div onClick={() => changeLanguage('en')}>
+            <div
+              className={`switcher_dropdown ${
+                isLanguageDropdownOpen ? "open" : ""
+              }`}
+            >
+              <div onClick={() => changeLanguage("en")}>
                 <img src="https://dedevelopers.org/devolta/resources/frontend/images/english.png" />
                 <span>English</span>
               </div>
-              <div onClick={() => changeLanguage('ur')}>
+              <div onClick={() => changeLanguage("ur")}>
                 <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/Flag_of_Pakistan.svg/1280px-Flag_of_Pakistan.svg.png" />
                 <span>اردو</span>
               </div>
-              <div onClick={() => changeLanguage('ar')}>
+              <div onClick={() => changeLanguage("ar")}>
                 <img src="https://cdn.britannica.com/79/5779-004-DC479508/Flag-Saudi-Arabia.jpg" />
                 <span>عربي</span>
               </div>

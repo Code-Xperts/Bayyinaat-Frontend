@@ -1,11 +1,5 @@
-import React, { useState, useRef, useEffect } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSun, faMoon, faAngleDown, faPhoneVolume, faPhone, faMagnifyingGlass, faLocationDot } from "@fortawesome/free-solid-svg-icons";
-import { faBackward, faPlay, faPause, faForward, faStop, faVolumeMute, faVolumeUp } from "@fortawesome/free-solid-svg-icons";
-import { faTwitter, faFacebook, faWhatsapp } from "@fortawesome/free-brands-svg-icons";
-import { faMap, faClock, faCalendarDays, faEnvelope } from "@fortawesome/free-regular-svg-icons";
+import React, { useState } from "react";
 
-import i18n from './../../i18n';
 import { useTranslation } from 'react-i18next';
 
 function AboutSection() {

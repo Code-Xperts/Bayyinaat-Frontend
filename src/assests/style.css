@@ -59,7 +59,6 @@ h6 {
   content: " ";
   height: 15px;
   width: 2px;
-  background-color: #646262;
   margin-left: 20px;
   margin-right: 20px;
 }
@@ -1264,6 +1263,7 @@ button:hover {
 .mmmm{
   display: flex;
   gap: 40px;
+  width: 97%;
 }
 
 .mmm .i{
@@ -1280,13 +1280,20 @@ button:hover {
 
 .llll {
   height: 30px;
-  width: 100%;
+  width: 95%;
   padding: 10px;
   border-radius: 10px;
   border: 1px solid #cdcdcd;
   margin-bottom: 20px;
 }
 
+
+.Contacttex{
+  max-width: 95%;
+  height: 100px;
+  resize: none;
+
+}
 
 .f{
   width: 50%;
@@ -1669,13 +1676,6 @@ li a{
   opacity: 1; /* Show on hover */
 }
 
-/*
-.iiccoon{
-  font-size: 16px;
-  width: 15px;
-  height: 14px;
-  color: var(--primary-color);
-}*/
 
 .audio-progress input[type="range"] {
   width: 247%;
@@ -1811,10 +1811,20 @@ li a{
 
 /* Add this at the end of your existing CSS */
 
+@media screen and (max-width:500px) {
+  .Contacttex{
+    max-width: 100%;
+  }
+  .llll{
+    width: 95%;
+  }
+}
+
 @media only screen and (max-width: 768px) {
   .container{
     width: 90%;
   }
+  
   .search-bar {
     display: flex;
     justify-content: center;

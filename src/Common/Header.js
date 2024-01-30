@@ -1,14 +1,18 @@
 import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBars, faCalendarDays, faPhoneVolume, faMagnifyingGlass, faEnvelope } from "@fortawesome/free-solid-svg-icons";
+import {
+  faBars,
+  faCalendarDays,
+  faPhoneVolume,
+  faMagnifyingGlass,
+  faEnvelope,
+} from "@fortawesome/free-solid-svg-icons";
 import logo from "./../assests/images/logo.png";
-import ReactDOM from "react-dom/client";
-import { BrowserRouter, Link } from "react-router-dom";
-import i18n from '../i18n';
-import { useTranslation } from 'react-i18next';
+import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const Header = () => {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const toggleMobileMenu = () => {
@@ -16,70 +20,77 @@ const Header = () => {
   };
 
   return (
-    <><div className={`logo-inf-sec ${isMobileMenuOpen ? "open" : ""}`}>
-      <div className="container">
-        <div className="parent">
-          <div className="logo">
-            <a href="#" itemprop="url">
-              <img src={logo} alt="" itemprop="image" />
-            </a>
-          </div>
-          <div className="mobile-menu-button" onClick={toggleMobileMenu}>
-            <FontAwesomeIcon icon={faBars} />
-          </div>
-          <div className="main">
-            <div className="float-right cnt-inf-btn">
-              <ul className="inf-lst">
-                <li>
-                  <i className="far fa-calendar-alt theme-clr brd-rd50">
-                    <FontAwesomeIcon className="ico" icon={faCalendarDays} />
-                  </i>
-                  <div className="ss">
-                    {t('info')}: <span className="theme-clr">Starts 10th May</span>
-                  </div>
-                </li>
-                <li>
-                  <i className="flaticon-phone-volume theme-clr brd-rd50">
-                    <FontAwesomeIcon icon={faPhoneVolume} />
-                  </i>
-                  <div className="ss">
-                    {t('callus')}:<span className="theme-clr"> +00 123-345-11</span>
-                  </div>
-                </li>
-                <li>
-                  <i className="fas fa-envelope theme-clr brd-rd50">
-                    <FontAwesomeIcon icon={faEnvelope} />
-                  </i>
-                  <div className="ss">
-                    {t('email')}:{" "}
-                    <a className="theme-clr" href="#" itemprop="url">
-                      help@example.com
-                    </a>
-                  </div>
-                </li>
-              </ul>
-              <Link className="theme-btn theme-bg brd-rd5" to="/donate" itemprop="url">
-                {t('makedonation')}
-              </Link>
+    <>
+      <div className={`logo-inf-sec ${isMobileMenuOpen ? "open" : ""}`}>
+        <div className="container">
+          <div className="parent">
+            <div className="logo">
+              <a href="#" itemprop="url">
+                <img src={logo} alt="" itemprop="image" />
+              </a>
+            </div>
+            <div className="mobile-menu-button" onClick={toggleMobileMenu}>
+              <FontAwesomeIcon icon={faBars} />
+            </div>
+            <div className="main">
+              <div className="float-right cnt-inf-btn">
+                <ul className="inf-lst">
+                  <li>
+                    <i className="far fa-calendar-alt theme-clr brd-rd50">
+                      <FontAwesomeIcon className="ico" icon={faCalendarDays} />
+                    </i>
+                    <div className="ss">
+                      {t("info")}:{" "}
+                      <span className="theme-clr">Starts 10th May</span>
+                    </div>
+                  </li>
+                  <li>
+                    <i className="flaticon-phone-volume theme-clr brd-rd50">
+                      <FontAwesomeIcon icon={faPhoneVolume} />
+                    </i>
+                    <div className="ss">
+                      {t("callus")}:
+                      <span className="theme-clr"> +00 123-345-11</span>
+                    </div>
+                  </li>
+                  <li>
+                    <i className="fas fa-envelope theme-clr brd-rd50">
+                      <FontAwesomeIcon icon={faEnvelope} />
+                    </i>
+                    <div className="ss">
+                      {t("email")}:{" "}
+                      <a className="theme-clr" href="#" itemprop="url">
+                        help@example.com
+                      </a>
+                    </div>
+                  </li>
+                </ul>
+                <Link
+                  className="theme-btn theme-bg brd-rd5"
+                  to="/donate"
+                  itemprop="url"
+                >
+                  {t("makedonation")}
+                </Link>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-    <div className={`menu-sec theme-bg ${isMobileMenuOpen ? "open" : ""}`}>
+      <div className={`menu-sec theme-bg ${isMobileMenuOpen ? "open" : ""}`}>
         <div class="banner-vertical"></div>
         <div className="container">
           <nav>
             <div className="fl">
               <ul id="menu-main-menu" className="menu-item">
                 <li className="menu-item">
-                  <Link to="/Home">{t('home')}</Link>
+                  <Link to="/Home">{t("home")}</Link>
                 </li>
                 <li className="menu-item">
-                  <Link to="/about-us">{t('aboutus')}</Link>
+                  <Link to="/about-us">{t("aboutus")}</Link>
                 </li>
                 <li className="menu-item">
-                  <Link to="/audios">{t('audios')}</Link>
+                  <Link to="/audios">{t("audios")}</Link>
                   <ul className="sub-menu">
                     <li className="menu-item">
                       <a href="">{t("alquran")}</a>
@@ -114,7 +125,7 @@ const Header = () => {
                   </ul>
                 </li>
                 <li className="menu-item">
-                  <Link to="/videos">{t('videos')}</Link>
+                  <Link to="/videos">{t("videos")}</Link>
                   <ul className="sub-menu">
                     <li className="menu-item">
                       <a href="">{t("alquran")}</a>
@@ -149,7 +160,7 @@ const Header = () => {
                   </ul>
                 </li>
                 <li className="menu-item">
-                  <Link to="/pdf">{t('pdf')}</Link>
+                  <Link to="/pdf">{t("pdf")}</Link>
                   <ul className="sub-menu">
                     <li className="menu-item">
                       <a href="">{t("alquran")}</a>
@@ -184,13 +195,17 @@ const Header = () => {
                   </ul>
                 </li>
                 <li className="menu-item">
-                  <Link to="/contact-us">{t('contactus')}</Link>
+                  <Link to="/contact-us">{t("contactus")}</Link>
                 </li>
                 <li className="menu-item ">
-                  <Link to="/queries">{t('queries')}</Link>
+                  <Link to="/queries">{t("queries")}</Link>
                 </li>
-                <Link className="theme-btn hiiiii theme-bg brd-rd5" to="/donate" itemprop="url">
-                  {t('makedonation')}
+                <Link
+                  className="theme-btn hiiiii theme-bg brd-rd5"
+                  to="/donate"
+                  itemprop="url"
+                >
+                  {t("makedonation")}
                 </Link>
               </ul>
               <div className="hdr-srch">
@@ -199,9 +214,8 @@ const Header = () => {
                     name="s"
                     type="text"
                     required=""
-                    placeholder={t('enterakeyword')}
-                    value=""
-                     />
+                    placeholder={t("enterakeyword")}
+                  />
                   <button type="submit">
                     <FontAwesomeIcon icon={faMagnifyingGlass} />
                   </button>
@@ -210,7 +224,8 @@ const Header = () => {
             </div>
           </nav>
         </div>
-      </div></>
+      </div>
+    </>
   );
 };
 

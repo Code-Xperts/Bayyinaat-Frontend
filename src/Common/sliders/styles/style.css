@@ -1,0 +1,53 @@
+.MainSlider {
+  height: max-content;
+  width: 80%;
+  margin: auto;
+}
+
+.Sliderimg {
+  height: auto;
+  width: 100%;
+}
+
+.InnerBoxSlide {
+  overflow: hidden;
+  margin: 15px;
+  border-radius: 20px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.ViewBtn {
+  padding: 15px;
+  text-align: center;
+}
+
+.ViewBtn:hover{
+    background-color: #398585;
+}
+
+.ViewBtn:hover h1{
+    color: white;
+}
+.onlineheading {
+  text-decoration: none;
+  font-family: var(--font-family);
+  font-size: 20px;
+  color: black;
+}
+
+.CustomArrow {
+  position: absolute;
+  top: 50%;
+  z-index: 10;
+  cursor: pointer;
+  color: #398585;
+  font-size: 30px;
+}
+
+.CustomArrow.left {
+  left: -25px;
+}
+
+.CustomArrow.right {
+  right: -25px;
+}

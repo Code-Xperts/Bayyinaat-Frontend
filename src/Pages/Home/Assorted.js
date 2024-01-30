@@ -20,11 +20,11 @@ const Assorted = () => {
 
   useEffect(() => {
     const handleResize = () => {
-      // Adjust the number of visible slides based on screen width
+     
       if (window.innerWidth <= 767) {
-        setSwiperSlides(1); // Show 1 slide on small screens
+        setSwiperSlides(1); 
       } else {
-        setSwiperSlides(4); // Show 4 slides on larger screens
+        setSwiperSlides(4); 
       }
     };
 

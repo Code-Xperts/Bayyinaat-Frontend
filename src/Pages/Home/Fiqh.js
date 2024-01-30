@@ -10,6 +10,7 @@ import './slider.css';
 
 import i18n from './../../i18n';
 import { useTranslation } from 'react-i18next';
+import { PdfSlider } from '../../Common/sliders';
 
 const Fiqh = () => {
   const { t, i18n } = useTranslation();
@@ -49,136 +50,7 @@ const Fiqh = () => {
           alt="heading-image"
         />
       </div>
-      <Swiper
-        className="custom-swiper"
-        modules={[Navigation, Pagination, Scrollbar, A11y, Autoplay]}
-        navigation
-        spaceBetween={30}
-        slidesPerView={swiperSlides}
-        autoplay={{
-          delay: 5000,
-          disableOnInteraction: false,
-        }}
-        onSlideChange={() => console.log('slide change')}
-        onSwiper={(swiper) => console.log(swiper)}
-      >
-        <SwiperSlide>
-          <div className="serv-thmb2">
-            <a href="" itemprop="url">
-              <img
-                className="xx"
-                decoding="async"
-                src="https://taqwa.nauthemes.net/wp-content/uploads/bfi_thumb/services-community-pjyf69scbh90abc3swobt84mka1xq84851tbkvnelq.jpg"
-                alt=""
-                itemprop="image"
-              />
-            </a>
-            <div className="serv-inf2">
-              <h5 itemprop="headline">
-                <a className="text" href="" itemprop="url">
-                  Community Service
-                </a>
-              </h5>
-            </div>
-          </div>
-        </SwiperSlide>
-        <SwiperSlide>
-          <div className="serv-thmb2">
-            <a href="" itemprop="url">
-              <img className="xx" decoding="async"
-                src="https://taqwa.nauthemes.net/wp-content/uploads/bfi_thumb/special-child-pjyf6sl445yqqiksr4sv73dufzha066uvmv16evj5a.jpg"
-                alt="" itemprop="image"></img>
-            </a>
-            <div className="serv-inf2">
-              <h5 itemprop="headline">
-                <a className="text" href="" itemprop="url">
-                  Special Child Care
-                </a>
-              </h5>
-            </div>
-          </div>
-        </SwiperSlide>
-        <SwiperSlide>
-          <div className="serv-thmb2">
-            <a href="" itemprop="url">
-              <img className="xx" decoding="async"
-                src="https://taqwa.nauthemes.net/wp-content/uploads/bfi_thumb/quran-class-pjyf5tt33an4sxzbe7ro4u5sgq8p3dcseuq2f6b3ji.jpg"
-                alt="" itemprop="image"></img>
-            </a>
-            <div className="serv-inf2">
-              <h5 itemprop="headline">
-                <a className="text" href="" itemprop="url">
-                  Quran Classes
-                </a>
-              </h5>
-            </div>
-          </div>
-        </SwiperSlide>
-        <SwiperSlide>
-          <div className="serv-thmb2">
-            <a href="" itemprop="url">
-              <img className="xx" decoding="async"
-                src="https://taqwa.nauthemes.net/wp-content/uploads/bfi_thumb/quran-class-pjyf5tt33an4sxzbe7ro4u5sgq8p3dcseuq2f6b3ji.jpg"
-                alt="" itemprop="image"></img>
-            </a>
-            <div className="serv-inf2">
-              <h5 itemprop="headline">
-                <a className="text" href="" itemprop="url">
-                  Quran Classes
-                </a>
-              </h5>
-            </div>
-          </div>
-        </SwiperSlide>
-        <SwiperSlide>
-          <div className="serv-thmb2">
-            <a href="" itemprop="url">
-              <img className="xx" decoding="async"
-                src="https://taqwa.nauthemes.net/wp-content/uploads/bfi_thumb/quran-class-pjyf5tt33an4sxzbe7ro4u5sgq8p3dcseuq2f6b3ji.jpg"
-                alt="" itemprop="image"></img>
-            </a>
-            <div className="serv-inf2">
-              <h5 itemprop="headline">
-                <a className="text" href="" itemprop="url">
-                  Quran Classes
-                </a>
-              </h5>
-            </div>
-          </div>
-        </SwiperSlide>
-        <SwiperSlide>
-          <div className="serv-thmb2">
-            <a href="" itemprop="url">
-              <img className="xx" decoding="async"
-                src="https://taqwa.nauthemes.net/wp-content/uploads/bfi_thumb/quran-class-pjyf5tt33an4sxzbe7ro4u5sgq8p3dcseuq2f6b3ji.jpg"
-                alt="" itemprop="image"></img>
-            </a>
-            <div className="serv-inf2">
-              <h5 itemprop="headline">
-                <a className="text" href="" itemprop="url">
-                  Quran Classes
-                </a>
-              </h5>
-            </div>
-          </div>
-        </SwiperSlide>
-        <SwiperSlide>
-          <div className="serv-thmb2">
-            <a href="" itemprop="url">
-              <img className="xx" decoding="async"
-                src="https://taqwa.nauthemes.net/wp-content/uploads/bfi_thumb/quran-class-pjyf5tt33an4sxzbe7ro4u5sgq8p3dcseuq2f6b3ji.jpg"
-                alt="" itemprop="image"></img>
-            </a>
-            <div className="serv-inf2">
-              <h5 itemprop="headline">
-                <a className="text" href="" itemprop="url">
-                  Quran Classes
-                </a>
-              </h5>
-            </div>
-          </div>
-        </SwiperSlide>
-      </Swiper>
+     <PdfSlider />
     </div>
   );
 };
