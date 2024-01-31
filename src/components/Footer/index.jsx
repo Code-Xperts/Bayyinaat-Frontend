@@ -1,10 +1,6 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faPhone,
-  faMagnifyingGlass,
-  faLocationDot,
-} from "@fortawesome/free-solid-svg-icons";
+import { faPhone, faLocationDot } from "@fortawesome/free-solid-svg-icons";
 import {
   faTwitter,
   faFacebook,
@@ -12,12 +8,15 @@ import {
 } from "@fortawesome/free-brands-svg-icons";
 import { faEnvelope } from "@fortawesome/free-regular-svg-icons";
 import logo from "../../assests/images/logo.png";
-
 import { useTranslation } from "react-i18next";
+import httpRequest from "../../axios/index.js";
+import toast from "react-hot-toast";
+import { Contacts } from "../../constants/apiEndPoints";
 
 const Footer = () => {
   const { t, i18n } = useTranslation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [loading, setloading] = useState(false);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -33,9 +32,32 @@ const Footer = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form submitted:", formData);
+
+    try {
+      setloading(true);
+      const response = await httpRequest.post(Contacts, formData);
+      if (response.status === 200 || response.status === 201) {
+        toast.success(response.data.message);
+        setloading(false);
+        handleFormEmpty();
+      }
+    } catch (error) {
+      setloading(false);
+
+      toast.error(error.response ? error.response.data : error.message);
+    } finally {
+      setloading(false);
+    }
+  };
+
+  const handleFormEmpty = () => {
+    setFormData({
+      name: "",
+      email: "",
+      message: "",
+    });
   };
 
   return (
@@ -143,7 +165,7 @@ const Footer = () => {
                   placeholder={t("message")}
                   name="message"
                   style={{
-                    resize:"none"
+                    resize: "none",
                   }}
                   value={formData.message}
                   onChange={handleInputChange}
@@ -151,8 +173,8 @@ const Footer = () => {
                 ></textarea>
               </div>
               <div className="form-group">
-                <button className="bbnn" type="submit">
-                  {t("submit")}
+                <button className="bbnn" disabled={loading} type="submit">
+                  {!loading ? t("submit") : "sending..."}
                 </button>
               </div>
             </form>

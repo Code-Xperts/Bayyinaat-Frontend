@@ -9,9 +9,14 @@ import {
 import { useTranslation } from "react-i18next";
 import { Footer, Header, TopHeader } from "../../components";
 
+import { Contacts } from "../../constants/apiEndPoints";
+import httpRequest from "../../axios/index.js";
+import toast from "react-hot-toast";
+
 const ContactUs = () => {
   const { t, i18n } = useTranslation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [loading, setloading] = useState(false);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -28,9 +33,33 @@ const ContactUs = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form submitted:", formData);
+
+    try {
+      setloading(true);
+      const response = await httpRequest.post(Contacts, formData);
+      if (response.status === 200 || response.status === 201) {
+        toast.success(response.data.message);
+        setloading(false);
+        handleFormEmpty();
+      }
+    } catch (error) {
+      setloading(false);
+
+      toast.error(error.response ? error.response.data : error.message);
+    } finally {
+      setloading(false);
+    }
+  };
+
+  const handleFormEmpty = () => {
+    setFormData({
+      name: "",
+      email: "",
+      message: "",
+      phone: "",
+    });
   };
 
   return (
@@ -101,8 +130,8 @@ const ContactUs = () => {
                     ></textarea>
                   </div>
                   <div className="i">
-                    <button className="ccnn" type="submit">
-                      {t("submit")}
+                    <button className="ccnn" disabled={loading} type="submit">
+                      {!loading ? t("submit") : "sending..."}
                     </button>
                   </div>
                 </form>
