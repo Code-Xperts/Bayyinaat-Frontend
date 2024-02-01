@@ -1,9 +1,27 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Footer, Header, TopHeader } from "../../components";
+import { Banks } from "../../constants/apiEndPoints";
+import httpRequest from "../../axios/index.js";
 
 function Donate() {
   const { t } = useTranslation();
+  const [BanksDetails, setBankdetails] = useState([]);
+
+  useEffect(() => {
+    const FetchbankdDetails = async () => {
+      try {
+        const resp = await httpRequest.get(`${Banks}`);
+        if (resp.status === 200 || resp.status === 201) {
+          setBankdetails(resp?.data?.data);
+        }
+      } catch (err) {
+        console.log(err.message);
+      }
+    };
+
+    FetchbankdDetails();
+  }, []);
 
   return (
     <>
@@ -18,66 +36,91 @@ function Donate() {
       >
         <div className="donate-container">
           <div className="donate-main">
-            <div className="donate-child">
-              <div className="texttt-new">
-                <h2>{t("islamabadbankaccountdetails")}</h2>
-              </div>
-              <div className="super-class">
-                <div className="main-account-names">
-                  <div className="donte-class">
-                    <span className="names-account">{t("actitle")}</span>
-                    <p className="account-detail">
-                      {t(
-                        "alhudainternationalwelfarefoundationcollectionisbregion"
-                      )}
-                    </p>
-                  </div>
-                  <div className="donte-class">
-                    <span className="names-account">{t("acno")}</span>
-                    <p className="account-detail">0316-0104783594</p>
-                  </div>
-                  <div className="donte-class">
-                    <span className="names-account">{t("actype")}</span>
-                    <p className="account-detail">PKR</p>
-                  </div>
-                  <div className="donte-class">
-                    <span className="names-account">{t("branchcode")}</span>
-                    <p className="account-detail">0316</p>
-                  </div>
-                  <div className="donte-class">
-                    <span className="names-account">{t("swiftcode")}</span>
-                    <p className="account-detail">MEZNPKKAGRD</p>
-                  </div>
-                  <div className="donte-class">
-                    <span className="names-account">IBAN #:</span>
-                    <p className="account-detail">
-                      PK13 MEZN 0003 1601 0478 3594
-                    </p>
-                  </div>
-                  <div className="donte-class">
-                    <span className="names-account">{t("banknameadd")}</span>
-                    <p className="account-detail">
-                      Meezan Bank Ltd, E-11 Branch, Islamabad
-                    </p>
-                  </div>
-                </div>
-              </div>
-              <div className="account-mail">
-                <h2 className="email-address">{t("emailaddress")}</h2>
-                <p className="account-mail-email">donations@alhudapk.com</p>
-              </div>
-              <div className="account-phone">
-                <h2 className="phone-no">{t("whatsapp")}</h2>
-                <p className="account-phone-no">+923364444639</p>
-              </div>
-              <div className="account-office">
-                <h2 className="office">{t("officeaddress")}</h2>
-                <p className="account-office-address">
-                  7- A.K, Brohi Road, H-11/4, Islamabad, Pakistan.{" "}
-                  <p className="account-phone-no">Tel: +92(51)4866125-9</p>
-                </p>
-              </div>
-            </div>
+            {BanksDetails.length > 0
+              ? BanksDetails.map((detail) => {
+                  return (
+                    <div key={detail._id} className="donate-child">
+                      <div className="texttt-new">
+                        <h2>{t("islamabadbankaccountdetails")}</h2>
+                      </div>
+                      <div className="super-class">
+                        <div className="main-account-names">
+                          <div className="donte-class">
+                            <span className="names-account">
+                              {t("actitle")}
+                            </span>
+                            <p className="account-detail">
+                              {/* {t(
+                                "alhudainternationalwelfarefoundationcollectionisbregion"
+                              )} */}
+                              {detail.accountTitle}
+                            </p>
+                          </div>
+                          <div className="donte-class">
+                            <span className="names-account">{t("acno")}</span>
+                            <p className="account-detail">
+                              {detail.accountNumber}
+                            </p>
+                          </div>
+                          <div className="donte-class">
+                            <span className="names-account">{t("actype")}</span>
+                            <p className="account-detail">
+                              {detail.accountType}
+                            </p>
+                          </div>
+                          <div className="donte-class">
+                            <span className="names-account">
+                              {t("branchcode")}
+                            </span>
+                            <p className="account-detail">
+                              {detail.branchCode}
+                            </p>
+                          </div>
+                          <div className="donte-class">
+                            <span className="names-account">
+                              {t("swiftcode")}
+                            </span>
+                            <p className="account-detail">{detail.swiftCode}</p>
+                          </div>
+                          <div className="donte-class">
+                            <span className="names-account">IBAN #:</span>
+                            <p className="account-detail">{detail.IBAN}</p>
+                          </div>
+                          <div className="donte-class">
+                            <span className="names-account">
+                              {t("banknameadd")}
+                            </span>
+                            <p className="account-detail">
+                              {detail.bankAddress}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="account-mail">
+                        <h2 className="email-address">{t("emailaddress")}</h2>
+                        <p className="account-mail-email">
+                          {detail.emailAddress}
+                        </p>
+                      </div>
+                      <div className="account-phone">
+                        <h2 className="phone-no">{t("whatsapp")}</h2>
+                        <p className="account-phone-no">
+                          {detail.whatsappNumber}
+                        </p>
+                      </div>
+                      <div className="account-office">
+                        <h2 className="office">{t("officeaddress")}</h2>
+                        <p className="account-office-address">
+                          {detail.officeAddress}
+                          <p className="account-phone-no">
+                            Tel: {detail.telephone}
+                          </p>
+                        </p>
+                      </div>
+                    </div>
+                  );
+                })
+              : "No Details Found"}
           </div>
         </div>
       </section>

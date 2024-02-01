@@ -13,7 +13,7 @@ import {
   Answers,
   ViewPdf,
   Donate,
-  Home
+  Home,
 } from "./Pages/index.jsx";
 
 const App = () => {

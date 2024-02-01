@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faEnvelope,
@@ -8,15 +8,16 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { useTranslation } from "react-i18next";
 import { Footer, Header, TopHeader } from "../../components";
-
 import { Contacts } from "../../constants/apiEndPoints";
 import httpRequest from "../../axios/index.js";
 import toast from "react-hot-toast";
+import { useSelector } from "react-redux";
 
 const ContactUs = () => {
   const { t, i18n } = useTranslation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [loading, setloading] = useState(false);
+  const Compnayinfo = useSelector((state) => state.user.companyInfo);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -64,6 +65,7 @@ const ContactUs = () => {
 
   return (
     <>
+      <div id="google_translate_element"></div>
       <TopHeader />
       <Header />
       <div className="about-us-container">
@@ -147,8 +149,12 @@ const ContactUs = () => {
                       </a>
                       <strong>{t("email")}</strong>
                       <div className="content co se ">
-                        <span className="not">help@taqwa.com</span>
-                        <span className="not">support@taqwa.com</span>
+                        <span className="not">
+                          {Compnayinfo.primaryEmail || "info@code-xperts.com"}
+                        </span>
+                        <span className="not">
+                          {Compnayinfo.secondaryEmail}
+                        </span>
                       </div>
                     </li>
                     <li>
@@ -157,8 +163,12 @@ const ContactUs = () => {
                       </a>
                       <strong>{t("phone")}</strong>
                       <div className="content co se ">
-                        <span className="not">001 2565 2565 25</span>
-                        <span className="not">001 2565 2565 26</span>
+                        <span className="not">
+                          {Compnayinfo.primaryPhoneNumber || "+000000000"}
+                        </span>
+                        <span className="not">
+                          {Compnayinfo.secondaryPhoneNumber || "+000000000"}
+                        </span>
                       </div>
                     </li>
                   </div>
@@ -169,8 +179,12 @@ const ContactUs = () => {
                       </a>
                       <strong>{t("address")}</strong>
                       <div className="content co se ">
-                        <span className="not">19-J David Road H Block,</span>
-                        <span className="not">Orlando, USA</span>
+                        <span className="not">
+                          {Compnayinfo.primaryAddress || "Lahore , Islamabad"}
+                        </span>
+                        <span className="not">
+                          {Compnayinfo.secondaryAddress || "Lahore , Islamabad"}
+                        </span>
                       </div>
                     </li>
                     <li>
@@ -179,8 +193,12 @@ const ContactUs = () => {
                       </a>
                       <strong>{t("fax")}</strong>
                       <div className="content co se ">
-                        <span className="not">0044 55 25 26 23</span>
-                        <span className="not">0044 55 25 26 25</span>
+                        <span className="not">
+                          {Compnayinfo.faxnumberPrimary || "+000000000"}
+                        </span>
+                        <span className="not">
+                          {Compnayinfo.faxnumberSecondary || "+000000000"}
+                        </span>
                       </div>
                     </li>
                   </div>

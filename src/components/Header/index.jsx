@@ -10,10 +10,12 @@ import {
 import logo from "../../assests/images/logo.png";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 
 const Header = () => {
   const { t } = useTranslation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const Compnayinfo = useSelector((state) => state.user.companyInfo);
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
@@ -50,7 +52,9 @@ const Header = () => {
                     </i>
                     <div className="ss">
                       {t("callus")}:
-                      <span className="theme-clr"> +00 123-345-11</span>
+                      <span className="theme-clr">
+                        {Compnayinfo.primaryPhoneNumber}
+                      </span>
                     </div>
                   </li>
                   <li>
@@ -59,9 +63,9 @@ const Header = () => {
                     </i>
                     <div className="ss">
                       {t("email")}:{" "}
-                      <a className="theme-clr" href="#" itemprop="url">
-                        help@example.com
-                      </a>
+                      <Link className="theme-clr" to={"#"}>
+                        {Compnayinfo.primaryEmail}
+                      </Link>
                     </div>
                   </li>
                 </ul>

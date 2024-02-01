@@ -3,3 +3,5 @@ export const API_BASE_URL =
 
 export const users = "/api/users";
 export const Contacts = "/api/contact/contact-us";
+export const Company = "/api/settings";
+export const Banks = "/api/banks/bank-account-details";

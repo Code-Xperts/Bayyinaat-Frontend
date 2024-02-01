@@ -12,11 +12,14 @@ import { useTranslation } from "react-i18next";
 import httpRequest from "../../axios/index.js";
 import toast from "react-hot-toast";
 import { Contacts } from "../../constants/apiEndPoints";
+import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
   const { t, i18n } = useTranslation();
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [loading, setloading] = useState(false);
+  const CompanyData = useSelector((state) => state.user.companyInfo);
+  const { socialLinks = {} } = CompanyData;
 
   const [formData, setFormData] = useState({
     name: "",
@@ -65,17 +68,14 @@ const Footer = () => {
       <div className="upper">
         <div className="column">
           <h3>{t("aboutus")}</h3>
-          <p>
-            Lorem ipsum dolor sit amet, conec tetur adipisicing elit, sed do
-            eiusd tempor incididunt ut labore.
-          </p>
+          <p>{CompanyData.aboutCompany}</p>
           <img className="lo" src={logo} alt="Company Logo" />
           <p>
             {" "}
             <a className="qw">
               <FontAwesomeIcon icon={faLocationDot} />
             </a>
-            Jamia Mosque, New Orleans USA
+            {CompanyData.secondaryAddress || "Jamia Mosque, New Orleans USA"}
           </p>
         </div>
 
@@ -87,47 +87,48 @@ const Footer = () => {
               <a className="qw">
                 <FontAwesomeIcon icon={faEnvelope} />
               </a>
-              contact@example.com
+              {CompanyData.primaryEmail || "info@code-xperts.com"}
             </p>
             <p className="spp">
               {" "}
               <a className="qw">
                 <FontAwesomeIcon icon={faPhone} />
               </a>
-              +1 123-456-7890
+              {CompanyData.primaryPhoneNumber || "+00000000000"}
             </p>
             <p className="spp">
               {" "}
               <a className="qw">
                 <FontAwesomeIcon icon={faLocationDot} />
               </a>
-              123 Main St, City
+              {CompanyData.primaryAddress || "123 Main St, City"}
             </p>
             <div className="social-links bb">
-              <a
-                href="#"
+              <Link
+                to={socialLinks.twitter}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="social-link bb"
               >
                 <FontAwesomeIcon icon={faTwitter} />
-              </a>
-              <a
-                href="#"
+              </Link>
+              <Link
+                to={socialLinks.facebook}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="social-link bb"
               >
                 <FontAwesomeIcon icon={faFacebook} />
-              </a>
-              <a
-                href="#"
+              </Link>
+
+              <Link
+                to={socialLinks.youtube}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="social-link bb"
               >
                 <FontAwesomeIcon icon={faYoutube} />
-              </a>
+              </Link>
             </div>
           </div>
         </div>
