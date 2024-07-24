@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPhone, faLocationDot } from "@fortawesome/free-solid-svg-icons";
 import {
@@ -11,7 +11,7 @@ import logo from "../../assests/images/logo.png";
 import { useTranslation } from "react-i18next";
 import httpRequest from "../../axios/index.js";
 import toast from "react-hot-toast";
-import { Contacts } from "../../constants/apiEndPoints";
+import { Contacts, getSettings } from "../../constants/apiEndPoints";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
@@ -20,6 +20,8 @@ const Footer = () => {
   const [loading, setloading] = useState(false);
   const CompanyData = useSelector((state) => state.user.companyInfo);
   const { socialLinks = {} } = CompanyData;
+  const [settings, setSettings] = useState({})
+
 
   const [formData, setFormData] = useState({
     name: "",
@@ -63,6 +65,25 @@ const Footer = () => {
     });
   };
 
+  const currentLanguage = useSelector((state) => state.languageSlice.currentlanguage);
+  useEffect(()=>{
+    const FetchSettings = async () => {
+      try {
+        const settingsResp = await httpRequest.get(`${getSettings}`);
+        if (settingsResp.status === 200 || settingsResp.status === 201) {
+          // console.log('settingsr res',settingsResp.data.data)
+          setSettings(settingsResp.data.data)
+        }
+       
+      } catch (err) {
+        console.log(err.message);
+      }
+    };
+
+    FetchSettings();
+
+  },[currentLanguage])
+
   return (
     <footer className="footer bck">
       <div className="upper">
@@ -87,25 +108,25 @@ const Footer = () => {
               <a className="qw">
                 <FontAwesomeIcon icon={faEnvelope} />
               </a>
-              {CompanyData.primaryEmail || "info@code-xperts.com"}
+              {settings?.email || "info@code-xperts.com"}
             </p>
             <p className="spp">
               {" "}
               <a className="qw">
                 <FontAwesomeIcon icon={faPhone} />
               </a>
-              {CompanyData.primaryPhoneNumber || "+00000000000"}
+              {settings?.phone || "+00000000000"}
             </p>
             <p className="spp">
               {" "}
               <a className="qw">
                 <FontAwesomeIcon icon={faLocationDot} />
               </a>
-              {CompanyData.primaryAddress || "123 Main St, City"}
+              {settings?.address || "123 Main St, City"}
             </p>
             <div className="social-links bb">
               <Link
-                to={socialLinks.twitter}
+                to={settings?.twitter_link}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="social-link bb"
@@ -113,7 +134,7 @@ const Footer = () => {
                 <FontAwesomeIcon icon={faTwitter} />
               </Link>
               <Link
-                to={socialLinks.facebook}
+                to={settings?.facebook_link}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="social-link bb"
@@ -122,7 +143,7 @@ const Footer = () => {
               </Link>
 
               <Link
-                to={socialLinks.youtube}
+                to={settings?.youtube_link}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="social-link bb"

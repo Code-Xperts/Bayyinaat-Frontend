@@ -1,15 +1,18 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { SliderArr } from "./Jsons/slider";
 import "./styles/style.css";
 import { FaChevronRight, FaChevronLeft } from "react-icons/fa6";
+import httpRequest from "../../axios/index.js";
 
 import {
   faChevronLeft,
   faChevronRight,
 } from "@fortawesome/free-solid-svg-icons";
+import { useSelector } from "react-redux";
+import { getAllProducts, getProductsByCategories } from "../../constants/apiEndPoints";
 
 function SampleNextArrow(props) {
   const { className, style, onClick } = props;
@@ -22,6 +25,7 @@ function SamplePrevArrow(props) {
 }
 
 const Audioslider = () => {
+  const [audioData, setAudioData] = useState([])
   const settings = {
     dots: false,
     infinite: true,
@@ -61,19 +65,38 @@ const Audioslider = () => {
     ]
   };
 
+  const currentLanguage = useSelector((state) => state.languageSlice.currentlanguage);
+  useEffect(()=>{
+    const FetchProducts = async () => {
+      try {
+        const audioResp = await httpRequest.post(`${getAllProducts}`,{slug:'Audio',lang:currentLanguage?currentLanguage.code:''});
+        if (audioResp.status === 200 || audioResp.status === 201) {
+          console.log('audi res',audioResp.data.data)
+          setAudioData(audioResp.data.data)
+        }
+       
+      } catch (err) {
+        console.log(err.message);
+      }
+    };
+
+    FetchProducts();
+
+  },[currentLanguage])
+
   return (
     <div className="MainSlider">
       <Slider {...settings}>
-        {SliderArr.map((item, index) => (
+        {audioData?.map((item, index) => (
           <div key={index} className="SliderBox">
             <div className="InnerBoxSlide">
               <img
                 className="Sliderimg"
-                src={item.img}
-                alt={item.name + index}
+                src={item.image}
+                alt={item.title + index}
               />
               <div className="ViewBtn">
-                <h1 className="onlineheading">Online Classess</h1>
+                <h1 className="onlineheading">{item.title}</h1>
               </div>
             </div>
           </div>

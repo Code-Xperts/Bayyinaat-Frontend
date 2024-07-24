@@ -1,10 +1,13 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { SliderArr } from "./Jsons/slider";
 import "./styles/style.css";
 import { FaChevronRight, FaChevronLeft } from "react-icons/fa6";
+import { useSelector } from "react-redux";
+import { getAllProducts, getProductsByCategories } from "../../constants/apiEndPoints";
+import httpRequest from "../../axios/index.js";
 
 
 function SampleNextArrow(props) {
@@ -18,6 +21,7 @@ function SamplePrevArrow(props) {
 }
 
 const PdfSlider = () => {
+  const [pdfData, setPdfData] = useState([])
   const settings = {
     dots: false,
     infinite: true,
@@ -57,19 +61,39 @@ const PdfSlider = () => {
     ]
   };
 
+  const currentLanguage = useSelector((state) => state.languageSlice.currentlanguage);
+  useEffect(()=>{
+    const FetchProducts = async () => {
+      try {
+        const pdfResp = await httpRequest.post(`${getAllProducts}`,{slug:'Pdf',lang:currentLanguage?currentLanguage.code:''});
+        if (pdfResp.status === 200 || pdfResp.status === 201) {
+          // console.log('audi res',audioResp.data.data)
+          setPdfData(pdfResp.data.data)
+        }
+       
+      } catch (err) {
+        console.log(err.message);
+      }
+    };
+
+    FetchProducts();
+
+  },[currentLanguage])
+
+
   return (
     <div className="MainSlider">
       <Slider {...settings}>
-        {SliderArr.map((item, index) => (
+        {pdfData.map((item, index) => (
           <div key={index} className="SliderBox">
             <div className="InnerBoxSlide">
               <img
                 className="Sliderimg"
-                src={item.img}
-                alt={item.name + index}
+                src={item.image}
+                alt={item.title + index}
               />
               <div className="ViewBtn">
-                <h1 className="onlineheading">Online Classess</h1>
+                <h1 className="onlineheading">{item.title}</h1>
               </div>
             </div>
           </div>

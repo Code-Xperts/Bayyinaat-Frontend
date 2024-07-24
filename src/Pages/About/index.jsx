@@ -1,10 +1,33 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Footer, Header, TopHeader } from "../../components";
+import { useSelector } from "react-redux";
+import { getServices } from "../../constants/apiEndPoints";
+import httpRequest from "../../axios/index.js";
 
 const AboutUs = () => {
   const { t, i18n } = useTranslation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [services, setServices] = useState([]);
+
+  const currentLanguage = useSelector((state) => state.languageSlice.currentlanguage);
+  useEffect(()=>{
+    const FetchServices = async () => {
+      try {
+        const servicesResp = await httpRequest.get(`${getServices}/${currentLanguage.code}`);
+        if (servicesResp.status === 200 || servicesResp.status === 201) {
+          console.log('ser res',servicesResp.data.data)
+          setServices(servicesResp.data.data)
+        }
+       
+      } catch (err) {
+        console.log(err.message);
+      }
+    };
+
+    FetchServices();
+
+  },[currentLanguage])
 
   return (
     <>
@@ -112,11 +135,10 @@ const AboutUs = () => {
                     />
                   </g>
                 </svg>
-                <h2 className="jj">{t("quranlearning")}</h2>
+                <h2 className="jj">{t(services[0]?.title)}</h2>
                 <div className="oo">
                   <p>
-                    Learning Quran facility dolor sit amet, consectetur
-                    adipisicing elit, sed do eiusmod
+                    {services[0]?.description}
                   </p>
                 </div>
               </div>
@@ -178,11 +200,10 @@ c0 274 1 272 -145 277 l-70 3 -5 1235 c-3 679 -9 1240 -13 1247 -11 17 -73 33
                     />
                   </g>
                 </svg>
-                <h2 className="jj">{t("funeralservice")}</h2>
+                <h2 className="jj">{t(services[1]?.title)}</h2>
                 <div className="oo">
                   <p>
-                    Funeral facility dolor sit amet, consectetur adipisicing
-                    elit, sed do eiusmod tempor
+                    {services[1]?.description}
                   </p>
                 </div>
               </div>
@@ -256,11 +277,10 @@ c0 274 1 272 -145 277 l-70 3 -5 1235 c-3 679 -9 1240 -13 1247 -11 17 -73 33
                     />
                   </g>
                 </svg>
-                <h2 className="jj">{t("mosqurenovation")}</h2>
+                <h2 className="jj">{t(services[2]?.title)}</h2>
                 <div className="oo">
                   <p>
-                    Mosque rebuild facility dol sit amet, consectetur
-                    adipisicing elit, sed do eiusmod te
+                    {services[2]?.description}
                   </p>
                 </div>
               </div>
@@ -322,11 +342,10 @@ c0 274 1 272 -145 277 l-70 3 -5 1235 c-3 679 -9 1240 -13 1247 -11 17 -73 33
                     />
                   </g>
                 </svg>
-                <h2 className="jj">{t("helppoor")}</h2>
+                <h2 className="jj">{t(services[3]?.title)}</h2>
                 <div className="oo">
                   <p className="last">
-                    Poor rehab facility dolor sit amet, consectetur adipisicing
-                    elit, sed do eiusmod temp
+                    {services[3]?.description}
                   </p>
                 </div>
               </div>

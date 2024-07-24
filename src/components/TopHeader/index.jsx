@@ -10,8 +10,10 @@ import { faMap, faClock } from "@fortawesome/free-regular-svg-icons";
 import { useTranslation } from "react-i18next";
 import "../../assests/style.css";
 import i18n from "../../i18n";
-import { useSelector } from "react-redux";
+// import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from 'react-redux';
+import { changelanguage } from '../../lib/Redux/slices/languageSlice';
 
 const LanguageArr = [
   {
@@ -32,11 +34,15 @@ const LanguageArr = [
 ];
 
 const TopHeader = () => {
-  const [currentlanguage, setCurrentLanguage] = useState({
-    lang: "English",
-    img: "https://dedevelopers.org/devolta/resources/frontend/images/english.png",
-    code: "en",
-  });
+  const dispatch = useDispatch();
+  const currentLanguage = useSelector((state) => state.languageSlice.currentlanguage);
+  console.log('s,s', currentLanguage)
+  
+  // const [currentlanguage, setCurrentLanguage] = useState({
+  //   lang: "English",
+  //   img: "https://dedevelopers.org/devolta/resources/frontend/images/english.png",
+  //   code: "en",
+  // });
   const {
     socialLinks = {},
     primaryAddress = "",
@@ -44,13 +50,14 @@ const TopHeader = () => {
   } = useSelector((state) => state.user.companyInfo);
   const { t, i18n } = useTranslation();
   const changeLanguage = (lng, curr) => {
-    setCurrentLanguage(curr);
+    // setCurrentLanguage(curr);
+    dispatch(changelanguage(curr));
     i18n.changeLanguage(lng);
     document.body.classList.remove("en");
     document.body.classList.remove("ur");
     document.body.classList.remove("ar");
     document.body.classList.add(lng);
-    if (lng == "en") {
+    if (lng === "en") {
       document.documentElement.dir = "";
     } else {
       document.documentElement.dir = "rtl";
@@ -218,8 +225,8 @@ const TopHeader = () => {
             onClick={toggleLanguageDropdown}
             ref={languageDropdownRef}
           >
-            <img src={currentlanguage.img} alt="Currentlanguage.png" />
-            <span>{currentlanguage.lang}</span>
+            <img src={currentLanguage?.img} alt="Currentlanguage.png" />
+            <span>{currentLanguage?.lang}</span>
             <div
               className={`switcher_dropdown ${
                 isLanguageDropdownOpen ? "open" : ""

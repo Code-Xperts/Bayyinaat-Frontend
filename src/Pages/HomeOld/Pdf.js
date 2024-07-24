@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { PdfSlider } from "../../Common/sliders";
 import i18n from "../../i18n";
 
-const Fiqh = () => {
+const Pdf = () => {
   const { t } = useTranslation();
 
   return (
@@ -22,4 +22,4 @@ const Fiqh = () => {
   );
 };
 
-export default Fiqh;
+export default Pdf;

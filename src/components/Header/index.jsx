@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faBars,
@@ -8,18 +8,92 @@ import {
   faEnvelope,
 } from "@fortawesome/free-solid-svg-icons";
 import logo from "../../assests/images/logo.png";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
+import httpRequest from "../../axios/index.js";
+import { Categories, getProductById, getSettings } from "../../constants/apiEndPoints";
+
 
 const Header = () => {
+  // console.log('first', audioData,videoData,pdfData)
   const { t } = useTranslation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const Compnayinfo = useSelector((state) => state.user.companyInfo);
+  const [audioData, setAudioData] = useState([])
+  const [videoData, setVideoData] = useState([])
+  const [pdfData, setPdfData] = useState([])
+  const [settings, setSettings] = useState({})
+  const navigate = useNavigate();
+  const currentLanguage = useSelector((state) => state.languageSlice.currentlanguage);
+
+
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
+
+  const handleClick = async(route,name,id)=>{
+    try {
+      const res = await httpRequest.post(`${getProductById}`, {
+        category_id: id,
+        lang: currentLanguage ? currentLanguage.code : "",
+      });
+      if (res.status === 200 || res.status === 201) {
+        console.log("audi pro", res.data.data);
+        
+        navigate(`/${route}/${name}`, { state: { data: res.data.data } });
+      }
+    } catch (err) {
+      console.log(err.message);
+    }
+  }
+
+  useEffect(()=>{
+    const FetchCategoriesInfo = async () => {
+      try {
+        const audioResp = await httpRequest.post(`${Categories}`,{slug:'Audio',lang:currentLanguage?currentLanguage.code:''});
+        if (audioResp.status === 200 || audioResp.status === 201) {
+          console.log('audi res',audioResp.data.data)
+          setAudioData(audioResp.data.data)
+          // dispatch(setCompanyInfo(resp?.data?.data));
+        }
+        const VideoResp = await httpRequest.post(`${Categories}`,{slug:'Video',lang:currentLanguage?currentLanguage.code:''});
+        if (VideoResp.status === 200 || VideoResp.status === 201) {
+          // console.log('Video',VideoResp.data.data)
+          setVideoData(VideoResp.data.data)
+          // dispatch(setCompanyInfo(resp?.data?.data));
+        }
+
+        const pdfResp = await httpRequest.post(`${Categories}`,{slug:'Pdf',lang:currentLanguage?currentLanguage.code:''});
+        if (pdfResp.status === 200 || pdfResp.status === 201) {
+          // console.log('Pdf res',pdfResp.data.data)
+          setPdfData(pdfResp.data.data)
+          // dispatch(setCompanyInfo(resp?.data?.data));
+        }
+
+        const FetchSettings = async () => {
+          try {
+            const settingsResp = await httpRequest.get(`${getSettings}`);
+            if (settingsResp.status === 200 || settingsResp.status === 201) {
+              // console.log('settingsr res',settingsResp.data.data)
+              setSettings(settingsResp.data.data)
+            }
+           
+          } catch (err) {
+            console.log(err.message);
+          }
+        };
+    
+        FetchSettings();
+      } catch (err) {
+        console.log(err.message);
+      }
+    };
+
+    FetchCategoriesInfo();
+
+  },[currentLanguage])
 
   return (
     <>
@@ -43,7 +117,7 @@ const Header = () => {
                     </i>
                     <div className="ss">
                       {t("info")}:{" "}
-                      <span className="theme-clr">Starts 10th May</span>
+                      <span className="theme-clr">{settings?.info}</span>
                     </div>
                   </li>
                   <li>
@@ -53,7 +127,7 @@ const Header = () => {
                     <div className="ss">
                       {t("callus")}:
                       <span className="theme-clr">
-                        {Compnayinfo.primaryPhoneNumber}
+                        {settings?.phone}
                       </span>
                     </div>
                   </li>
@@ -64,7 +138,7 @@ const Header = () => {
                     <div className="ss">
                       {t("email")}:{" "}
                       <Link className="theme-clr" to={"#"}>
-                        {Compnayinfo.primaryEmail}
+                        {settings?.email}
                       </Link>
                     </div>
                   </li>
@@ -94,108 +168,45 @@ const Header = () => {
                   <Link to="/about-us">{t("aboutus")}</Link>
                 </li>
                 <li className="menu-item">
-                  <Link to="/audios">{t("audios")}</Link>
+                  <Link>{t("audios")}</Link>
                   <ul className="sub-menu">
-                    <li className="menu-item">
-                      <a href="">{t("alquran")}</a>
-                    </li>
-                    <li className="menu-item">
-                      <a href="">{t("al-hadith-al-nabawi")}</a>
-                    </li>
-                    <li className="menu-item">
-                      <a href="">{t("seerah")}</a>
-                    </li>
-                    <li className="menu-item">
-                      <a href="">{t("aqeedah")}</a>
-                    </li>
-                    <li className="menu-item">
-                      <a href="">{t("fiqh")}</a>
-                    </li>
-                    <li className="menu-item">
-                      <a href="">{t("akhlaqiaat")}</a>
-                    </li>
-                    <li className="menu-item">
-                      <a href="">{t("khusoosi-mawaqay")}</a>
-                    </li>
-                    <li className="menu-item">
-                      <a href="">{t("tarbiyat-o-tazkia")}</a>
-                    </li>
-                    <li className="menu-item">
-                      <a href="">{t("learnarabic")}</a>
-                    </li>
-                    <li className="menu-item">
-                      <a href="">{t("subjects")}</a>
-                    </li>
+                    {
+                      audioData?.map((item,index)=>(
+                        <li key={index} className="menu-item">
+                        <Link onClick={()=>handleClick('audios',item?.slug,item?.id)} >{t(item.name)}</Link>
+                      </li>
+                      ))
+                    }
+                   
+                  
                   </ul>
                 </li>
                 <li className="menu-item">
-                  <Link to="/videos">{t("videos")}</Link>
+                  <Link >{t("videos")}</Link>
                   <ul className="sub-menu">
-                    <li className="menu-item">
-                      <a href="">{t("alquran")}</a>
-                    </li>
-                    <li className="menu-item">
-                      <a href="">{t("al-hadith-al-nabawi")}</a>
-                    </li>
-                    <li className="menu-item">
-                      <a href="">{t("seerah")}</a>
-                    </li>
-                    <li className="menu-item">
-                      <a href="">{t("aqeedah")}</a>
-                    </li>
-                    <li className="menu-item">
-                      <a href="">{t("fiqh")}</a>
-                    </li>
-                    <li className="menu-item">
-                      <a href="">{t("akhlaqiaat")}</a>
-                    </li>
-                    <li className="menu-item">
-                      <a href="">{t("khusoosi-mawaqay")}</a>
-                    </li>
-                    <li className="menu-item">
-                      <a href="">{t("tarbiyat-o-tazkia")}</a>
-                    </li>
-                    <li className="menu-item">
-                      <a href="">{t("learnarabic")}</a>
-                    </li>
-                    <li className="menu-item">
-                      <a href="">{t("subjects")}</a>
-                    </li>
+                    {
+                      videoData?.map((item,index)=>(
+                        <li key={index} className="menu-item">
+                        <Link onClick={()=>handleClick('videos',item?.slug,item?.id)} >{t(item.name)}</Link>
+                        </li>
+                      ))
+                    }
+                   
+                    
                   </ul>
                 </li>
                 <li className="menu-item">
-                  <Link to="/pdf">{t("pdf")}</Link>
+                  <Link to="/pdf/all">{t("pdf")}</Link>
                   <ul className="sub-menu">
-                    <li className="menu-item">
-                      <a href="">{t("alquran")}</a>
-                    </li>
-                    <li className="menu-item">
-                      <a href="">{t("al-hadith-al-nabawi")}</a>
-                    </li>
-                    <li className="menu-item">
-                      <a href="">{t("seerah")}</a>
-                    </li>
-                    <li className="menu-item">
-                      <a href="">{t("aqeedah")}</a>
-                    </li>
-                    <li className="menu-item">
-                      <a href="">{t("fiqh")}</a>
-                    </li>
-                    <li className="menu-item">
-                      <a href="">{t("akhlaqiaat")}</a>
-                    </li>
-                    <li className="menu-item">
-                      <a href="">{t("khusoosi-mawaqay")}</a>
-                    </li>
-                    <li className="menu-item">
-                      <a href="">{t("tarbiyat-o-tazkia")}</a>
-                    </li>
-                    <li className="menu-item">
-                      <a href="">{t("learnarabic")}</a>
-                    </li>
-                    <li className="menu-item">
-                      <a href="">{t("subjects")}</a>
-                    </li>
+                    {
+                      pdfData?.map((item,index)=>(
+                    <li key={index} className="menu-item">
+                        <Link onClick={()=>handleClick('pdf',item?.slug,item?.id)} >{t(item.name)}</Link>
+                        </li>
+                      ))
+                    }
+                    
+                   
                   </ul>
                 </li>
                 <li className="menu-item">

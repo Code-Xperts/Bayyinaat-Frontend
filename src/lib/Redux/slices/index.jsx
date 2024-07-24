@@ -1,4 +1,4 @@
-import counterSlice from "./counterSlice";
+import languageSlice from "./languageSlice";
 import userslice from "./userslice";
 
-export { userslice, counterSlice };
+export { userslice, languageSlice };
