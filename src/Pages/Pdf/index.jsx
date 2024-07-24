@@ -2,11 +2,11 @@ import React, { useState, useEffect, useRef } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCalendarDays, faVolumeLow } from "@fortawesome/free-solid-svg-icons";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Footer, Header, TopHeader } from "../../components";
 import { useSelector } from "react-redux";
-import { getAllCategories, getAllProducts, getProductByBothCategory } from "../../constants/apiEndPoints";
+import { getAllCategories, getAllProducts, getProductByBothCategory, getProductById } from "../../constants/apiEndPoints";
 import httpRequest from "../../axios/index.js";
 
 const PDF = ({ onSearch }) => {
@@ -17,6 +17,9 @@ const PDF = ({ onSearch }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const data = location.state?.data; 
+  const {id,slug2, slug2_id} = useParams()
+  const [currentPage, setCurrentPage] = useState(1);
+  const [productsPerPage] = useState(5);
 
 
   const [query, setQuery] = useState("");
@@ -50,24 +53,44 @@ const PDF = ({ onSearch }) => {
     };
 
     FetchCategoriesInfo();
+    if(data){
+      const FetchProducts = async () => {
+        if(slug2){
+            try {
+                const pdfResp = await httpRequest.post(`${getProductByBothCategory}`, {
+                  category_id: data[0]?.id,
+                  lang: currentLanguage ? currentLanguage.code : "",
+                  sub_category_id: data[0]?.sub_category_id
+                });
+                if (pdfResp.status === 200 || pdfResp.status === 201) {
+                  console.log("audi pro", pdfResp.data.data);
+                  setAllProducts(pdfResp.data.data);
+                }
+              } catch (err) {
+                console.log(err.message);
+              }
 
-    const FetchProducts = async () => {
-      try {
-        const pdfResp = await httpRequest.post(`${getAllProducts}`, {
-          slug: "Pdf",
-          lang: currentLanguage ? currentLanguage.code : "",
-        });
-        if (pdfResp.status === 200 || pdfResp.status === 201) {
-          console.log("pdf pro", pdfResp.data.data);
-          setAllProducts(pdfResp.data.data);
+        }else{
+            try {
+                const pdfResp = await httpRequest.post(`${getProductById}`, {
+                  category_id: data[0].category_id,
+                  lang: currentLanguage ? currentLanguage.code : "",
+                });
+                if (pdfResp.status === 200 || pdfResp.status === 201) {
+                  console.log("pdfResp pro", pdfResp.data.data);
+                  setAllProducts(pdfResp.data.data);
+                }
+              } catch (err) {
+                console.log(err.message);
+              }
         }
-      } catch (err) {
-        console.log(err.message);
-      }
+     
     };
 
-    // FetchProducts();
-  }, [currentLanguage,data]);
+    FetchProducts();
+    }
+  
+  }, [currentLanguage,id,slug2]);
 
   const [isOpen, setIsOpen] = useState(0);
 
@@ -91,6 +114,27 @@ const PDF = ({ onSearch }) => {
       console.log(err.message);
     }
   }
+
+  const handleViewPdf = (pdfSrc)=>{
+    console.log('sssssssrrrrrrrcccccc',pdfSrc)
+    if(pdfSrc){
+      localStorage.setItem('pdfSrc', pdfSrc?.audio); // Save to local storage
+      navigate(`/view-pdf`, { state: { data: pdfSrc?.audio } });
+
+    }
+
+  }
+
+  // Get current products
+  const indexOfLastProduct = currentPage * productsPerPage;
+  const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+  const currentProducts = allProducts.slice(
+    indexOfFirstProduct,
+    indexOfLastProduct
+  );
+
+  // Change page
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
     <>
@@ -159,7 +203,11 @@ const PDF = ({ onSearch }) => {
             <div className="column-right main-right">
               <div className="mar">
                 <div className="bar">
-                  <div className="texttt">{t("showingresults")}</div>
+                  <div className="texttt">{`Showing ${indexOfFirstProduct + 1}-${
+                      indexOfLastProduct > allProducts.length
+                        ? allProducts.length
+                        : indexOfLastProduct
+                    } of ${allProducts.length}`}</div>
                   <form className="rtcl-ordering" method="get">
                     <select
                       className="isko"
@@ -180,8 +228,8 @@ const PDF = ({ onSearch }) => {
                   </form>
                 </div>
               </div>
-              {data?.map((item, index) => (
-                <div className="audio-player">
+              {currentProducts?.map((item, index) => (
+                <div style={{marginTop:'15px'}} className="audio-player">
                   <div className="major-picture">
                     <div className="image-div">
                       <img
@@ -192,7 +240,7 @@ const PDF = ({ onSearch }) => {
                     </div>
                     <div className="major-content">
                       <h2 className="surah-heading">{t(item?.title)}</h2>
-                      <p>{item?.description}</p>
+                      <p dangerouslySetInnerHTML={{ __html: item?.description } }/>
                       <div className="p-last">
                         <p className="publish">
                           {" "}
@@ -203,7 +251,7 @@ const PDF = ({ onSearch }) => {
                         </p>
                         <div className="P-button">
                           <Link to="/view-pdf">
-                            <button className="download-button">
+                            <button onClick={()=>handleViewPdf(item)} className="download-button">
                               {t("viewpdf")}
                             </button>
                           </Link>
@@ -223,6 +271,20 @@ const PDF = ({ onSearch }) => {
                   </div>
                 </div>
               ))}
+               <div style={{margin:'40px'}} className="pagination">
+                <button
+                  onClick={() => paginate(currentPage - 1)}
+                  disabled={currentPage === 1}
+                >
+                  {t("previous")}
+                </button>
+                <button style={{marginLeft:'600px'}}
+                  onClick={() => paginate(currentPage + 1)}
+                  disabled={indexOfLastProduct >= allProducts.length}
+                >
+                  {t("next")}
+                </button>
+              </div>
             </div>
           </div>
         </section>

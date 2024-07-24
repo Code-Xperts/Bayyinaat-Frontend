@@ -196,7 +196,7 @@ const Header = () => {
                   </ul>
                 </li>
                 <li className="menu-item">
-                  <Link to="/pdf/all">{t("pdf")}</Link>
+                  <Link >{t("pdf")}</Link>
                   <ul className="sub-menu">
                     {
                       pdfData?.map((item,index)=>(

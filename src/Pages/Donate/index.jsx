@@ -1,26 +1,30 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Footer, Header, TopHeader } from "../../components";
-import { Banks } from "../../constants/apiEndPoints";
+import { Banks, Donations } from "../../constants/apiEndPoints";
 import httpRequest from "../../axios/index.js";
+import { useSelector } from "react-redux";
 
 function Donate() {
   const { t } = useTranslation();
-  const [BanksDetails, setBankdetails] = useState([]);
+  const [donationHtml, setDonationHtml] = useState('');
+  const currentLanguage = useSelector(
+    (state) => state.languageSlice.currentlanguage
+  );
 
   useEffect(() => {
-    const FetchbankdDetails = async () => {
+    const FetchDonationsPage = async () => {
       try {
-        const resp = await httpRequest.get(`${Banks}`);
+        const resp = await httpRequest.get(`${Donations}/${currentLanguage?.code}`);
         if (resp.status === 200 || resp.status === 201) {
-          setBankdetails(resp?.data?.data);
+          setDonationHtml(resp.data?.data?.description)
         }
       } catch (err) {
         console.log(err.message);
       }
     };
 
-    FetchbankdDetails();
+    FetchDonationsPage();
   }, []);
 
   return (
@@ -35,24 +39,24 @@ function Donate() {
         }}
       >
         <div className="donate-container">
-          <div className="donate-main">
-            {BanksDetails.length > 0
-              ? BanksDetails.map((detail) => {
-                  return (
-                    <div key={detail._id} className="donate-child">
-                      <div className="texttt-new">
+          <div className="donate-main" dangerouslySetInnerHTML={{ __html: donationHtml }}/>
+            {/* {BanksDetails.length > 0 */}
+              {/* // ? BanksDetails.map((detail) => { */}
+                  {/* // return ( */}
+                    {/* // <div key={detail._id} className="donate-child"> */}
+                      {/* <div className="texttt-new">
                         <h2>{t("islamabadbankaccountdetails")}</h2>
-                      </div>
-                      <div className="super-class">
+                      </div> */}
+                      {/* <div className="super-class">
                         <div className="main-account-names">
                           <div className="donte-class">
                             <span className="names-account">
                               {t("actitle")}
                             </span>
                             <p className="account-detail">
-                              {/* {t(
+                               {t(
                                 "alhudainternationalwelfarefoundationcollectionisbregion"
-                              )} */}
+                              )} 
                               {detail.accountTitle}
                             </p>
                           </div>
@@ -95,20 +99,20 @@ function Donate() {
                             </p>
                           </div>
                         </div>
-                      </div>
-                      <div className="account-mail">
+                      </div> */}
+                      {/* <div className="account-mail">
                         <h2 className="email-address">{t("emailaddress")}</h2>
                         <p className="account-mail-email">
                           {detail.emailAddress}
                         </p>
-                      </div>
-                      <div className="account-phone">
+                      </div> */}
+                      {/* <div className="account-phone">
                         <h2 className="phone-no">{t("whatsapp")}</h2>
                         <p className="account-phone-no">
                           {detail.whatsappNumber}
                         </p>
-                      </div>
-                      <div className="account-office">
+                      </div> */}
+                      {/* <div className="account-office">
                         <h2 className="office">{t("officeaddress")}</h2>
                         <p className="account-office-address">
                           {detail.officeAddress}
@@ -116,12 +120,15 @@ function Donate() {
                             Tel: {detail.telephone}
                           </p>
                         </p>
-                      </div>
-                    </div>
-                  );
-                })
-              : "No Details Found"}
-          </div>
+                      </div> */}
+                    {/* </div> */}
+                  {/* ); */}
+                {/* }) */}
+              {/* :  */}
+              {/* "No Details Found"} */}
+
+              
+          {/* </div> */}
         </div>
       </section>
       <Footer />

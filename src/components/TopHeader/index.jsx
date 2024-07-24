@@ -36,7 +36,7 @@ const LanguageArr = [
 const TopHeader = () => {
   const dispatch = useDispatch();
   const currentLanguage = useSelector((state) => state.languageSlice.currentlanguage);
-  console.log('s,s', currentLanguage)
+  // console.log('s,s', currentLanguage)
   
   // const [currentlanguage, setCurrentLanguage] = useState({
   //   lang: "English",

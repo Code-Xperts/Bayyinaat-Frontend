@@ -8,36 +8,36 @@ import {
   faArrowRotateRight,
   faCalendarDays,
   faVolumeLow,
+  faMagnifyingGlass,
 } from "@fortawesome/free-solid-svg-icons";
-import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { useTranslation } from "react-i18next";
 import { Footer, Header, TopHeader } from "../../components";
 import { useSelector } from "react-redux";
 import {
-  Categories,
   getAllCategories,
-  getAllProducts,
   getProductByBothCategory,
   getProductById,
 } from "../../constants/apiEndPoints";
 import httpRequest from "../../axios/index.js";
-import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
-
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 
 const Audios = ({ onSearch }) => {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const audioRef = useRef(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const [audioData, setAudioData] = useState([]);
-  const [allProducts, setAllProducts] = useState([1]);
+  const [allProducts, setAllProducts] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [productsPerPage] = useState(5);
+
   const navigate = useNavigate();
-  const {id,slug2, slug2_id} = useParams()
+  const { id, slug2, slug2_id } = useParams();
   const location = useLocation();
-  const data = location.state?.data; 
-  console.log('dtaa', data)
+  const data = location.state?.data;
+  console.log("dtaa", data);
 
   const audioUrl =
     "https://taqwa.nauthemes.net/wp-content/uploads/2021/02/surah-fateh.mp3";
@@ -83,8 +83,11 @@ const Audios = ({ onSearch }) => {
   const currentLanguage = useSelector(
     (state) => state.languageSlice.currentlanguage
   );
+
   useEffect(() => {
-    const FetchCategoriesInfo = async () => {
+    console.log("data:", data);
+
+    const fetchCategoriesInfo = async () => {
       try {
         const audioResp = await httpRequest.post(`${getAllCategories}`, {
           slug: "Audio",
@@ -93,65 +96,62 @@ const Audios = ({ onSearch }) => {
         if (audioResp.status === 200 || audioResp.status === 201) {
           console.log("audi res", audioResp.data.data);
           setAudioData(audioResp.data.data);
-          // dispatch(setCompanyInfo(resp?.data?.data));
         }
       } catch (err) {
         console.log(err.message);
       }
     };
 
-    FetchCategoriesInfo();
+    fetchCategoriesInfo();
 
-    if(data){
-      console.log('first')
-      const FetchProducts = async () => {
-        if(slug2){
-            try {
-                const audioResp = await httpRequest.post(`${getProductByBothCategory}`, {
-                  category_id: data?.category_id,
-                  lang: currentLanguage ? currentLanguage.code : "",
-                  sub_category_id: data?.sub_category_id
-                });
-                if (audioResp.status === 200 || audioResp.status === 201) {
-                  console.log("audi pro", audioResp.data.data);
-                  setAllProducts(audioResp.data.data);
-                }
-              } catch (err) {
-                console.log(err.message);
+    if (data) {
+      console.log("first", data.category_id);
+      const fetchProducts = async () => {
+        if (slug2) {
+          try {
+            const audioResp = await httpRequest.post(
+              `${getProductByBothCategory}`,
+              {
+                category_id: data[0]?.category_id,
+                lang: currentLanguage ? currentLanguage.code : "",
+                sub_category_id: data[0]?.sub_category_id,
               }
-
-        }else{
-            try {
-                const audioResp = await httpRequest.post(`${getProductById}`, {
-                  category_id: data?.category_id,
-                  lang: currentLanguage ? currentLanguage.code : "",
-                });
-                if (audioResp.status === 200 || audioResp.status === 201) {
-                  console.log("audi pro", audioResp.data.data);
-                  setAllProducts(audioResp.data.data);
-                }
-              } catch (err) {
-                console.log(err.message);
-              }
+            );
+            if (audioResp.status === 200 || audioResp.status === 201) {
+              console.log("audi pro", audioResp.data.data);
+              setAllProducts(audioResp.data.data);
+            }
+          } catch (err) {
+            console.log(err.message);
+          }
+        } else {
+          try {
+            const audioResp = await httpRequest.post(`${getProductById}`, {
+              category_id: data[0].category_id,
+              lang: currentLanguage ? currentLanguage.code : "",
+            });
+            if (audioResp.status === 200 || audioResp.status === 201) {
+              console.log("audi pro", audioResp.data.data);
+              setAllProducts(audioResp.data.data);
+            }
+          } catch (err) {
+            console.log(err.message);
+          }
         }
-     
-    };
-    FetchProducts();
+      };
+      fetchProducts();
     }
-
-    
-
-  }, [currentLanguage,id,slug2,data]);
+  }, [currentLanguage, id, slug2, data]);
 
   useEffect(() => {
     const audioElement = audioRef.current;
 
-    audioElement.addEventListener("timeupdate", handleTimeUpdate);
-    audioElement.addEventListener("loadeddata", handleLoadedData);
+    audioElement?.addEventListener("timeupdate", handleTimeUpdate);
+    audioElement?.addEventListener("loadeddata", handleLoadedData);
 
     return () => {
-      audioElement.removeEventListener("timeupdate", handleTimeUpdate);
-      audioElement.removeEventListener("loadeddata", handleLoadedData);
+      audioElement?.removeEventListener("timeupdate", handleTimeUpdate);
+      audioElement?.removeEventListener("loadeddata", handleLoadedData);
     };
   }, []);
 
@@ -177,22 +177,33 @@ const Audios = ({ onSearch }) => {
     setIsOpen((prevIsOpen) => (prevIsOpen === section ? null : section));
   };
 
-  const handleClick = async(name,id,name2,id2)=>{
+  const handleClick = async (name, id, name2, id2) => {
     try {
-        const res = await httpRequest.post(`${getProductByBothCategory}`, {
-            category_id: id,
-            lang: currentLanguage ? currentLanguage.code : "",
-            sub_category_id: id2
-          });
+      const res = await httpRequest.post(`${getProductByBothCategory}`, {
+        category_id: id,
+        lang: currentLanguage ? currentLanguage.code : "",
+        sub_category_id: id2,
+      });
       if (res.status === 200 || res.status === 201) {
         console.log("audi pro", res.data.data);
-        
+
         navigate(`/audios/${name}/${name2}`, { state: { data: res.data.data } });
       }
     } catch (err) {
       console.log(err.message);
     }
-  }
+  };
+
+  // Get current products
+  const indexOfLastProduct = currentPage * productsPerPage;
+  const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+  const currentProducts = allProducts.slice(
+    indexOfFirstProduct,
+    indexOfLastProduct
+  );
+
+  // Change page
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
     <>
@@ -246,22 +257,36 @@ const Audios = ({ onSearch }) => {
                       >
                         {item?.sub_categories?.map((i, ind) => (
                           <li key={ind}>
-                            <Link onClick={()=>handleClick(item?.slug,item?.id,i?.slug,i?.id)} > {t(i.name)}</Link>
+                            <Link
+                              onClick={() =>
+                                handleClick(
+                                  item?.slug,
+                                  item?.id,
+                                  i?.slug,
+                                  i?.id
+                                )
+                              }
+                            >
+                              {t(i.name)}
+                            </Link>
                           </li>
                         ))}
-                      
                       </ul>
                     )}
                   </li>
                 ))}
-
-                
               </ul>
             </div>
             <div className="column-right main-right">
               <div className="mar">
                 <div className="bar">
-                  <div className="texttt">{t("showingresults")}</div>
+                  <div className="texttt">
+                    {`Showing ${indexOfFirstProduct + 1}-${
+                      indexOfLastProduct > allProducts.length
+                        ? allProducts.length
+                        : indexOfLastProduct
+                    } of ${allProducts.length}`}
+                  </div>
                   <form className="rtcl-ordering" method="get">
                     <select
                       className="isko"
@@ -282,8 +307,12 @@ const Audios = ({ onSearch }) => {
                   </form>
                 </div>
               </div>
-              {data?.map((item, index) => (
-                <div key={index} className="audio-player audio-new">
+              {currentProducts.map((item, index) => (
+                <div
+                  style={{ marginTop: "15px" }}
+                  key={index}
+                  className="audio-player audio-new"
+                >
                   <div className="major-picture major-picture-new">
                     <div className="image-div image-div-new">
                       <img
@@ -357,18 +386,28 @@ const Audios = ({ onSearch }) => {
                     </div>
                   </div>
                   <div className="customs-tags">
-                    {
-                        item?.tags?.map((item,index)=>(
-                    <div key={index} className="custom-tag">
-                      <p className="tags">{item}</p>
-                    </div>
-                        ))
-                    }
-                    
-                    
+                    {item?.tags?.map((item, index) => (
+                      <div key={index} className="custom-tag">
+                        <p className="tags">{item}</p>
+                      </div>
+                    ))}
                   </div>
                 </div>
               ))}
+              <div style={{margin:'40px'}} className="pagination">
+                <button
+                  onClick={() => paginate(currentPage - 1)}
+                  disabled={currentPage === 1}
+                >
+                  {t("previous")}
+                </button>
+                <button style={{marginLeft:'600px'}}
+                  onClick={() => paginate(currentPage + 1)}
+                  disabled={indexOfLastProduct >= allProducts.length}
+                >
+                  {t("next")}
+                </button>
+              </div>
             </div>
           </div>
         </section>

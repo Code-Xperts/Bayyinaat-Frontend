@@ -8,7 +8,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { useTranslation } from "react-i18next";
 import { Footer, Header, TopHeader } from "../../components";
-import { Contacts } from "../../constants/apiEndPoints";
+import { Contacts, getSettings } from "../../constants/apiEndPoints";
 import httpRequest from "../../axios/index.js";
 import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
@@ -17,6 +17,7 @@ const ContactUs = () => {
   const { t, i18n } = useTranslation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [loading, setloading] = useState(false);
+  const [settings, setSettings] = useState(false);
   const Compnayinfo = useSelector((state) => state.user.companyInfo);
 
   const [formData, setFormData] = useState({
@@ -62,6 +63,25 @@ const ContactUs = () => {
       phone: "",
     });
   };
+
+  const currentLanguage = useSelector((state) => state.languageSlice.currentlanguage);
+  useEffect(()=>{
+    const FetchSettings = async () => {
+      try {
+        const settingsResp = await httpRequest.get(`${getSettings}`);
+        if (settingsResp.status === 200 || settingsResp.status === 201) {
+          // console.log('settingsr res',settingsResp.data.data)
+          setSettings(settingsResp.data.data)
+        }
+       
+      } catch (err) {
+        console.log(err.message);
+      }
+    };
+
+    FetchSettings();
+
+  },[currentLanguage])
 
   return (
     <>
@@ -150,10 +170,10 @@ const ContactUs = () => {
                       <strong>{t("email")}</strong>
                       <div className="content co se ">
                         <span className="not">
-                          {Compnayinfo.primaryEmail || "info@code-xperts.com"}
+                          {settings?.email || "info@code-xperts.com"}
                         </span>
                         <span className="not">
-                          {Compnayinfo.secondaryEmail}
+                          {settings?.email}
                         </span>
                       </div>
                     </li>
@@ -164,10 +184,10 @@ const ContactUs = () => {
                       <strong>{t("phone")}</strong>
                       <div className="content co se ">
                         <span className="not">
-                          {Compnayinfo.primaryPhoneNumber || "+000000000"}
+                          {settings?.phone || "+000000000"}
                         </span>
                         <span className="not">
-                          {Compnayinfo.secondaryPhoneNumber || "+000000000"}
+                          {settings?.phone || "+000000000"}
                         </span>
                       </div>
                     </li>
@@ -180,10 +200,10 @@ const ContactUs = () => {
                       <strong>{t("address")}</strong>
                       <div className="content co se ">
                         <span className="not">
-                          {Compnayinfo.primaryAddress || "Lahore , Islamabad"}
+                          {settings?.address || "Lahore , Islamabad"}
                         </span>
                         <span className="not">
-                          {Compnayinfo.secondaryAddress || "Lahore , Islamabad"}
+                          {settings?.address  || "Lahore , Islamabad"}
                         </span>
                       </div>
                     </li>
@@ -194,10 +214,10 @@ const ContactUs = () => {
                       <strong>{t("fax")}</strong>
                       <div className="content co se ">
                         <span className="not">
-                          {Compnayinfo.faxnumberPrimary || "+000000000"}
+                          {settings?.phone  || "+000000000"}
                         </span>
                         <span className="not">
-                          {Compnayinfo.faxnumberSecondary || "+000000000"}
+                          {settings?.phone  || "+000000000"}
                         </span>
                       </div>
                     </li>

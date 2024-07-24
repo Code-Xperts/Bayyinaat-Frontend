@@ -33,15 +33,16 @@ const Videos = ({ onSearch }) => {
   const [allProducts, setAllProducts] = useState([]);
   const location = useLocation();
   const data = location.state?.data; 
-  const {id, slug2_id} = useParams()
+  const {id,slug2, slug2_id} = useParams()
   const navigate = useNavigate();
+  const [currentPage, setCurrentPage] = useState(1);
+  const [productsPerPage] = useState(5);
 
 
 
   const handleInputChange = (e) => {
     setQuery(e.target.value);
   };
-console.log('video link is', videoLink)
   const handleSearch = () => {
     onSearch(query);
   };
@@ -68,13 +69,14 @@ console.log('video link is', videoLink)
 
     FetchCategoriesInfo();
 
-    const FetchProducts = async () => {
-        if(slug2_id){
+    if(data){
+      const FetchProducts = async () => {
+        if(slug2){
             try {
                 const audioResp = await httpRequest.post(`${getProductByBothCategory}`, {
-                  category_id: id,
+                  category_id: data[0]?.id,
                   lang: currentLanguage ? currentLanguage.code : "",
-                  sub_category_id: slug2_id
+                  sub_category_id: data[0]?.sub_category_id
                 });
                 if (audioResp.status === 200 || audioResp.status === 201) {
                   console.log("audi pro", audioResp.data.data);
@@ -87,7 +89,7 @@ console.log('video link is', videoLink)
         }else{
             try {
                 const audioResp = await httpRequest.post(`${getProductById}`, {
-                  category_id: id,
+                  category_id: data[0].category_id,
                   lang: currentLanguage ? currentLanguage.code : "",
                 });
                 if (audioResp.status === 200 || audioResp.status === 201) {
@@ -101,15 +103,25 @@ console.log('video link is', videoLink)
      
     };
 
-    // FetchProducts();
-  }, [currentLanguage,id,slug2_id]);
+    FetchProducts();
+    }
+    
+  }, [currentLanguage,id,slug2]);
 
   const toggleDropdown = (section) => {
     setIsOpen((prevIsOpen) => (prevIsOpen === section ? null : section));
   };
 
-  const toggleModal = (link) => {
-    setVideoLink(link);
+  const toggleModal = (link = "") => {
+    console.log('link',link)
+    if (link.includes("youtube.com")) {
+      // Convert YouTube URL to embed URL
+      const url = new URL(link);
+      const videoId = url.searchParams.get("v");
+      setVideoLink(`https://www.youtube.com/embed/${videoId}`);
+    } else if (link) {
+      setVideoLink(link);
+    }
     setIsModalOpen(!isModalOpen);
   };
 
@@ -145,6 +157,17 @@ console.log('video link is', videoLink)
       console.log(err.message);
     }
   }
+
+   // Get current products
+   const indexOfLastProduct = currentPage * productsPerPage;
+   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+   const currentProducts = allProducts.slice(
+     indexOfFirstProduct,
+     indexOfLastProduct
+   );
+ 
+   // Change page
+   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
     <>
@@ -212,7 +235,11 @@ console.log('video link is', videoLink)
             <div className="column-right main-right">
               <div className="mar">
                 <div className="bar">
-                  <div className="texttt">{t("showingresults")}</div>
+                  <div className="texttt">{`Showing ${indexOfFirstProduct + 1}-${
+                      indexOfLastProduct > allProducts.length
+                        ? allProducts.length
+                        : indexOfLastProduct
+                    } of ${allProducts.length}`}</div>
                   <form className="rtcl-ordering" method="get">
                     <select
                       className="isko"
@@ -233,8 +260,8 @@ console.log('video link is', videoLink)
                   </form>
                 </div>
               </div>
-              {data?.map((item, index) => (
-                <div key={index} className="audio-player">
+              {currentProducts?.map((item, index) => (
+                <div  style={{ marginTop: "15px" }} key={index} className="audio-player">
                   <div className="major-picture">
                     <div className="image-div">
                       <img
@@ -245,7 +272,7 @@ console.log('video link is', videoLink)
                     </div>
                     <div className="major-content">
                       <h2 className="surah-heading">{t(item?.title)}</h2>
-                      <p>{item?.description}</p>
+                      <p dangerouslySetInnerHTML={{ __html: item?.description } }/>
                       <div className="p-last">
                         <p className="publish">
                           {" "}
@@ -276,13 +303,27 @@ console.log('video link is', videoLink)
                   </div>
                 </div>
               ))}
+               <div style={{margin:'40px'}} className="pagination">
+                <button
+                  onClick={() => paginate(currentPage - 1)}
+                  disabled={currentPage === 1}
+                >
+                  {t("previous")}
+                </button>
+                <button style={{marginLeft:'600px'}}
+                  onClick={() => paginate(currentPage + 1)}
+                  disabled={indexOfLastProduct >= allProducts.length}
+                >
+                  {t("next")}
+                </button>
+              </div>
             </div>
           </div>
         </section>
       </div>
       <Modal
         isOpen={isModalOpen}
-        onRequestClose={toggleModal}
+        onRequestClose={()=>toggleModal('')}
         contentLabel="Video Modal"
         style={modalStyle}
         shouldCloseOnOverlayClick={false}
@@ -295,7 +336,7 @@ console.log('video link is', videoLink)
           frameBorder="0"
           allowFullScreen
         ></iframe>
-        <button className="flooot-rrr" onClick={toggleModal}>
+        <button className="flooot-rrr" onClick={()=>toggleModal('')}>
           {t("close")}
         </button>
       </Modal>

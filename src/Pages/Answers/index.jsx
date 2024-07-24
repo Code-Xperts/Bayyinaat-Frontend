@@ -2,8 +2,11 @@ import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faShareNodes } from "@fortawesome/free-solid-svg-icons";
 import { Footer, Header, TopHeader } from "../../components";
+import { useLocation } from "react-router-dom";
 
 const Answers = ({ onSearch }) => {
+  const location = useLocation();
+  const data = location.state?.data; 
   return (
     <>
       <TopHeader />
@@ -24,7 +27,8 @@ const Answers = ({ onSearch }) => {
                 </a>
               </div>
               <div className="Question-para">
-                <p className="que-para">
+                {
+                 data &&  data[0]?.question ? data[0]?.question :<p className="que-para">
                   I have completed my Masters Degree in Human Resource
                   Management (HRM) / Personnel Management, which is a
                   specialised branch of MBA. However, now that Allah has guided
@@ -56,43 +60,18 @@ const Answers = ({ onSearch }) => {
                   lookout for a job. May Allah reward you for your efforts to
                   find solutions based on the Quran and Sunnah.
                 </p>
+                }
+                
                 <div className="customs-tags">
-                  <div className="custom-tag">
-                    <p className="tags">Hello, Custom Tag!</p>
-                  </div>
-                  <div className="custom-tag">
-                    <p className="tags">Hello, Custom Tag!</p>
-                  </div>
-                  <div className="custom-tag">
-                    <p className="tags">Hello, Custom Tag!</p>
-                  </div>
-                  <div className="custom-tag">
-                    <p className="tags">Hello, Custom Tag!</p>
-                  </div>
-                  <div className="custom-tag">
-                    <p className="tags">Hello, Custom Tag!</p>
-                  </div>
-                  <div className="custom-tag">
-                    <p className="tags">Hello, Custom Tag!</p>
-                  </div>
-                  <div className="custom-tag">
-                    <p className="tags">Hello, Custom Tag!</p>
-                  </div>
-                  <div className="custom-tag">
-                    <p className="tags">Hello, Custom Tag!</p>
-                  </div>
-                  <div className="custom-tag">
-                    <p className="tags">Hello, Custom Tag!</p>
-                  </div>
-                  <div className="custom-tag">
-                    <p className="tags">Hello, Custom Tag!</p>
-                  </div>
-                  <div className="custom-tag">
-                    <p className="tags">Hello, Custom Tag!</p>
-                  </div>
-                  <div className="custom-tag">
-                    <p className="tags">Hello, Custom Tag!</p>
-                  </div>
+                  {
+                   data && data[0]?.tags?.map((item,index)=>(
+                      <div key={index} className="custom-tag">
+                      <p className="tags">item</p>
+                    </div>
+                    ))
+                  }
+                 
+                  
                 </div>
               </div>
             </div>
@@ -101,7 +80,8 @@ const Answers = ({ onSearch }) => {
                 <h2 className="answer-major">Answer</h2>
               </div>
               <div className="answer-para">
-                <p className="ans-para">
+                {
+                  data && data[0]?.answer ? data[0]?.answer : <p className="ans-para">
                   1- Some jobs are haram in and of themselves such as working in
                   riba-based banks and places where alcohol is sold. 2- Some
                   jobs may be haram because of things in the work-place that are
@@ -113,6 +93,8 @@ const Answers = ({ onSearch }) => {
                   followed and some exceptions in cases of need and when certain
                   evils are unavoidable.
                 </p>
+                }
+                
               </div>
             </div>
           </div>

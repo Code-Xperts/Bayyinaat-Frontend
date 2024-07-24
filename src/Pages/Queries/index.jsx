@@ -2,41 +2,68 @@ import React, { useState, useEffect, useRef } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStop, faMicrophone } from "@fortawesome/free-solid-svg-icons";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Footer, Header, TopHeader } from "../../components";
+import { getAllQuestions, PostQuestion } from "../../constants/apiEndPoints";
+import httpRequest from "../../axios/index.js";
+import toast from "react-hot-toast";
+import { useSelector } from "react-redux";
 
 const Queries = ({ onSearch }) => {
-  const { t } = useTranslation();
-  const [query, setQuery] = useState("");
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    message: "",
-  });
-
-  const handleInputChange = (e) => {
-    setQuery(e.target.value);
-  };
-
-  const handleSearch = () => {
-    onSearch(query);
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Handle form submission logic here
-    console.log("Form submitted with data:", formData);
-  };
-
   const [recordingStatus, setRecordingStatus] = useState("inactive");
   const [mediaRecorder, setMediaRecorder] = useState(null);
   const [audioChunks, setAudioChunks] = useState([]);
   const [audio, setAudio] = useState(null);
   const [permission, setPermission] = useState(false);
   const [stream, setStream] = useState(null);
+  const [queriesData, setQueriesData] = useState([]);
   const mediaRecorderRef = useRef(null);
+  const { t } = useTranslation();
+  const [loading, setloading] = useState(false);
+  const [query, setQuery] = useState("");
+  const navigate = useNavigate();
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    message: "",
+  });
+  const currentLanguage = useSelector((state) => state.languageSlice.currentlanguage);
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
+
+  const handleSearch = () => {
+    onSearch(query);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      setloading(true);
+      const response = await httpRequest.post(PostQuestion, {...formData,voice_message:audio,lang:currentLanguage?.code});
+      if (response.status === 200 || response.status === 201) {
+        toast.success(response.data.message);
+        setloading(false);
+        handleFormEmpty();
+      }
+    } catch (error) {
+      setloading(false);
+
+      toast.error(error.response ? error.response.data : error.message);
+    } finally {
+      setloading(false);
+    }
+  };
+
+
 
   const getMicrophonePermission = async () => {
     if ("MediaRecorder" in window) {
@@ -79,6 +106,36 @@ const Queries = ({ onSearch }) => {
       setAudioChunks([]);
     };
   };
+  const handleFormEmpty = () => {
+    setFormData({
+      name: "",
+      email: "",
+      message: "",
+      phone: "",
+      audio: null
+    });
+  };
+
+  useEffect(()=>{
+    const getAllQueries = async()=>{
+      try{
+        const response = await httpRequest.get(`${getAllQuestions}/${currentLanguage?.code}`)
+        if (response.status === 200 || response.status === 201) {
+          console.log("quries res", response.data.data);
+          setQueriesData(response.data.data);
+          // dispatch(setCompanyInfo(resp?.data?.data));
+        }
+
+      }catch(error){
+        console.log(error)
+      }
+    }
+  },[])
+
+  const handleQuestionClick = (data) =>{
+    navigate(`/answer`, { state: { data: data } });
+
+  }
 
   return (
     <>
@@ -107,6 +164,28 @@ const Queries = ({ onSearch }) => {
                 <h2 className="queri-heading">Questions / Answers</h2>
                 <div className="tiles-main-block">
                   <div className="tiles-sub-block">
+                    {
+                       queriesData.length>0 ?  queriesData.map((item,index)=>(
+                          <div className="major-tiles">
+                      <Link onClick={()=>handleQuestionClick(item)} className="titit">
+                        <h2 className="">{item?.question}</h2>
+                      </Link>
+                      <span className="ss-tiles">{item?.created_at}</span>
+                    </div>
+                       )) :
+                       "No Query Found be the first to query"
+                    }
+                    
+                  </div>
+                  {/* <div className="tiles-sub-block">
+                    <div className="major-tiles">
+                      <Link to="/answer" className="titit">
+                        <h2 className="">Answers Title</h2>
+                      </Link>
+                      <span className="ss-tiles">08-11-2023</span>
+                    </div>
+                  </div> */}
+                  {/* <div className="tiles-sub-block">
                     <div className="major-tiles">
                       <Link to="/answer" className="titit">
                         <h2 className="">Answers Title</h2>
@@ -121,39 +200,23 @@ const Queries = ({ onSearch }) => {
                       </Link>
                       <span className="ss-tiles">08-11-2023</span>
                     </div>
-                  </div>
-                  <div className="tiles-sub-block">
+                  </div> */}
+                  {/* <div className="tiles-sub-block">
                     <div className="major-tiles">
                       <Link to="/answer" className="titit">
                         <h2 className="">Answers Title</h2>
                       </Link>
                       <span className="ss-tiles">08-11-2023</span>
                     </div>
-                  </div>
-                  <div className="tiles-sub-block">
+                  </div> */}
+                  {/* <div className="tiles-sub-block">
                     <div className="major-tiles">
                       <Link to="/answer" className="titit">
                         <h2 className="">Answers Title</h2>
                       </Link>
                       <span className="ss-tiles">08-11-2023</span>
                     </div>
-                  </div>
-                  <div className="tiles-sub-block">
-                    <div className="major-tiles">
-                      <Link to="/answer" className="titit">
-                        <h2 className="">Answers Title</h2>
-                      </Link>
-                      <span className="ss-tiles">08-11-2023</span>
-                    </div>
-                  </div>
-                  <div className="tiles-sub-block">
-                    <div className="major-tiles">
-                      <Link to="/answer" className="titit">
-                        <h2 className="">Answers Title</h2>
-                      </Link>
-                      <span className="ss-tiles">08-11-2023</span>
-                    </div>
-                  </div>
+                  </div> */}
                 </div>
               </div>
             </div>
