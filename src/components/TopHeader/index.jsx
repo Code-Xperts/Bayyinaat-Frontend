@@ -14,6 +14,7 @@ import i18n from "../../i18n";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
 import { changelanguage } from '../../lib/Redux/slices/languageSlice';
+import { getNamazTimings } from "../../utils/get-namaz-timings";
 
 const LanguageArr = [
   {
@@ -69,25 +70,30 @@ const TopHeader = () => {
 
   const namazTimeDropdownRef = useRef(null);
   const languageDropdownRef = useRef(null);
-
+  const [namazTimings, setNamazTimings]=  useState({})
   useEffect(() => {
+    const fetchData = async () => {
+      const namazTime = await getNamazTimings();
+      setNamazTimings(namazTime);
+      console.log('namazTime', namazTime?.timings?.Fajr);
+    };
+  
+    fetchData();
+  
+    // Event listener for outside clicks
     const handleOutsideClick = (event) => {
-      if (
-        namazTimeDropdownRef.current &&
-        !namazTimeDropdownRef.current.contains(event.target)
-      ) {
+      if (namazTimeDropdownRef.current && !namazTimeDropdownRef.current.contains(event.target)) {
         setIsNamazTimeDropdownOpen(false);
       }
-      if (
-        languageDropdownRef.current &&
-        !languageDropdownRef.current.contains(event.target)
-      ) {
+      if (languageDropdownRef.current && !languageDropdownRef.current.contains(event.target)) {
         setIsLanguageDropdownOpen(false);
       }
     };
-
+  
+    // Add event listener only once
     document.addEventListener("mousedown", handleOutsideClick);
-
+  
+    // Cleanup function to remove event listener on unmount
     return () => {
       document.removeEventListener("mousedown", handleOutsideClick);
     };
@@ -149,8 +155,8 @@ const TopHeader = () => {
                 <thead>
                   <tr>
                     <th scope="col">{t("namaz")}</th>
-                    <th scope="col">{t("time")}</th>
-                    <th scope="col">{t("jammat")}</th>
+                    <th scope="col">{t("Timings")}</th>
+                    {/* <th scope="col">{t("jammat")}</th> */}
                   </tr>
                 </thead>
                 <tbody>
@@ -158,36 +164,36 @@ const TopHeader = () => {
                     <td>
                       <FontAwesomeIcon icon={faSun} /> {t("fajr")}
                     </td>
-                    <td>4:45 AM</td>
-                    <td>5:30 AM</td>
+                    <td>{ namazTimings?.timings?.Fajr}</td>
+                    {/* <td>5:30 AM</td> */}
                   </tr>
                   <tr>
                     <td>
                       <FontAwesomeIcon icon={faSun} /> {t("zuhr")}
                     </td>
-                    <td>01:02 PM</td>
-                    <td>1:30 PM</td>
+                    <td>{namazTimings?.timings?.Dhuhr}</td>
+                    {/* <td>1:30 PM</td> */}
                   </tr>
                   <tr>
                     <td>
                       <FontAwesomeIcon icon={faSun} /> {t("asr")}
                     </td>
-                    <td>5:25 PM</td>
-                    <td>6:00 PM</td>
+                    <td>{namazTimings?.timings?.Asr}</td>
+                    {/* <td>6:00 PM</td> */}
                   </tr>
                   <tr>
                     <td>
                       <FontAwesomeIcon icon={faMoon} /> {t("maghrib")}
                     </td>
-                    <td>7:30 PM</td>
-                    <td>7:30 PM</td>
+                    <td>{namazTimings?.timings?.Maghrib}</td>
+                    {/* <td>7:30 PM</td> */}
                   </tr>
                   <tr>
                     <td>
                       <FontAwesomeIcon icon={faMoon} /> {t("isha")}
                     </td>
-                    <td>8:44 PM</td>
-                    <td>9:00 PM</td>
+                    <td>{namazTimings?.timings?.Isha}</td>
+                    {/* <td>9:00 PM</td> */}
                   </tr>
                 </tbody>
               </table>

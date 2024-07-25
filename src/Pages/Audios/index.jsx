@@ -19,6 +19,8 @@ import {
   getProductById,
 } from "../../constants/apiEndPoints";
 import httpRequest from "../../axios/index.js";
+import AudioPlayer from 'react-h5-audio-player';
+import 'react-h5-audio-player/lib/styles.css';
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 
 const Audios = ({ onSearch }) => {
@@ -271,6 +273,23 @@ const Audios = ({ onSearch }) => {
     setAllProducts(sortedProducts);
     
   }
+  const [currentAudioIndex, setCurrentAudioIndex] = useState(null);
+  // const [currentTime, setCurrentTime] = useState(0);
+  // const [duration, setDuration] = useState(0);  
+  const handleSeek = (event) => {
+    console.log('Seeked to:', event.target.currentTime);
+    setCurrentTime(event.target.currentTime);
+  };
+
+  const handleCanPlay = (event) => {
+    console.log('Audio duration:', event.target.duration);
+    setDuration(event.target.duration);
+  };
+
+  const handleProgress = (event) => {
+    console.log('Audio current time:', event.target.currentTime);
+    setCurrentTime(event.target.currentTime);
+  };
 
   return (
     <>
@@ -444,11 +463,20 @@ const Audios = ({ onSearch }) => {
                             	</button>
                           	</div> */}
                         	</div>
-                        	<audio className="audio-progress-new" controls key={item?.id+index}>
+                          <AudioPlayer className="audio-progress-new"
+    autoPlay={false}
+    src={item?.file_url}
+    onPlay={e => console.log("onPlay")}
+    onSeeking={handleSeek}
+    onCanPlay={handleCanPlay}
+    onTimeUpdate={handleProgress}
+    // other props here
+  />
+                        	{/* <audio className="audio-progress-new" controls key={item?.id+index}>
                           	<source src={item?.file_url} type="audio/ogg"/>
                           	<source src={item?.file_url} type="audio/mpeg"/>
 
-                        	</audio>
+                        	</audio> */}
                       	</div>
                       	<div className="p-last-new">
                         	<p className="publish-new">
