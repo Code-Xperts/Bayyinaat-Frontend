@@ -58,7 +58,7 @@ const Videos = ({ onSearch }) => {
           lang: currentLanguage?.code,
         });
         if (videoResp.status === 200 || videoResp.status === 201) {
-          console.log("audi res", videoResp.data.data);
+          // console.log("audi res", videoResp.data.data);
           setVideoData(videoResp.data.data);
           // dispatch(setCompanyInfo(resp?.data?.data));
         }
@@ -69,51 +69,43 @@ const Videos = ({ onSearch }) => {
 
     FetchCategoriesInfo();
 
-    if(data){
-      const FetchProducts = async () => {
-        if(slug2){
-            try {
-                const audioResp = await httpRequest.post(`${getProductByBothCategory}`, {
-                  category_id: data[0]?.id,
-                  lang: currentLanguage ? currentLanguage.code : "",
-                  sub_category_id: data[0]?.sub_category_id
-                });
-                if (audioResp.status === 200 || audioResp.status === 201) {
-                  console.log("audi pro", audioResp.data.data);
-                  setAllProducts(audioResp.data.data);
-                }
-              } catch (err) {
-                console.log(err.message);
+    if (data) {
+      const fetchProducts = async () => {
+        try {
+          let videoResp;
+          if (slug2) {
+            videoResp = await httpRequest.post(
+              `${getProductByBothCategory}`,
+              {
+                category_id: data[0]?.category_id ? data[0]?.category_id : -1,
+                lang: currentLanguage ? currentLanguage.code : "",
+                sub_category_id: data[0]?.sub_category_id ? data[0]?.sub_category_id : -1
               }
+            );
+          } else {
+            videoResp = await httpRequest.post(`${getProductById}`, {
+              category_id:  data.length > 0 ? data[0].category_id : -1,
+              lang: currentLanguage ? currentLanguage.code : "",
+            });
+          }
 
-        }else{
-            try {
-                const audioResp = await httpRequest.post(`${getProductById}`, {
-                  category_id: data[0].category_id,
-                  lang: currentLanguage ? currentLanguage.code : "",
-                });
-                if (audioResp.status === 200 || audioResp.status === 201) {
-                  console.log("audi pro", audioResp.data.data);
-                  setAllProducts(audioResp.data.data);
-                }
-              } catch (err) {
-                console.log(err.message);
-              }
+          if (videoResp.status === 200 || videoResp.status === 201) {
+            setAllProducts(videoResp.data.data);
+          }
+        } catch (err) {
+          console.log(err.message);
         }
-     
-    };
-
-    FetchProducts();
+      };
+      fetchProducts();
     }
-    
-  }, [currentLanguage,id,slug2]);
+  }, [currentLanguage, id, slug2, data]);
 
   const toggleDropdown = (section) => {
     setIsOpen((prevIsOpen) => (prevIsOpen === section ? null : section));
   };
 
   const toggleModal = (link = "") => {
-    console.log('link',link)
+    // console.log('link',link)
     if (link.includes("youtube.com")) {
       // Convert YouTube URL to embed URL
       const url = new URL(link);
@@ -149,7 +141,7 @@ const Videos = ({ onSearch }) => {
             sub_category_id: id2
           });
       if (res.status === 200 || res.status === 201) {
-        console.log("audi pro", res.data.data);
+        // console.log("audi pro", res.data.data);
         
         navigate(`/videos/${name}/${name2}`, { state: { data: res.data.data } });
       }
@@ -168,6 +160,31 @@ const Videos = ({ onSearch }) => {
  
    // Change page
    const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+   const handleOptionSelect = (value) =>{
+    console.log("clicked", value)
+    let sortedProducts
+    switch (value) {
+      case 'title-asc':
+        sortedProducts= [...allProducts].sort((a, b) => a.title.localeCompare(b.title));
+        break;
+      case 'title-desc':
+        sortedProducts =[...allProducts].sort((a, b) => b.title.localeCompare(a.title));
+        break;
+      case 'date-asc':
+        sortedProducts =[...allProducts].sort((a, b) => new Date(a.date) - new Date(b.date));
+        break;
+      case 'date-desc':
+        sortedProducts =[...allProducts].sort((a, b) => new Date(b.date) - new Date(a.date));
+        break;
+      default:
+        sortedProducts= [...allProducts];
+    }
+    console.log('sortedProducts', sortedProducts)
+
+    setAllProducts(sortedProducts);
+    
+  }
 
   return (
     <>
@@ -247,6 +264,7 @@ const Videos = ({ onSearch }) => {
                       aria-label="Listing order"
                       tabIndex="-1"
                       aria-hidden="true"
+                      onChange={(e)=>handleOptionSelect(e.target.value)}
                     >
                       <option value="title-asc">{t("atoztitle")}</option>
                       <option value="title-desc">{t("ztoatitle")}</option>

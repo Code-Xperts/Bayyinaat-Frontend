@@ -40,7 +40,7 @@ const Header = () => {
         lang: currentLanguage ? currentLanguage.code : "",
       });
       if (res.status === 200 || res.status === 201) {
-        console.log("audi pro", res.data.data);
+        // console.log("audi pro", res.data.data);
         
         navigate(`/${route}/${name}`, { state: { data: res.data.data } });
       }
@@ -54,7 +54,7 @@ const Header = () => {
       try {
         const audioResp = await httpRequest.post(`${Categories}`,{slug:'Audio',lang:currentLanguage?currentLanguage.code:''});
         if (audioResp.status === 200 || audioResp.status === 201) {
-          console.log('audi res',audioResp.data.data)
+          // console.log('audi res',audioResp.data.data)
           setAudioData(audioResp.data.data)
           // dispatch(setCompanyInfo(resp?.data?.data));
         }

@@ -16,7 +16,7 @@ const AboutUs = () => {
       try {
         const servicesResp = await httpRequest.get(`${getServices}/${currentLanguage.code}`);
         if (servicesResp.status === 200 || servicesResp.status === 201) {
-          console.log('ser res',servicesResp.data.data)
+          // console.log('ser res',servicesResp.data.data)
           setServices(servicesResp.data.data)
         }
        

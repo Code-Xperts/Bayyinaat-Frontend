@@ -22,7 +22,7 @@ const App = () => {
   const currentLanguage = useSelector((state) => state.languageSlice.currentLanguage);
 
   useEffect(() => {
-    console.log('Language changed:', currentLanguage);
+    // console.log('Language changed:', currentLanguage);
     // Perform any side effects or dispatch actions needed here
   }, [currentLanguage]);
   return (

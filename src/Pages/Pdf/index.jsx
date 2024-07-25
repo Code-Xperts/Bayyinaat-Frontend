@@ -43,7 +43,7 @@ const PDF = ({ onSearch }) => {
           lang: currentLanguage?.code,
         });
         if (videoResp.status === 200 || videoResp.status === 201) {
-          console.log("audi res", videoResp.data.data);
+          // console.log("audi res", videoResp.data.data);
           setPdfData(videoResp.data.data);
           // dispatch(setCompanyInfo(resp?.data?.data));
         }
@@ -58,12 +58,12 @@ const PDF = ({ onSearch }) => {
         if(slug2){
             try {
                 const pdfResp = await httpRequest.post(`${getProductByBothCategory}`, {
-                  category_id: data[0]?.id,
+                  category_id: data[0]?.id ? data[0]?.id : -1,
                   lang: currentLanguage ? currentLanguage.code : "",
-                  sub_category_id: data[0]?.sub_category_id
+                  sub_category_id: data[0]?.sub_category_id ? data[0]?.sub_category_id : -1
                 });
                 if (pdfResp.status === 200 || pdfResp.status === 201) {
-                  console.log("audi pro", pdfResp.data.data);
+                  // console.log("audi pro", pdfResp.data.data);
                   setAllProducts(pdfResp.data.data);
                 }
               } catch (err) {
@@ -73,11 +73,11 @@ const PDF = ({ onSearch }) => {
         }else{
             try {
                 const pdfResp = await httpRequest.post(`${getProductById}`, {
-                  category_id: data[0].category_id,
+                  category_id:  data.length > 0 ? data[0].category_id : -1,
                   lang: currentLanguage ? currentLanguage.code : "",
                 });
                 if (pdfResp.status === 200 || pdfResp.status === 201) {
-                  console.log("pdfResp pro", pdfResp.data.data);
+                  // console.log("pdfResp pro", pdfResp.data.data);
                   setAllProducts(pdfResp.data.data);
                 }
               } catch (err) {
@@ -90,7 +90,7 @@ const PDF = ({ onSearch }) => {
     FetchProducts();
     }
   
-  }, [currentLanguage,id,slug2]);
+  }, [currentLanguage,id,slug2,data]);
 
   const [isOpen, setIsOpen] = useState(0);
 
@@ -106,9 +106,9 @@ const PDF = ({ onSearch }) => {
             sub_category_id: id2
           });
       if (res.status === 200 || res.status === 201) {
-        console.log("audi pro", res.data.data);
+        // console.log("audi pro", res.data.data);
         
-        navigate(`/videos/${name}/${name2}`, { state: { data: res.data.data } });
+        navigate(`/pdf/${name}/${name2}`, { state: { data: res.data.data } });
       }
     } catch (err) {
       console.log(err.message);
@@ -118,7 +118,7 @@ const PDF = ({ onSearch }) => {
   const handleViewPdf = (pdfSrc)=>{
     console.log('sssssssrrrrrrrcccccc',pdfSrc)
     if(pdfSrc){
-      localStorage.setItem('pdfSrc', pdfSrc?.audio); // Save to local storage
+      localStorage.setItem('pdfSrc', pdfSrc?.file_url); // Save to local storage
       navigate(`/view-pdf`, { state: { data: pdfSrc?.audio } });
 
     }
@@ -135,6 +135,32 @@ const PDF = ({ onSearch }) => {
 
   // Change page
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+
+  const handleOptionSelect = (value) =>{
+    console.log("clicked", value)
+    let sortedProducts
+    switch (value) {
+      case 'title-asc':
+        sortedProducts= [...allProducts].sort((a, b) => a.title.localeCompare(b.title));
+        break;
+      case 'title-desc':
+        sortedProducts =[...allProducts].sort((a, b) => b.title.localeCompare(a.title));
+        break;
+      case 'date-asc':
+        sortedProducts =[...allProducts].sort((a, b) => new Date(a.date) - new Date(b.date));
+        break;
+      case 'date-desc':
+        sortedProducts =[...allProducts].sort((a, b) => new Date(b.date) - new Date(a.date));
+        break;
+      default:
+        sortedProducts= [...allProducts];
+    }
+    console.log('sortedProducts', sortedProducts)
+
+    setAllProducts(sortedProducts);
+    
+  }
 
   return (
     <>
@@ -215,6 +241,7 @@ const PDF = ({ onSearch }) => {
                       aria-label="Listing order"
                       tabIndex="-1"
                       aria-hidden="true"
+                      onChange={(e)=>handleOptionSelect(e.target.value)}
                     >
                       <option value="title-asc">{t("atoztitle")}</option>
                       <option value="title-desc">{t("ztoatitle")}</option>

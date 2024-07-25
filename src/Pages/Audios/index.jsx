@@ -23,70 +23,27 @@ import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 
 const Audios = ({ onSearch }) => {
   const { t } = useTranslation();
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const audioRef = useRef(null);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [currentTime, setCurrentTime] = useState(0);
-  const [duration, setDuration] = useState(0);
   const [audioData, setAudioData] = useState([]);
   const [allProducts, setAllProducts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [productsPerPage] = useState(5);
+  const [currentPlayingIndex, setCurrentPlayingIndex] = useState(null);
+  const [audioRefs, setAudioRefs] = useState([]);
+  const [currentTime, setCurrentTime] = useState({});
+  const [duration, setDuration] = useState({});
+  const [isPlaying, setIsPlaying] = useState({});
+  // const [sortedProducts, setSortedProducts] = useState([])?
 
   const navigate = useNavigate();
   const { id, slug2, slug2_id } = useParams();
   const location = useLocation();
   const data = location.state?.data;
-  console.log("dtaa", data);
-
-  const audioUrl =
-    "https://taqwa.nauthemes.net/wp-content/uploads/2021/02/surah-fateh.mp3";
-
-  const handlePlayPause = () => {
-    if (audioRef.current.paused) {
-      audioRef.current.play();
-      setIsPlaying(true);
-    } else {
-      audioRef.current.pause();
-      setIsPlaying(false);
-    }
-  };
-
-  const handleSeekBackward = () => {
-    audioRef.current.currentTime -= 10; // Adjust the seek duration as needed
-  };
-
-  const handleSeekForward = () => {
-    audioRef.current.currentTime += 10; // Adjust the seek duration as needed
-  };
-
-  const handleStop = () => {
-    audioRef.current.pause();
-    audioRef.current.currentTime = 0;
-    setIsPlaying(false);
-  };
-
-  const handleSeek = (e) => {
-    const newTime = (e.target.value / 100) * duration;
-    audioRef.current.currentTime = newTime;
-    setCurrentTime(newTime);
-  };
-
-  const handleTimeUpdate = () => {
-    setCurrentTime(audioRef.current.currentTime);
-  };
-
-  const handleLoadedData = () => {
-    setDuration(audioRef.current.duration);
-  };
 
   const currentLanguage = useSelector(
     (state) => state.languageSlice.currentlanguage
   );
 
   useEffect(() => {
-    console.log("data:", data);
-
     const fetchCategoriesInfo = async () => {
       try {
         const audioResp = await httpRequest.post(`${getAllCategories}`, {
@@ -94,7 +51,6 @@ const Audios = ({ onSearch }) => {
           lang: currentLanguage?.code,
         });
         if (audioResp.status === 200 || audioResp.status === 201) {
-          console.log("audi res", audioResp.data.data);
           setAudioData(audioResp.data.data);
         }
       } catch (err) {
@@ -105,55 +61,52 @@ const Audios = ({ onSearch }) => {
     fetchCategoriesInfo();
 
     if (data) {
-      console.log("first", data.category_id);
       const fetchProducts = async () => {
-        if (slug2) {
-          try {
-            const audioResp = await httpRequest.post(
-              `${getProductByBothCategory}`,
-              {
-                category_id: data[0]?.category_id,
-                lang: currentLanguage ? currentLanguage.code : "",
-                sub_category_id: data[0]?.sub_category_id,
-              }
-            );
-            if (audioResp.status === 200 || audioResp.status === 201) {
-              console.log("audi pro", audioResp.data.data);
-              setAllProducts(audioResp.data.data);
-            }
-          } catch (err) {
-            console.log(err.message);
-          }
-        } else {
-          try {
-            const audioResp = await httpRequest.post(`${getProductById}`, {
-              category_id: data[0].category_id,
+        try {
+          let audioResp;
+          if (slug2) {
+            audioResp = await httpRequest.post(`${getProductByBothCategory}`, {
+              category_id: data[0]?.category_id ? data[0]?.category_id : -1,
+              lang: currentLanguage ? currentLanguage.code : "",
+              sub_category_id: data[0]?.sub_category_id,
+            });
+          } else {
+            audioResp = await httpRequest.post(`${getProductById}`, {
+              category_id:  data.length > 0 ? data[0].category_id : -1,
               lang: currentLanguage ? currentLanguage.code : "",
             });
-            if (audioResp.status === 200 || audioResp.status === 201) {
-              console.log("audi pro", audioResp.data.data);
-              setAllProducts(audioResp.data.data);
-            }
-          } catch (err) {
-            console.log(err.message);
           }
+
+          if (audioResp.status === 200 || audioResp.status === 201) {
+            setAllProducts(audioResp.data.data);
+            // setAudioRefs(audioResp.data.data.map(() => React.createRef()));
+            // setCurrentTime(
+            //   audioResp.data.data.reduce(
+            //     (acc, _, idx) => ({ ...acc, [idx]: 0 }),
+            //     {}
+            //   )
+            // );
+            // setDuration(
+            //   audioResp.data.data.reduce(
+            //     (acc, _, idx) => ({ ...acc, [idx]: 0 }),
+            //     {}
+            //   )
+            // );
+            // setIsPlaying(
+            //   audioResp.data.data.reduce(
+            //     (acc, _, idx) => ({ ...acc, [idx]: false }),
+            //     {}
+            //   )
+            // );
+          }
+        } catch (err) {
+          console.log(err.message);
         }
       };
       fetchProducts();
     }
-  }, [currentLanguage, id, slug2, data]);
+  }, [currentLanguage, id, slug2, data, ]);
 
-  useEffect(() => {
-    const audioElement = audioRef.current;
-
-    audioElement?.addEventListener("timeupdate", handleTimeUpdate);
-    audioElement?.addEventListener("loadeddata", handleLoadedData);
-
-    return () => {
-      audioElement?.removeEventListener("timeupdate", handleTimeUpdate);
-      audioElement?.removeEventListener("loadeddata", handleLoadedData);
-    };
-  }, []);
 
   const formatTime = (timeInSeconds) => {
     const minutes = Math.floor(timeInSeconds / 60);
@@ -185,14 +138,102 @@ const Audios = ({ onSearch }) => {
         sub_category_id: id2,
       });
       if (res.status === 200 || res.status === 201) {
-        console.log("audi pro", res.data.data);
-
-        navigate(`/audios/${name}/${name2}`, { state: { data: res.data.data } });
+        navigate(`/audios/${name}/${name2}`, {
+          state: { data: res.data.data },
+        });
       }
     } catch (err) {
       console.log(err.message);
     }
   };
+
+  // const handlePlayPause = (index) => {
+  //   const audioElement = audioRefs[index].current;
+  //   if (audioElement) {
+  //     if (audioElement.paused) {
+  //       audioElement.play();
+  //       setIsPlaying((prev) => ({ ...prev, [index]: true }));
+  //       setCurrentPlayingIndex(index);
+  //     } else {
+  //       audioElement.pause();
+  //       setIsPlaying((prev) => ({ ...prev, [index]: false }));
+  //       setCurrentPlayingIndex(null);
+  //     }
+  //   }
+  // };
+
+  // const handleSeekBackward = (index) => {
+  //   const audioElement = audioRefs[index].current;
+  //   if (audioElement) audioElement.currentTime -= 10; // Adjust the seek duration as needed
+  // };
+
+  // const handleSeekForward = (index) => {
+  //   const audioElement = audioRefs[index].current;
+  //   if (audioElement) audioElement.currentTime += 10; // Adjust the seek duration as needed
+  // };
+
+  // const handleStop = (index) => {
+  //   const audioElement = audioRefs[index].current;
+  //   if (audioElement) {
+  //     audioElement.pause();
+  //     audioElement.currentTime = 0;
+  //     setIsPlaying((prev) => ({ ...prev, [index]: false }));
+  //     if (currentPlayingIndex === index) {
+  //       setCurrentPlayingIndex(null);
+  //     }
+  //   }
+  // };
+
+  // const handleSeek = (e, index) => {
+  //   const newTime = (e.target.value / 100) * duration[index];
+  //   const audioElement = audioRefs[index].current;
+  //   if (audioElement) {
+  //     audioElement.currentTime = newTime;
+  //     setCurrentTime((prev) => ({ ...prev, [index]: newTime }));
+  //   }
+  // };
+
+  // const handleTimeUpdate = (index) => {
+  //   const audioElement = audioRefs[index].current;
+  //   if (audioElement) {
+  //     setCurrentTime((prev) => ({
+  //       ...prev,
+  //       [index]: audioElement.currentTime,
+  //     }));
+  //   }
+  // };
+
+  // const handleLoadedData = (index) => {
+  //   const audioElement = audioRefs[index].current;
+  //   if (audioElement) {
+  //     setDuration((prev) => ({ ...prev, [index]: audioElement.duration }));
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   audioRefs.forEach((ref, index) => {
+  //     const audioElement = ref.current;
+  //     if (audioElement) {
+  //       audioElement.addEventListener("timeupdate", () =>
+  //         handleTimeUpdate(index)
+  //       );
+  //       audioElement.addEventListener("loadeddata", () =>
+  //         handleLoadedData(index)
+  //       );
+  //     }
+
+  //     return () => {
+  //       if (audioElement) {
+  //         audioElement.removeEventListener("timeupdate", () =>
+  //           handleTimeUpdate(index)
+  //         );
+  //         audioElement.removeEventListener("loadeddata", () =>
+  //           handleLoadedData(index)
+  //         );
+  //       }
+  //     };
+  //   });
+  // }, [audioRefs]);
 
   // Get current products
   const indexOfLastProduct = currentPage * productsPerPage;
@@ -204,6 +245,32 @@ const Audios = ({ onSearch }) => {
 
   // Change page
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+
+  const handleOptionSelect = (value) =>{
+    console.log("clicked", value)
+    let sortedProducts
+    switch (value) {
+      case 'title-asc':
+        sortedProducts= [...allProducts].sort((a, b) => a.title.localeCompare(b.title));
+        break;
+      case 'title-desc':
+        sortedProducts =[...allProducts].sort((a, b) => b.title.localeCompare(a.title));
+        break;
+      case 'date-asc':
+        sortedProducts =[...allProducts].sort((a, b) => new Date(a.date) - new Date(b.date));
+        break;
+      case 'date-desc':
+        sortedProducts =[...allProducts].sort((a, b) => new Date(b.date) - new Date(a.date));
+        break;
+      default:
+        sortedProducts= [...allProducts];
+    }
+    console.log('sortedProducts', sortedProducts)
+
+    setAllProducts(sortedProducts);
+    
+  }
 
   return (
     <>
@@ -236,7 +303,7 @@ const Audios = ({ onSearch }) => {
                   <li key={index}>
                     <span
                       className={`drop-down-button ${
-                        isOpen == index ? "active" : "inactive"
+                        isOpen === index ? "active" : "inactive"
                       }`}
                       onClick={() => toggleDropdown(index)}
                     ></span>
@@ -249,10 +316,10 @@ const Audios = ({ onSearch }) => {
                       </a>
                       {t(item.name)}
                     </a>
-                    {isOpen == index && (
+                    {isOpen === index && (
                       <ul
                         className={`col-cont-main-dropdown ${
-                          isOpen == index ? "active" : ""
+                          isOpen === index ? "active" : ""
                         }`}
                       >
                         {item?.sub_categories?.map((i, ind) => (
@@ -287,14 +354,14 @@ const Audios = ({ onSearch }) => {
                         : indexOfLastProduct
                     } of ${allProducts.length}`}
                   </div>
-                  <form className="rtcl-ordering" method="get">
+                  <form className="rtcl-ordering" >
                     <select
                       className="isko"
                       name="orderby"
                       aria-label="Listing order"
                       tabIndex="-1"
                       aria-hidden="true"
-                    >
+                      onChange={(e)=>handleOptionSelect(e.target.value)}                    >
                       <option value="title-asc">{t("atoztitle")}</option>
                       <option value="title-desc">{t("ztoatitle")}</option>
                       <option value="date-desc" selected="selected">
@@ -307,101 +374,115 @@ const Audios = ({ onSearch }) => {
                   </form>
                 </div>
               </div>
-              {currentProducts.map((item, index) => (
-                <div
-                  style={{ marginTop: "15px" }}
-                  key={index}
-                  className="audio-player audio-new"
-                >
-                  <div className="major-picture major-picture-new">
-                    <div className="image-div image-div-new">
-                      <img
-                        className="image-border-new"
-                        src={item?.image}
-                        alt={item?.title}
-                      />
-                      <p className="border-new-p">{item?.title} </p>
-                    </div>
-                    <div className="major-content-new">
-                      <div className="audio-players-new">
-                        <div className="audio-controls-new">
-                          <div className="audio-progress-new">
-                            <input
-                              type="range"
-                              min="0"
-                              max="100"
-                              value={(currentTime / duration) * 100 || 0}
-                              onChange={handleSeek}
-                            />
-                            <div className="audio-time-new">
-                              <div className="">{formatTime(currentTime)}</div>
-                              <div className="">{formatTime(duration)}</div>
-                            </div>
-                          </div>
-                          <div className="audio-buttons audio-buttons-new">
-                            <button
-                              className="clss cls-new"
-                              onClick={handleSeekBackward}
-                            >
-                              <FontAwesomeIcon icon={faArrowRotateLeft} />
-                            </button>
-                            <button
-                              className="cls cls-new"
-                              onClick={handlePlayPause}
-                            >
-                              {isPlaying ? (
-                                <FontAwesomeIcon icon={faPause} />
-                              ) : (
-                                <FontAwesomeIcon icon={faPlay} />
-                              )}
-                            </button>
-                            <button
-                              className="clss cls-new"
-                              onClick={handleSeekForward}
-                            >
-                              <FontAwesomeIcon icon={faArrowRotateRight} />
-                            </button>
-                            <button
-                              className="cls cls-new"
-                              onClick={handleStop}
-                            >
-                              <FontAwesomeIcon icon={faStop} />
-                            </button>
-                          </div>
-                        </div>
-                        <audio ref={audioRef} src={item?.audio}></audio>
-                      </div>
-                      <div className="p-last-new">
-                        <p className="publish-new">
-                          {" "}
-                          <a className="qw colo">
-                            <FontAwesomeIcon icon={faCalendarDays} />
-                          </a>
-                          {t("date")}:&nbsp;{item?.date}
-                        </p>
-                        <button className="download-button download-button-new">
-                          {t("download")}
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="customs-tags">
-                    {item?.tags?.map((item, index) => (
-                      <div key={index} className="custom-tag">
-                        <p className="tags">{item}</p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              ))}
-              <div style={{margin:'40px'}} className="pagination">
+              {currentProducts.map((item, index) => {
+                return (
+                	<div
+                  	style={{ marginTop: "15px" }}
+                  	key={item?.id+index}
+                  	className="audio-player audio-new"
+                	>
+                  	<div className="major-picture major-picture-new">
+                    	<div className="image-div image-div-new">
+                      	<img
+                        	className="image-border-new"
+                        	src={item?.image}
+                        	alt={item?.title}
+                      	/>
+                      	<p className="border-new-p">{item?.title} </p>
+                    	</div>
+                    	<div className="major-content-new">
+                      	<div className="audio-players-new">
+                        	<div className="audio-controls-new">
+                          	{/* <div className="audio-progress-new">
+                            	<input
+                              	type="range"
+                              	min="0"
+                              	max="100"
+                              	value={
+                                	(currentTime[index] / duration[index]) * 100 ||
+                                	0
+                              	}
+                              	onChange={(e) => handleSeek(e, index)}
+                            	/>
+                            	<div className="audio-time-new">
+                              	<div className="">
+                                	{formatTime(currentTime[index])}
+                              	</div>
+                              	<div className="">
+                                	{formatTime(duration[index])}
+                              	</div>
+                            	</div>
+                          	</div> */}
+                          	{/* <div className="audio-buttons audio-buttons-new">
+                            	<button
+                              	className="clss cls-new"
+                              	onClick={() => handleSeekBackward(index)}
+                            	>
+                              	<FontAwesomeIcon icon={faArrowRotateLeft} />
+                            	</button>
+                            	<button
+                              	className="cls cls-new"
+                              	onClick={() => handlePlayPause(index)}
+                            	>
+                              	{isPlaying[index] ? (
+                                	<FontAwesomeIcon icon={faPause} />
+                              	) : (
+                                	<FontAwesomeIcon icon={faPlay} />
+                              	)}
+                            	</button>
+                            	<button
+                              	className="clss cls-new"
+                              	onClick={() => handleSeekForward(index)}
+                            	>
+                              	<FontAwesomeIcon icon={faArrowRotateRight} />
+                            	</button>
+                            	<button
+                              	className="cls cls-new"
+                              	onClick={() => handleStop(index)}
+                            	>
+                              	<FontAwesomeIcon icon={faStop} />
+                            	</button>
+                          	</div> */}
+                        	</div>
+                        	<audio className="audio-progress-new" controls key={item?.id+index}>
+                          	<source src={item?.file_url} type="audio/ogg"/>
+                          	<source src={item?.file_url} type="audio/mpeg"/>
+
+                        	</audio>
+                      	</div>
+                      	<div className="p-last-new">
+                        	<p className="publish-new">
+                          	{" "}
+                          	<a className="qw colo">
+                            	<FontAwesomeIcon icon={faCalendarDays} />
+                          	</a>
+                          	{t("date")}:&nbsp;{item?.date}
+                        	</p>
+                        	<button className="download-button download-button-new">
+                          	{t("download")}
+                        	</button>
+                      	</div>
+                    	</div>
+                  	</div>
+                  	<div className="customs-tags">
+                    	{item?.tags?.map((tag, index) => (
+                      	<div key={index} className="custom-tag">
+                        	<p className="tags">{tag}</p>
+                      	</div>
+                    	))}
+                  	</div>
+                	</div>
+              )}
+              )}
+              <div style={{ margin: "40px" }} className="pagination">
                 <button
                   onClick={() => paginate(currentPage - 1)}
                   disabled={currentPage === 1}
                 >
                   {t("previous")}
                 </button>
-                <button style={{marginLeft:'600px'}}
+                <button
+                  style={{ marginLeft: "600px" }}
                   onClick={() => paginate(currentPage + 1)}
                   disabled={indexOfLastProduct >= allProducts.length}
                 >

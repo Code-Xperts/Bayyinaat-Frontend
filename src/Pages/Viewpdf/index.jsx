@@ -8,7 +8,7 @@ const ViewPdf = ({ onSearch }) => {
   const [query, setQuery] = useState("");
   const location = useLocation();
   const pdfSrc = location?.state?.data;
-  console.log('pdfSrc:', location);
+  // console.log('pdfSrc:', location);
 
   const [pdf, setPdf] = useState(''); 
 

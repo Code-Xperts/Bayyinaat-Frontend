@@ -121,7 +121,7 @@ const Queries = ({ onSearch }) => {
       try{
         const response = await httpRequest.get(`${getAllQuestions}/${currentLanguage?.code}`)
         if (response.status === 200 || response.status === 201) {
-          console.log("quries res", response.data.data);
+          // console.log("quries res", response.data.data);
           setQueriesData(response.data.data);
           // dispatch(setCompanyInfo(resp?.data?.data));
         }
