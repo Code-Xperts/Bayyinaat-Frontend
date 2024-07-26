@@ -158,7 +158,6 @@ const Audios = () => {
 
 
   const handleOptionSelect = (value) =>{
-    console.log("clicked", value)
     let sortedProducts
     switch (value) {
       case 'title-asc':
@@ -176,7 +175,7 @@ const Audios = () => {
       default:
         sortedProducts= [...currentProducts];
     }
-    console.log('sortedProducts', sortedProducts)
+    // console.log('sortedProducts', sortedProducts)
 
     setCurrentProducts(sortedProducts);
     

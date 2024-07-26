@@ -16,6 +16,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { changelanguage } from '../../lib/Redux/slices/languageSlice';
 import { getNamazTimings } from "../../utils/get-namaz-timings";
 import { getCurrentTime } from "../../utils/get-time";
+import { getSettings } from "../../constants/apiEndPoints";
+import httpRequest from "../../axios/index.js";
+
 
 const LanguageArr = [
   {
@@ -36,6 +39,7 @@ const LanguageArr = [
 ];
 
 const TopHeader = () => {
+  const [settings,setSettings] = useState({})
   const dispatch = useDispatch();
   const currentLanguage = useSelector((state) => state.languageSlice.currentlanguage);
   // console.log('s,s', currentLanguage)
@@ -76,10 +80,24 @@ const TopHeader = () => {
     const fetchData = async () => {
       const namazTime = await getNamazTimings();
       setNamazTimings(namazTime);
-      console.log('namazTime', namazTime?.timings?.Fajr);
     };
   
     fetchData();
+
+    const FetchSettings = async () => {
+      try {
+        const settingsResp = await httpRequest.get(`${getSettings}`);
+        if (settingsResp.status === 200 || settingsResp.status === 201) {
+          // console.log('settingsr res',settingsResp.data.data)
+          setSettings(settingsResp.data.data)
+        }
+       
+      } catch (err) {
+        console.log(err.message);
+      }
+    };
+
+    FetchSettings();
   
     // Event listener for outside clicks
     const handleOutsideClick = (event) => {
@@ -98,7 +116,7 @@ const TopHeader = () => {
     return () => {
       document.removeEventListener("mousedown", handleOutsideClick);
     };
-  }, []);
+  }, [currentLanguage]);
 
   const toggleNamazTimeDropdown = () => {
     setIsNamazTimeDropdownOpen(!isNamazTimeDropdownOpen);
@@ -203,30 +221,30 @@ const TopHeader = () => {
         </div>
         <p className="follow">{t("followus")}:</p>
         <div className="social-links">
-          <Link
-            to={socialLinks.twitter}
+          <a
+            href={settings?.twitter_link}
             target="_blank"
             rel="noopener noreferrer"
             className="social-link"
           >
             <FontAwesomeIcon icon={faTwitter} />
-          </Link>
-          <Link
-            to={socialLinks.facebook}
+          </a>
+          <a
+            href={settings?.facebook_link}
             target="_blank"
             rel="noopener noreferrer"
             className="social-link"
           >
             <FontAwesomeIcon icon={faFacebook} />
-          </Link>
-          <Link
-            to={socialLinks.youtube}
+          </a>
+          <a
+            href={settings?.youtube_link}
             target="_blank"
             rel="noopener noreferrer"
             className="social-link"
           >
             <FontAwesomeIcon icon={faYoutube} />
-          </Link>
+          </a>
           <div
             className="language_switcher"
             onClick={toggleLanguageDropdown}

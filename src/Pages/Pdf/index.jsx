@@ -140,7 +140,7 @@ const PDF = ({ onSearch }) => {
   }
 
   const handleViewPdf = (pdfSrc)=>{
-    console.log('sssssssrrrrrrrcccccc',pdfSrc)
+    // console.log('sssssssrrrrrrrcccccc',pdfSrc)
     if(pdfSrc){
       localStorage.setItem('pdfSrc', pdfSrc?.file_url); // Save to local storage
       navigate(`/view-pdf`, { state: { data: pdfSrc?.audio } });
@@ -162,7 +162,7 @@ const PDF = ({ onSearch }) => {
 
 
   const handleOptionSelect = (value) =>{
-    console.log("clicked", value)
+    // console.log("clicked", value)
     let sortedProducts
     switch (value) {
       case 'title-asc':

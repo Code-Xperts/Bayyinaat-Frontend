@@ -1,4 +1,4 @@
-export const API_BASE_URL = "http://192.168.1.24:9090"
+export const API_BASE_URL = "https://bayyinaatpanel.dedevelopers.org"
   // process.env.REACT_APP_API_BASE_URL || "http://192.168.8.113:9090";
 
 export const users = "/api/users";

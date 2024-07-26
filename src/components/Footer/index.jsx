@@ -125,31 +125,31 @@ const Footer = () => {
               {settings?.address || "123 Main St, City"}
             </p>
             <div className="social-links bb">
-              <Link
-                to={settings?.twitter_link}
+              <a
+                href={settings?.twitter_link}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="social-link bb"
               >
                 <FontAwesomeIcon icon={faTwitter} />
-              </Link>
-              <Link
-                to={settings?.facebook_link}
+              </a>
+              <a
+                href={settings?.facebook_link}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="social-link bb"
               >
                 <FontAwesomeIcon icon={faFacebook} />
-              </Link>
+              </a>
 
-              <Link
-                to={settings?.youtube_link}
+              <a
+                href={settings?.youtube_link}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="social-link bb"
               >
                 <FontAwesomeIcon icon={faYoutube} />
-              </Link>
+              </a>
             </div>
           </div>
         </div>
