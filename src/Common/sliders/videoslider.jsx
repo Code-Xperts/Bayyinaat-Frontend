@@ -69,7 +69,7 @@ const VideoSlider = () => {
         const videoResp = await httpRequest.post(`${getAllProducts}`,{slug:'Video',lang:currentLanguage?currentLanguage.code:''});
         if (videoResp.status === 200 || videoResp.status === 201) {
           // console.log('audi res',audioResp.data.data)
-          setVideoData(videoResp.data.data)
+          setVideoData(videoResp.data.data.data)
         }
        
       } catch (err) {

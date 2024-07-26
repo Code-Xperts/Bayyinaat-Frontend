@@ -6,7 +6,7 @@ import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Footer, Header, TopHeader } from "../../components";
 import { useSelector } from "react-redux";
-import { getAllCategories, getAllProducts, getProductByBothCategory, getProductById } from "../../constants/apiEndPoints";
+import { getAllCategories, getAllProducts, getProductByBothCategory, getProductById, getProductsBySearch } from "../../constants/apiEndPoints";
 import httpRequest from "../../axios/index.js";
 
 const PDF = ({ onSearch }) => {
@@ -18,8 +18,7 @@ const PDF = ({ onSearch }) => {
   const location = useLocation();
   const data = location.state?.data; 
   const {id,slug2, slug2_id} = useParams()
-  const [currentPage, setCurrentPage] = useState(1);
-  const [productsPerPage] = useState(5);
+  const [currentProducts, setCurrentProducts] = useState([]);
 
 
   const [query, setQuery] = useState("");
@@ -28,8 +27,39 @@ const PDF = ({ onSearch }) => {
     setQuery(e.target.value);
   };
 
-  const handleSearch = () => {
-    onSearch(query);
+  const handleSearch = async() => {
+    if (data) {
+        try {
+          let pdfResp;
+          if (slug2) {
+            pdfResp = await httpRequest.post(`${getProductsBySearch}`, {
+              category_id: data[0]?.category_id ? data[0]?.category_id : -1,
+              lang: currentLanguage ? currentLanguage.code : "",
+              sub_category_id: data[0]?.sub_category_id ? data[0]?.sub_category_id : -1,
+              keyword: query
+            });
+          } else {
+            pdfResp = await httpRequest.post(`${getProductsBySearch}`, {
+              category_id:  data.length > 0 ? data[0].category_id : -1,
+              lang: currentLanguage ? currentLanguage.code : "",
+              keyword: query,
+              slug: "Pdf"
+
+            });
+          }
+
+          if (pdfResp.status === 200 || pdfResp.status === 201) {
+            setAllProducts(pdfResp.data.data);
+            setCurrentProducts(pdfResp.data?.data?.data)
+           
+          }
+        } catch (err) {
+          console.log(err.message);
+        }
+      
+    }
+    
+    // onSearch(query);
   };
 
   const currentLanguage = useSelector(
@@ -53,44 +83,38 @@ const PDF = ({ onSearch }) => {
     };
 
     FetchCategoriesInfo();
-    if(data){
-      const FetchProducts = async () => {
-        if(slug2){
-            try {
-                const pdfResp = await httpRequest.post(`${getProductByBothCategory}`, {
-                  category_id: data[0]?.id ? data[0]?.id : -1,
-                  lang: currentLanguage ? currentLanguage.code : "",
-                  sub_category_id: data[0]?.sub_category_id ? data[0]?.sub_category_id : -1
-                });
-                if (pdfResp.status === 200 || pdfResp.status === 201) {
-                  // console.log("audi pro", pdfResp.data.data);
-                  setAllProducts(pdfResp.data.data);
-                }
-              } catch (err) {
-                console.log(err.message);
+    if (data) {
+      const fetchProducts = async () => {
+        try {
+          let pdfResp;
+          if (slug2) {
+            pdfResp = await httpRequest.post(
+              `${getProductByBothCategory}`,
+              {
+                category_id: data[0]?.category_id ? data[0]?.category_id : -1,
+                lang: currentLanguage ? currentLanguage.code : "",
+                sub_category_id: data[0]?.sub_category_id ? data[0]?.sub_category_id : -1
               }
+            );
+          } else {
+            pdfResp = await httpRequest.post(`${getProductById}`, {
+              category_id:  data.length > 0 ? data[0].category_id : -1,
+              lang: currentLanguage ? currentLanguage.code : "",
+            });
+          }
 
-        }else{
-            try {
-                const pdfResp = await httpRequest.post(`${getProductById}`, {
-                  category_id:  data.length > 0 ? data[0].category_id : -1,
-                  lang: currentLanguage ? currentLanguage.code : "",
-                });
-                if (pdfResp.status === 200 || pdfResp.status === 201) {
-                  // console.log("pdfResp pro", pdfResp.data.data);
-                  setAllProducts(pdfResp.data.data);
-                }
-              } catch (err) {
-                console.log(err.message);
-              }
+          if (pdfResp.status === 200 || pdfResp.status === 201) {
+            setCurrentProducts(pdfResp.data.data?.data)
+            setAllProducts(pdfResp.data.data);
+          }
+        } catch (err) {
+          console.log(err.message);
         }
-     
-    };
-
-    FetchProducts();
+      };
+      fetchProducts();
     }
   
-  }, [currentLanguage,id,slug2,data]);
+  }, [currentLanguage,id,slug2,data,query]);
 
   const [isOpen, setIsOpen] = useState(0);
 
@@ -126,15 +150,15 @@ const PDF = ({ onSearch }) => {
   }
 
   // Get current products
-  const indexOfLastProduct = currentPage * productsPerPage;
-  const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-  const currentProducts = allProducts.slice(
-    indexOfFirstProduct,
-    indexOfLastProduct
-  );
+  // const indexOfLastProduct = currentPage * productsPerPage;
+  // const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+  // const currentProducts = allProducts.slice(
+  //   indexOfFirstProduct,
+  //   indexOfLastProduct
+  // );
 
   // Change page
-  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+  // const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
 
   const handleOptionSelect = (value) =>{
@@ -142,24 +166,43 @@ const PDF = ({ onSearch }) => {
     let sortedProducts
     switch (value) {
       case 'title-asc':
-        sortedProducts= [...allProducts].sort((a, b) => a.title.localeCompare(b.title));
+        sortedProducts= [...currentProducts].sort((a, b) => a.title.localeCompare(b.title));
         break;
       case 'title-desc':
-        sortedProducts =[...allProducts].sort((a, b) => b.title.localeCompare(a.title));
+        sortedProducts =[...currentProducts].sort((a, b) => b.title.localeCompare(a.title));
         break;
       case 'date-asc':
-        sortedProducts =[...allProducts].sort((a, b) => new Date(a.date) - new Date(b.date));
+        sortedProducts =[...currentProducts].sort((a, b) => new Date(a.date) - new Date(b.date));
         break;
       case 'date-desc':
-        sortedProducts =[...allProducts].sort((a, b) => new Date(b.date) - new Date(a.date));
+        sortedProducts =[...currentProducts].sort((a, b) => new Date(b.date) - new Date(a.date));
         break;
       default:
-        sortedProducts= [...allProducts];
+        sortedProducts= [...currentProducts];
     }
-    console.log('sortedProducts', sortedProducts)
+    // console.log('sortedProducts', sortedProducts)
 
-    setAllProducts(sortedProducts);
+    setCurrentProducts(sortedProducts);
     
+  }
+
+  const loadMore = async()=>{
+    try {
+      const response  = await httpRequest.post(`${allProducts?.next_page_url}`, {
+        category_id:  data.length > 0 ? data[0].category_id : -1,
+        lang: currentLanguage ? currentLanguage.code : "",
+        slug: "Pdf",
+        keyword: query
+      });
+      
+      if (response.status === 200 || response.status === 201) {
+        setCurrentProducts([...currentProducts, ...response.data.data?.data]);
+        setAllProducts(response?.data?.data)
+        // setCurrentPage(currentPage + 1);
+      }
+    } catch (err) {
+      console.log(err.message);
+    }
   }
 
   return (
@@ -229,11 +272,7 @@ const PDF = ({ onSearch }) => {
             <div className="column-right main-right">
               <div className="mar">
                 <div className="bar">
-                  <div className="texttt">{`Showing ${indexOfFirstProduct + 1}-${
-                      indexOfLastProduct > allProducts.length
-                        ? allProducts.length
-                        : indexOfLastProduct
-                    } of ${allProducts.length}`}</div>
+                  <div className="texttt"> {`Showing ${allProducts?.to} of ${allProducts?.total} results`}</div>
                   <form className="rtcl-ordering" method="get">
                     <select
                       className="isko"
@@ -255,7 +294,8 @@ const PDF = ({ onSearch }) => {
                   </form>
                 </div>
               </div>
-              {currentProducts?.map((item, index) => (
+              {
+              currentProducts.length > 0 ? currentProducts?.map((item, index) => (
                 <div style={{marginTop:'15px'}} className="audio-player">
                   <div className="major-picture">
                     <div className="image-div">
@@ -297,21 +337,17 @@ const PDF = ({ onSearch }) => {
                     ))}
                   </div>
                 </div>
-              ))}
-               <div style={{margin:'40px'}} className="pagination">
+              )): "No data found"}
+                {
+                currentProducts?.length > 0 && allProducts?.next_page_url
+                 && <div  style={{ display:'flex', justifyContent:'center', alignItems:'center', marginTop:'20px' }} className="pagination">
                 <button
-                  onClick={() => paginate(currentPage - 1)}
-                  disabled={currentPage === 1}
+                  onClick={loadMore}
                 >
-                  {t("previous")}
-                </button>
-                <button style={{marginLeft:'600px'}}
-                  onClick={() => paginate(currentPage + 1)}
-                  disabled={indexOfLastProduct >= allProducts.length}
-                >
-                  {t("next")}
+                  {t("loadmore")}
                 </button>
               </div>
+              }
             </div>
           </div>
         </section>

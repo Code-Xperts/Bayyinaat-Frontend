@@ -20,10 +20,11 @@ import {
   getAllProducts,
   getProductByBothCategory,
   getProductById,
+  getProductsBySearch,
 } from "../../constants/apiEndPoints/index.js";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 
-const Videos = ({ onSearch }) => {
+const Videos = () => {
   const { t } = useTranslation();
   const [query, setQuery] = useState("");
   const [isOpen, setIsOpen] = useState(0);
@@ -35,16 +36,47 @@ const Videos = ({ onSearch }) => {
   const data = location.state?.data; 
   const {id,slug2, slug2_id} = useParams()
   const navigate = useNavigate();
-  const [currentPage, setCurrentPage] = useState(1);
-  const [productsPerPage] = useState(5);
+  const [currentProducts, setCurrentProducts] = useState([]);
+  // const [productsPerPage] = useState(5);
 
 
 
   const handleInputChange = (e) => {
     setQuery(e.target.value);
   };
-  const handleSearch = () => {
-    onSearch(query);
+  const handleSearch = async() => {
+    if (data) {
+        try {
+          let videoResp;
+          if (slug2) {
+            videoResp = await httpRequest.post(`${getProductsBySearch}`, {
+              category_id: data[0]?.category_id ? data[0]?.category_id : -1,
+              lang: currentLanguage ? currentLanguage.code : "",
+              sub_category_id: data[0]?.sub_category_id ? data[0]?.sub_category_id : -1,
+              keyword: query
+            });
+          } else {
+            videoResp = await httpRequest.post(`${getProductsBySearch}`, {
+              category_id:  data.length > 0 ? data[0].category_id : -1,
+              lang: currentLanguage ? currentLanguage.code : "",
+              keyword: query,
+              slug: "Video"
+
+            });
+          }
+
+          if (videoResp.status === 200 || videoResp.status === 201) {
+            setAllProducts(videoResp.data.data);
+            setCurrentProducts(videoResp.data?.data?.data)
+           
+          }
+        } catch (err) {
+          console.log(err.message);
+        }
+      
+    }
+    
+    // onSearch(query);
   };
 
   const currentLanguage = useSelector(
@@ -90,6 +122,7 @@ const Videos = ({ onSearch }) => {
           }
 
           if (videoResp.status === 200 || videoResp.status === 201) {
+            setCurrentProducts(videoResp.data.data?.data)
             setAllProducts(videoResp.data.data);
           }
         } catch (err) {
@@ -98,7 +131,7 @@ const Videos = ({ onSearch }) => {
       };
       fetchProducts();
     }
-  }, [currentLanguage, id, slug2, data]);
+  }, [currentLanguage, id, slug2, data, query]);
 
   const toggleDropdown = (section) => {
     setIsOpen((prevIsOpen) => (prevIsOpen === section ? null : section));
@@ -143,7 +176,7 @@ const Videos = ({ onSearch }) => {
       if (res.status === 200 || res.status === 201) {
         // console.log("audi pro", res.data.data);
         
-        navigate(`/videos/${name}/${name2}`, { state: { data: res.data.data } });
+        navigate(`/videos/${name}/${name2}`, { state: { data: res.data.data.data } });
       }
     } catch (err) {
       console.log(err.message);
@@ -151,39 +184,58 @@ const Videos = ({ onSearch }) => {
   }
 
    // Get current products
-   const indexOfLastProduct = currentPage * productsPerPage;
-   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-   const currentProducts = allProducts.slice(
-     indexOfFirstProduct,
-     indexOfLastProduct
-   );
+  //  const indexOfLastProduct = currentPage * productsPerPage;
+  //  const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+  //  const currentProducts = allProducts.slice(
+  //    indexOfFirstProduct,
+  //    indexOfLastProduct
+  //  );
  
    // Change page
-   const paginate = (pageNumber) => setCurrentPage(pageNumber);
+  //  const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
    const handleOptionSelect = (value) =>{
     console.log("clicked", value)
     let sortedProducts
     switch (value) {
       case 'title-asc':
-        sortedProducts= [...allProducts].sort((a, b) => a.title.localeCompare(b.title));
+        sortedProducts= [...currentProducts].sort((a, b) => a.title.localeCompare(b.title));
         break;
       case 'title-desc':
-        sortedProducts =[...allProducts].sort((a, b) => b.title.localeCompare(a.title));
+        sortedProducts =[...currentProducts].sort((a, b) => b.title.localeCompare(a.title));
         break;
       case 'date-asc':
-        sortedProducts =[...allProducts].sort((a, b) => new Date(a.date) - new Date(b.date));
+        sortedProducts =[...currentProducts].sort((a, b) => new Date(a.date) - new Date(b.date));
         break;
       case 'date-desc':
-        sortedProducts =[...allProducts].sort((a, b) => new Date(b.date) - new Date(a.date));
+        sortedProducts =[...currentProducts].sort((a, b) => new Date(b.date) - new Date(a.date));
         break;
       default:
-        sortedProducts= [...allProducts];
+        sortedProducts= [...currentProducts];
     }
-    console.log('sortedProducts', sortedProducts)
+    // console.log('sortedProducts', sortedProducts)
 
-    setAllProducts(sortedProducts);
+    setCurrentProducts(sortedProducts);
     
+  }
+
+  const loadMore = async()=>{
+    try {
+      const response  = await httpRequest.post(`${allProducts?.next_page_url}`, {
+        category_id:  data.length > 0 ? data[0].category_id : -1,
+        lang: currentLanguage ? currentLanguage.code : "",
+        slug: "Video",
+        keyword: query
+      });
+      
+      if (response.status === 200 || response.status === 201) {
+        setCurrentProducts([...currentProducts, ...response.data.data?.data]);
+        setAllProducts(response?.data?.data)
+        // setCurrentPage(currentPage + 1);
+      }
+    } catch (err) {
+      console.log(err.message);
+    }
   }
 
   return (
@@ -252,11 +304,7 @@ const Videos = ({ onSearch }) => {
             <div className="column-right main-right">
               <div className="mar">
                 <div className="bar">
-                  <div className="texttt">{`Showing ${indexOfFirstProduct + 1}-${
-                      indexOfLastProduct > allProducts.length
-                        ? allProducts.length
-                        : indexOfLastProduct
-                    } of ${allProducts.length}`}</div>
+                  <div className="texttt"> {`Showing ${allProducts?.to} of ${allProducts?.total}`}</div>
                   <form className="rtcl-ordering" method="get">
                     <select
                       className="isko"
@@ -278,7 +326,8 @@ const Videos = ({ onSearch }) => {
                   </form>
                 </div>
               </div>
-              {currentProducts?.map((item, index) => (
+              {
+              currentProducts?.length > 0 ? currentProducts?.map((item, index) => (
                 <div  style={{ marginTop: "15px" }} key={index} className="audio-player">
                   <div className="major-picture">
                     <div className="image-div">
@@ -320,21 +369,18 @@ const Videos = ({ onSearch }) => {
                     ))}
                   </div>
                 </div>
-              ))}
-               <div style={{margin:'40px'}} className="pagination">
+              )): "No data found"}
+               {
+                currentProducts?.length > 0 && allProducts?.next_page_url 
+                && <div  style={{ display:'flex', justifyContent:'center', alignItems:'center', marginTop:'20px' }} className="pagination">
                 <button
-                  onClick={() => paginate(currentPage - 1)}
-                  disabled={currentPage === 1}
+                  onClick={loadMore}
                 >
-                  {t("previous")}
-                </button>
-                <button style={{marginLeft:'600px'}}
-                  onClick={() => paginate(currentPage + 1)}
-                  disabled={indexOfLastProduct >= allProducts.length}
-                >
-                  {t("next")}
+                  {t("loadmore")}
                 </button>
               </div>
+              }
+
             </div>
           </div>
         </section>

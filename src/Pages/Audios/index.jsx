@@ -17,24 +17,20 @@ import {
   getAllCategories,
   getProductByBothCategory,
   getProductById,
+  getProductsBySearch,
 } from "../../constants/apiEndPoints";
 import httpRequest from "../../axios/index.js";
 import AudioPlayer from 'react-h5-audio-player';
 import 'react-h5-audio-player/lib/styles.css';
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 
-const Audios = ({ onSearch }) => {
+const Audios = () => {
   const { t } = useTranslation();
   const [audioData, setAudioData] = useState([]);
   const [allProducts, setAllProducts] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [productsPerPage] = useState(5);
-  const [currentPlayingIndex, setCurrentPlayingIndex] = useState(null);
-  const [audioRefs, setAudioRefs] = useState([]);
-  const [currentTime, setCurrentTime] = useState({});
-  const [duration, setDuration] = useState({});
-  const [isPlaying, setIsPlaying] = useState({});
-  // const [sortedProducts, setSortedProducts] = useState([])?
+  const [currentProducts, setCurrentProducts] = useState([]);
+  const [query, setQuery] = useState("");
+
 
   const navigate = useNavigate();
   const { id, slug2, slug2_id } = useParams();
@@ -70,7 +66,7 @@ const Audios = ({ onSearch }) => {
             audioResp = await httpRequest.post(`${getProductByBothCategory}`, {
               category_id: data[0]?.category_id ? data[0]?.category_id : -1,
               lang: currentLanguage ? currentLanguage.code : "",
-              sub_category_id: data[0]?.sub_category_id,
+              sub_category_id: data[0]?.sub_category_id ? data[0]?.sub_category_id : -1
             });
           } else {
             audioResp = await httpRequest.post(`${getProductById}`, {
@@ -81,25 +77,8 @@ const Audios = ({ onSearch }) => {
 
           if (audioResp.status === 200 || audioResp.status === 201) {
             setAllProducts(audioResp.data.data);
-            // setAudioRefs(audioResp.data.data.map(() => React.createRef()));
-            // setCurrentTime(
-            //   audioResp.data.data.reduce(
-            //     (acc, _, idx) => ({ ...acc, [idx]: 0 }),
-            //     {}
-            //   )
-            // );
-            // setDuration(
-            //   audioResp.data.data.reduce(
-            //     (acc, _, idx) => ({ ...acc, [idx]: 0 }),
-            //     {}
-            //   )
-            // );
-            // setIsPlaying(
-            //   audioResp.data.data.reduce(
-            //     (acc, _, idx) => ({ ...acc, [idx]: false }),
-            //     {}
-            //   )
-            // );
+            setCurrentProducts(audioResp.data?.data?.data)
+           
           }
         } catch (err) {
           console.log(err.message);
@@ -107,23 +86,49 @@ const Audios = ({ onSearch }) => {
       };
       fetchProducts();
     }
-  }, [currentLanguage, id, slug2, data, ]);
+  }, [currentLanguage, id, slug2, data,query ]);
 
 
-  const formatTime = (timeInSeconds) => {
-    const minutes = Math.floor(timeInSeconds / 60);
-    const seconds = Math.floor(timeInSeconds % 60);
-    return `${minutes}:${String(seconds).padStart(2, "0")}`;
-  };
+  
 
-  const [query, setQuery] = useState("");
 
   const handleInputChange = (e) => {
     setQuery(e.target.value);
   };
 
-  const handleSearch = () => {
-    onSearch(query);
+  const handleSearch = async() => {
+    if (data) {
+        try {
+          let audioResp;
+          if (slug2) {
+            audioResp = await httpRequest.post(`${getProductsBySearch}`, {
+              category_id: data[0]?.category_id ? data[0]?.category_id : -1,
+              lang: currentLanguage ? currentLanguage.code : "",
+              sub_category_id: data[0]?.sub_category_id ? data[0]?.sub_category_id : -1,
+              keyword: query
+            });
+          } else {
+            audioResp = await httpRequest.post(`${getProductsBySearch}`, {
+              category_id:  data.length > 0 ? data[0].category_id : -1,
+              lang: currentLanguage ? currentLanguage.code : "",
+              keyword: query,
+              slug: "Audio"
+
+            });
+          }
+
+          if (audioResp.status === 200 || audioResp.status === 201) {
+            setAllProducts(audioResp.data.data);
+            setCurrentProducts(audioResp.data?.data?.data)
+           
+          }
+        } catch (err) {
+          console.log(err.message);
+        }
+      
+    }
+    
+    // onSearch(query);
   };
 
   const [isOpen, setIsOpen] = useState(0);
@@ -141,7 +146,7 @@ const Audios = ({ onSearch }) => {
       });
       if (res.status === 200 || res.status === 201) {
         navigate(`/audios/${name}/${name2}`, {
-          state: { data: res.data.data },
+          state: { data: res.data.data?.data },
         });
       }
     } catch (err) {
@@ -149,104 +154,7 @@ const Audios = ({ onSearch }) => {
     }
   };
 
-  // const handlePlayPause = (index) => {
-  //   const audioElement = audioRefs[index].current;
-  //   if (audioElement) {
-  //     if (audioElement.paused) {
-  //       audioElement.play();
-  //       setIsPlaying((prev) => ({ ...prev, [index]: true }));
-  //       setCurrentPlayingIndex(index);
-  //     } else {
-  //       audioElement.pause();
-  //       setIsPlaying((prev) => ({ ...prev, [index]: false }));
-  //       setCurrentPlayingIndex(null);
-  //     }
-  //   }
-  // };
-
-  // const handleSeekBackward = (index) => {
-  //   const audioElement = audioRefs[index].current;
-  //   if (audioElement) audioElement.currentTime -= 10; // Adjust the seek duration as needed
-  // };
-
-  // const handleSeekForward = (index) => {
-  //   const audioElement = audioRefs[index].current;
-  //   if (audioElement) audioElement.currentTime += 10; // Adjust the seek duration as needed
-  // };
-
-  // const handleStop = (index) => {
-  //   const audioElement = audioRefs[index].current;
-  //   if (audioElement) {
-  //     audioElement.pause();
-  //     audioElement.currentTime = 0;
-  //     setIsPlaying((prev) => ({ ...prev, [index]: false }));
-  //     if (currentPlayingIndex === index) {
-  //       setCurrentPlayingIndex(null);
-  //     }
-  //   }
-  // };
-
-  // const handleSeek = (e, index) => {
-  //   const newTime = (e.target.value / 100) * duration[index];
-  //   const audioElement = audioRefs[index].current;
-  //   if (audioElement) {
-  //     audioElement.currentTime = newTime;
-  //     setCurrentTime((prev) => ({ ...prev, [index]: newTime }));
-  //   }
-  // };
-
-  // const handleTimeUpdate = (index) => {
-  //   const audioElement = audioRefs[index].current;
-  //   if (audioElement) {
-  //     setCurrentTime((prev) => ({
-  //       ...prev,
-  //       [index]: audioElement.currentTime,
-  //     }));
-  //   }
-  // };
-
-  // const handleLoadedData = (index) => {
-  //   const audioElement = audioRefs[index].current;
-  //   if (audioElement) {
-  //     setDuration((prev) => ({ ...prev, [index]: audioElement.duration }));
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   audioRefs.forEach((ref, index) => {
-  //     const audioElement = ref.current;
-  //     if (audioElement) {
-  //       audioElement.addEventListener("timeupdate", () =>
-  //         handleTimeUpdate(index)
-  //       );
-  //       audioElement.addEventListener("loadeddata", () =>
-  //         handleLoadedData(index)
-  //       );
-  //     }
-
-  //     return () => {
-  //       if (audioElement) {
-  //         audioElement.removeEventListener("timeupdate", () =>
-  //           handleTimeUpdate(index)
-  //         );
-  //         audioElement.removeEventListener("loadeddata", () =>
-  //           handleLoadedData(index)
-  //         );
-  //       }
-  //     };
-  //   });
-  // }, [audioRefs]);
-
-  // Get current products
-  const indexOfLastProduct = currentPage * productsPerPage;
-  const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-  const currentProducts = allProducts.slice(
-    indexOfFirstProduct,
-    indexOfLastProduct
-  );
-
-  // Change page
-  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+  
 
 
   const handleOptionSelect = (value) =>{
@@ -254,42 +162,81 @@ const Audios = ({ onSearch }) => {
     let sortedProducts
     switch (value) {
       case 'title-asc':
-        sortedProducts= [...allProducts].sort((a, b) => a.title.localeCompare(b.title));
+        sortedProducts= [...currentProducts].sort((a, b) => a.title.localeCompare(b.title));
         break;
       case 'title-desc':
-        sortedProducts =[...allProducts].sort((a, b) => b.title.localeCompare(a.title));
+        sortedProducts =[...currentProducts].sort((a, b) => b.title.localeCompare(a.title));
         break;
       case 'date-asc':
-        sortedProducts =[...allProducts].sort((a, b) => new Date(a.date) - new Date(b.date));
+        sortedProducts =[...currentProducts].sort((a, b) => new Date(a.date) - new Date(b.date));
         break;
       case 'date-desc':
-        sortedProducts =[...allProducts].sort((a, b) => new Date(b.date) - new Date(a.date));
+        sortedProducts =[...currentProducts].sort((a, b) => new Date(b.date) - new Date(a.date));
         break;
       default:
-        sortedProducts= [...allProducts];
+        sortedProducts= [...currentProducts];
     }
     console.log('sortedProducts', sortedProducts)
 
-    setAllProducts(sortedProducts);
+    setCurrentProducts(sortedProducts);
     
   }
-  const [currentAudioIndex, setCurrentAudioIndex] = useState(null);
-  // const [currentTime, setCurrentTime] = useState(0);
-  // const [duration, setDuration] = useState(0);  
-  const handleSeek = (event) => {
-    console.log('Seeked to:', event.target.currentTime);
-    setCurrentTime(event.target.currentTime);
-  };
 
-  const handleCanPlay = (event) => {
-    console.log('Audio duration:', event.target.duration);
-    setDuration(event.target.duration);
-  };
+  async function handleDownload(audioUrl, filename) {
+    try {
+      // Fetch the audio file
+      const response = await fetch(audioUrl);
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+  
+      // Create a Blob from the response
+      const blob = await response.blob();
+  
+      // Create an Object URL from the Blob
+      const url = window.URL.createObjectURL(blob);
+  
+      // Create an anchor element
+      const anchor = document.createElement('a');
+      anchor.href = url;
+      anchor.download = filename;
+  
+      // Append the anchor to the body (required for Firefox)
+      document.body.appendChild(anchor);
+  
+      // Programmatically click the anchor to trigger the download
+      anchor.click();
+  
+      // Remove the anchor from the document
+      document.body.removeChild(anchor);
+  
+      // Release the Object URL
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error('Failed to download file:', error);
+    }
+  }
 
-  const handleProgress = (event) => {
-    console.log('Audio current time:', event.target.currentTime);
-    setCurrentTime(event.target.currentTime);
-  };
+
+  const loadMore = async()=>{
+    try {
+      const response  = await httpRequest.post(`${allProducts?.next_page_url}`, {
+        category_id:  data.length > 0 ? data[0].category_id : -1,
+        lang: currentLanguage ? currentLanguage.code : "",
+        slug: "Audio",
+        keyword: query
+      });
+      
+      if (response.status === 200 || response.status === 201) {
+        setCurrentProducts([...currentProducts, ...response.data.data?.data]);
+        setAllProducts(response?.data?.data)
+        // setCurrentPage(currentPage + 1);
+      }
+    } catch (err) {
+      console.log(err.message);
+    }
+  }
+ 
 
   return (
     <>
@@ -367,11 +314,7 @@ const Audios = ({ onSearch }) => {
               <div className="mar">
                 <div className="bar">
                   <div className="texttt">
-                    {`Showing ${indexOfFirstProduct + 1}-${
-                      indexOfLastProduct > allProducts.length
-                        ? allProducts.length
-                        : indexOfLastProduct
-                    } of ${allProducts.length}`}
+                    {`Showing ${allProducts?.to} of ${allProducts?.total} results`}
                   </div>
                   <form className="rtcl-ordering" >
                     <select
@@ -393,7 +336,8 @@ const Audios = ({ onSearch }) => {
                   </form>
                 </div>
               </div>
-              {currentProducts.map((item, index) => {
+              {
+              currentProducts?.length > 0 ? currentProducts?.map((item, index) => {
                 return (
                 	<div
                   	style={{ marginTop: "15px" }}
@@ -412,71 +356,17 @@ const Audios = ({ onSearch }) => {
                     	<div className="major-content-new">
                       	<div className="audio-players-new">
                         	<div className="audio-controls-new">
-                          	{/* <div className="audio-progress-new">
-                            	<input
-                              	type="range"
-                              	min="0"
-                              	max="100"
-                              	value={
-                                	(currentTime[index] / duration[index]) * 100 ||
-                                	0
-                              	}
-                              	onChange={(e) => handleSeek(e, index)}
-                            	/>
-                            	<div className="audio-time-new">
-                              	<div className="">
-                                	{formatTime(currentTime[index])}
-                              	</div>
-                              	<div className="">
-                                	{formatTime(duration[index])}
-                              	</div>
-                            	</div>
-                          	</div> */}
-                          	{/* <div className="audio-buttons audio-buttons-new">
-                            	<button
-                              	className="clss cls-new"
-                              	onClick={() => handleSeekBackward(index)}
-                            	>
-                              	<FontAwesomeIcon icon={faArrowRotateLeft} />
-                            	</button>
-                            	<button
-                              	className="cls cls-new"
-                              	onClick={() => handlePlayPause(index)}
-                            	>
-                              	{isPlaying[index] ? (
-                                	<FontAwesomeIcon icon={faPause} />
-                              	) : (
-                                	<FontAwesomeIcon icon={faPlay} />
-                              	)}
-                            	</button>
-                            	<button
-                              	className="clss cls-new"
-                              	onClick={() => handleSeekForward(index)}
-                            	>
-                              	<FontAwesomeIcon icon={faArrowRotateRight} />
-                            	</button>
-                            	<button
-                              	className="cls cls-new"
-                              	onClick={() => handleStop(index)}
-                            	>
-                              	<FontAwesomeIcon icon={faStop} />
-                            	</button>
-                          	</div> */}
+                          	
                         	</div>
-                          <AudioPlayer className="audio-progress-new"
-    autoPlay={false}
-    src={item?.file_url}
-    onPlay={e => console.log("onPlay")}
-    onSeeking={handleSeek}
-    onCanPlay={handleCanPlay}
-    onTimeUpdate={handleProgress}
-    // other props here
-  />
-                        	{/* <audio className="audio-progress-new" controls key={item?.id+index}>
-                          	<source src={item?.file_url} type="audio/ogg"/>
-                          	<source src={item?.file_url} type="audio/mpeg"/>
+                         <AudioPlayer
+                         autoPlay={false}
+                         src={item?.file_url}
+                         onPlay={e => console.log("onPlay")}
+                         customAdditionalControls={[]}
+                        //  customVolumeControls={[]}
+                         showJumpControls={true}
 
-                        	</audio> */}
+                         />
                       	</div>
                       	<div className="p-last-new">
                         	<p className="publish-new">
@@ -486,7 +376,7 @@ const Audios = ({ onSearch }) => {
                           	</a>
                           	{t("date")}:&nbsp;{item?.date}
                         	</p>
-                        	<button className="download-button download-button-new">
+                        	<button onClick={() => handleDownload(item?.file_url, item?.title)} className="download-button download-button-new">
                           	{t("download")}
                         	</button>
                       	</div>
@@ -501,22 +391,18 @@ const Audios = ({ onSearch }) => {
                   	</div>
                 	</div>
               )}
-              )}
-              <div style={{ margin: "40px" }} className="pagination">
+              ): "No data found"}
+              {
+                currentProducts?.length > 0 && allProducts?.next_page_url 
+                && <div  style={{ display:'flex', justifyContent:'center', alignItems:'center', marginTop:'20px' }} className="pagination">
                 <button
-                  onClick={() => paginate(currentPage - 1)}
-                  disabled={currentPage === 1}
+                  onClick={loadMore}
                 >
-                  {t("previous")}
-                </button>
-                <button
-                  style={{ marginLeft: "600px" }}
-                  onClick={() => paginate(currentPage + 1)}
-                  disabled={indexOfLastProduct >= allProducts.length}
-                >
-                  {t("next")}
+                  {t("loadmore")}
                 </button>
               </div>
+              }
+              
             </div>
           </div>
         </section>

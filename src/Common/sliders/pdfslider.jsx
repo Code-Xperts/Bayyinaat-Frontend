@@ -68,7 +68,7 @@ const PdfSlider = () => {
         const pdfResp = await httpRequest.post(`${getAllProducts}`,{slug:'Pdf',lang:currentLanguage?currentLanguage.code:''});
         if (pdfResp.status === 200 || pdfResp.status === 201) {
           // console.log('audi res',audioResp.data.data)
-          setPdfData(pdfResp.data.data)
+          setPdfData(pdfResp.data.data.data)
         }
        
       } catch (err) {

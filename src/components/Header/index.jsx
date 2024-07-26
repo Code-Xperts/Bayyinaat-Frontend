@@ -42,7 +42,7 @@ const Header = () => {
       if (res.status === 200 || res.status === 201) {
         // console.log("audi pro", res.data.data);
         
-        navigate(`/${route}/${name}`, { state: { data: res.data.data } });
+        navigate(`/${route}/${name}`, { state: { data: res.data.data?.data } });
       }
     } catch (err) {
       console.log(err.message);

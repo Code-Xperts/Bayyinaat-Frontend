@@ -15,6 +15,7 @@ import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
 import { changelanguage } from '../../lib/Redux/slices/languageSlice';
 import { getNamazTimings } from "../../utils/get-namaz-timings";
+import { getCurrentTime } from "../../utils/get-time";
 
 const LanguageArr = [
   {
@@ -122,7 +123,7 @@ const TopHeader = () => {
             {primaryAddress || "New Orleans, Jamia Mosque"}
           </p>
           <p className="space">
-            <FontAwesomeIcon icon={faClock} />{" "}
+            <FontAwesomeIcon icon={faClock} />{getCurrentTime()}
             {Object.keys(businessHours).map((day) => (
               <>
                 <strong>{day || "Day"} : </strong>{" "}

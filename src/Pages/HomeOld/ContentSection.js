@@ -9,8 +9,32 @@ import 'swiper/css/scrollbar';
 import image1 from './../../assests/images/image1.jpg'; 
 import image2 from './../../assests/images/image2.jpg';
 import image3 from './../../assests/images/image3.jpg';
+import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { getBannerData } from '../../constants/apiEndPoints';
+import httpRequest from "../../axios/index.js";
+
 
 const ContentSection = () => {
+  const [bannerData ,  setBannerData] = useState([])
+  const currentLanguage = useSelector((state) => state.languageSlice.currentlanguage);
+
+  useEffect(() => {
+    const FetchCategoriesInfo = async () => {
+      try {
+        const res = await httpRequest.get(`${getBannerData}/${currentLanguage?.code}`);
+        if (res.status === 200 || res.status === 201) {
+          // console.log('audi res',audioResp.data.data)
+          setBannerData(res.data.data)
+          // dispatch(setCompanyInfo(resp?.data?.data));
+        }
+
+    }catch(error){
+      console.log(error)
+    }
+  }
+  FetchCategoriesInfo()
+  },[currentLanguage])
   return (
     <Swiper
       // Install Swiper modules
@@ -28,7 +52,7 @@ const ContentSection = () => {
       onSwiper={(swiper) => console.log(swiper)}
     >
       <SwiperSlide>
-        <img src={image1} alt="Slide 1" />
+        <img src={bannerData[0]?.image} alt="Slide 1" />
         <div className="content-container">
           <div className="heading-section">
             <h1 style={{ fontSize: "30px" }}>
@@ -36,14 +60,14 @@ const ContentSection = () => {
               بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْمِ
             </h1>
             <h1>
-              DISCOVER ISLAMIC BELIEVE <br /> WITH ULAMAH HERE
+              {bannerData[0]?.title}
             </h1>
             <button className="cta-button">Learn More</button>
           </div>
         </div>
       </SwiperSlide>
       <SwiperSlide>
-        <img src={image2} alt="Slide 2" />
+        <img src={bannerData[0]?.image} alt="Slide 2" />
         <div className="content-container">
           <div className="heading-section">
             <h1 style={{ fontSize: "30px" }}>
@@ -51,14 +75,14 @@ const ContentSection = () => {
               بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْمِ
             </h1>
             <h1>
-              DISCOVER ISLAMIC BELIEF <br /> WITH ULAMAH HERE
+              {bannerData[0]?.title}
             </h1>
             <button className="cta-button">Learn More</button>
           </div>
         </div>
       </SwiperSlide>
       <SwiperSlide>
-        <img src={image3} alt="Slide 3" />
+        <img src={bannerData[0]?.image} alt="Slide 3" />
         <div className="content-container">
           <div className="heading-section">
             <h1 style={{ fontSize: "30px" }}>
@@ -66,7 +90,7 @@ const ContentSection = () => {
               بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْمِ
             </h1>
             <h1>
-              DISCOVER ISLAMIC BELIEF <br /> WITH ULAMAH HERE
+              {bannerData[0]?.title}
             </h1>
             <button className="cta-button">Learn More</button>
           </div>

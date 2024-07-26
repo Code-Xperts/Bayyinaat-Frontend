@@ -1,4 +1,4 @@
-export const API_BASE_URL = "http://192.168.1.14:9090"
+export const API_BASE_URL = "http://192.168.1.24:9090"
   // process.env.REACT_APP_API_BASE_URL || "http://192.168.8.113:9090";
 
 export const users = "/api/users";
@@ -18,3 +18,6 @@ export const getProductById = `${API_BASE_URL}/api/products/get-products-by-cate
 export const getProductByBothCategory = `${API_BASE_URL}/api/products/get-products-by-both-category`
 export const getServices = `${API_BASE_URL}/api/service/get-services`
 export const getSettings = `${API_BASE_URL}/api/settings/settings`
+export const getBannerData = `${API_BASE_URL}/api/banners/get-banners`
+export const getProductsBySearch = `${API_BASE_URL}/api/products/search-products`
+

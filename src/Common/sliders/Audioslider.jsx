@@ -72,7 +72,7 @@ const Audioslider = () => {
         const audioResp = await httpRequest.post(`${getAllProducts}`,{slug:'Audio',lang:currentLanguage?currentLanguage.code:''});
         if (audioResp.status === 200 || audioResp.status === 201) {
           // console.log('audi res',audioResp.data.data)
-          setAudioData(audioResp.data.data)
+          setAudioData(audioResp.data.data.data)
         }
        
       } catch (err) {
