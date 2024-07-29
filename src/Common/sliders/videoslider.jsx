@@ -89,9 +89,10 @@ const VideoSlider = () => {
           <div key={index} className="SliderBox">
             <div className="InnerBoxSlide">
               <img
+                style={{width:'100%', height:'150px' , objectFit:'cover', borderRadius:'10px'}}
                 className="Sliderimg"
-                src={item.image}
-                alt={item.title + index}
+                src={item?.image}
+                alt={item?.title + index}
               />
               <div className="ViewBtn">
                 <h1 className="onlineheading">{item.title}</h1>

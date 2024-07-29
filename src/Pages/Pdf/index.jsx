@@ -116,7 +116,7 @@ const PDF = ({ onSearch }) => {
   
   }, [currentLanguage,id,slug2,data,query]);
 
-  const [isOpen, setIsOpen] = useState(0);
+  const [isOpen, setIsOpen] = useState();
 
   const toggleDropdown = (section) => {
     setIsOpen((prevIsOpen) => (prevIsOpen === section ? null : section));
@@ -205,6 +205,22 @@ const PDF = ({ onSearch }) => {
     }
   }
 
+  const handleRedirect = async(name,id)=>{
+    try {
+      const res = await httpRequest.post(`${getProductById}`, {
+        category_id: id,
+        lang: currentLanguage ? currentLanguage.code : "",
+      });
+      if (res.status === 200 || res.status === 201) {
+        // console.log("audi pro", res.data.data);
+        
+        navigate(`/pdf/${name}`, { state: { data: res.data.data?.data } });
+      }
+    } catch (err) {
+      console.log(err.message);
+    }
+  }
+
   return (
     <>
       <TopHeader />
@@ -234,21 +250,23 @@ const PDF = ({ onSearch }) => {
               <ul className="major">
                 {pdfData?.map((item, index) => (
                   <li key={index}>
-                    <span
-                      className={`drop-down-button ${
-                        isOpen == index ? "active" : "inactive"
-                      }`}
-                      onClick={() => toggleDropdown(index)}
-                    ></span>
-                    <a className="yes-bold" href="#">
-                      <a>
+                    {
+                      item?.sub_categories?.length > 0 &&( <span
+                        className={`drop-down-button ${
+                          isOpen === index ? "active" : "inactive"
+                        }`}
+                        onClick={() => toggleDropdown(index)}
+                      ></span>)
+                    }
+                    <Link className="yes-bold" onClick={() => handleRedirect(item?.slug, item?.id)}>
+                    <a>
                         <FontAwesomeIcon
                           className="qw colo"
                           icon={faVolumeLow}
                         />
                       </a>
                       {t(item.name)}
-                    </a>
+                    </Link>
                     {isOpen == index && (
                       <ul
                         className={`col-cont-main-dropdown ${
@@ -300,6 +318,7 @@ const PDF = ({ onSearch }) => {
                   <div className="major-picture">
                     <div className="image-div">
                       <img
+                        style={{width:'100px', height:'100px'}}
                         className="image-border"
                         src={item?.image}
                         alt={item?.title}

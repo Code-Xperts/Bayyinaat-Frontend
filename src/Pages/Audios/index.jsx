@@ -131,7 +131,7 @@ const Audios = () => {
     // onSearch(query);
   };
 
-  const [isOpen, setIsOpen] = useState(0);
+  const [isOpen, setIsOpen] = useState(null);
 
   const toggleDropdown = (section) => {
     setIsOpen((prevIsOpen) => (prevIsOpen === section ? null : section));
@@ -139,21 +139,40 @@ const Audios = () => {
 
   const handleClick = async (name, id, name2, id2) => {
     try {
-      const res = await httpRequest.post(`${getProductByBothCategory}`, {
-        category_id: id,
-        lang: currentLanguage ? currentLanguage.code : "",
-        sub_category_id: id2,
-      });
-      if (res.status === 200 || res.status === 201) {
-        navigate(`/audios/${name}/${name2}`, {
-          state: { data: res.data.data?.data },
-        });
+        const res = await httpRequest.post(`${getProductByBothCategory}`, {
+          category_id: id,
+          lang: currentLanguage ? currentLanguage.code : "",
+          sub_category_id: id2,
+        })
+          if (res.status === 200 || res.status === 201) {
+            navigate(`/audios/${name}/${name2}`, {
+              state: { data: res.data.data?.data },
+            });
+          
       }
+       
+      
+     
     } catch (err) {
       console.log(err.message);
     }
   };
 
+  const handleRedirect = async(name,id)=>{
+    try {
+      const res = await httpRequest.post(`${getProductById}`, {
+        category_id: id,
+        lang: currentLanguage ? currentLanguage.code : "",
+      });
+      if (res.status === 200 || res.status === 201) {
+        // console.log("audi pro", res.data.data);
+        
+        navigate(`/audios/${name}`, { state: { data: res.data.data?.data } });
+      }
+    } catch (err) {
+      console.log(err.message);
+    }
+  }
   
 
 
@@ -266,13 +285,16 @@ const Audios = () => {
               <ul className="major">
                 {audioData?.map((item, index) => (
                   <li key={index}>
-                    <span
-                      className={`drop-down-button ${
-                        isOpen === index ? "active" : "inactive"
-                      }`}
-                      onClick={() => toggleDropdown(index)}
-                    ></span>
-                    <a className="yes-bold" href="#">
+                    {
+                      item?.sub_categories?.length > 0 &&( <span
+                        className={`drop-down-button ${
+                          isOpen === index ? "active" : "inactive"
+                        }`}
+                        onClick={() => toggleDropdown(index)}
+                      ></span>)
+                    }
+                   
+                    <Link className="yes-bold" onClick={() => handleRedirect(item?.slug, item?.id)}>
                       <a>
                         <FontAwesomeIcon
                           className="qw colo"
@@ -280,7 +302,7 @@ const Audios = () => {
                         />
                       </a>
                       {t(item.name)}
-                    </a>
+                    </Link>
                     {isOpen === index && (
                       <ul
                         className={`col-cont-main-dropdown ${
@@ -346,6 +368,7 @@ const Audios = () => {
                   	<div className="major-picture major-picture-new">
                     	<div className="image-div image-div-new">
                       	<img
+                        style={{width:'100px', height:'100px'}}
                         	className="image-border-new"
                         	src={item?.image}
                         	alt={item?.title}

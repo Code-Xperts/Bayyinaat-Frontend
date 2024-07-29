@@ -26,7 +26,7 @@ const PdfSlider = () => {
     dots: false,
     infinite: true,
     speed: 500,
-    slidesToShow: 4,
+    slidesToShow: 3,
     slidesToScroll: 1,
     autoplay: true,
     autoplaySpeed: 2000,
@@ -88,8 +88,9 @@ const PdfSlider = () => {
           <div key={index} className="SliderBox">
             <div className="InnerBoxSlide">
               <img
+                style={{width:'100%', height:'150px' , objectFit:'cover', borderRadius:'10px'}}
                 className="Sliderimg"
-                src={item.image}
+                src={item?.image}
                 alt={item.title + index}
               />
               <div className="ViewBtn">
