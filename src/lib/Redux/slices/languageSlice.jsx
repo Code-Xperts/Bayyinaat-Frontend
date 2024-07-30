@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   currentlanguage: { lang: "English",
-    img: "https://dedevelopers.org/devolta/resources/frontend/images/english.png",
+    img: "https://w7.pngwing.com/pngs/64/514/png-transparent-flag-of-great-britain-flag-of-the-united-kingdom-english-flag-miscellaneous-angle-english-thumbnail.png",
     code: "en",},
 };
 

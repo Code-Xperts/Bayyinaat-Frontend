@@ -16,16 +16,27 @@ async function getUserLocationFromIP() {
   }
 }
 
+// function getTodayFormatted() {
+//   const today = new Date();
+//   const options = {
+//     weekday: 'long',
+//     month: 'long',
+//     day: 'numeric',
+//     year: 'numeric'
+//   };
+
+//   return today.toLocaleDateString('en-US', options);
+// }
 function getTodayFormatted() {
   const today = new Date();
-  const options = {
-    weekday: 'long',
-    month: 'long',
-    day: 'numeric',
-    year: 'numeric'
-  };
 
-  return today.toLocaleDateString('en-US', options);
+  const year = today.getFullYear();
+  const month = today.getMonth() + 1; // Months are 0-indexed
+
+  return {
+    year,
+    month
+  };
 }
 
 export const getNamazTimings = async () => {
@@ -35,20 +46,22 @@ export const getNamazTimings = async () => {
   const date = getTodayFormatted();
 
 
-  const url = `https://prayer-times11.p.rapidapi.com/timingsByCity/${date}?method=2&city=${city}&country=${country}`;
-  const options = {
-      method: 'GET',
-      headers: {
-          'x-rapidapi-key': 'a78b0b045emshf025ba249e51f9fp15435djsn36bc99eb2b27',
-          'x-rapidapi-host': 'prayer-times11.p.rapidapi.com',
-          Accept: 'application/json'
-      }
-  };
+  // const url = `https://prayer-times11.p.rapidapi.com/timingsByCity/${date}?method=2&city=${city}&country=${country}`;
+
+  // const options = {
+  //     method: 'GET',
+  //     headers: {
+  //         'x-rapidapi-key': 'a78b0b045emshf025ba249e51f9fp15435djsn36bc99eb2b27',
+  //         'x-rapidapi-host': 'prayer-times11.p.rapidapi.com',
+  //         Accept: 'application/json'
+  //     }
+  // };
+  const url = ` http://api.aladhan.com/v1/calendarByCity/${date.year}/${date.month}?city=${city}&country=${country}&method=2`
   
   try {
-      const response = await fetch(url, options);
-      const result = await response.json();
-      return result?.data
+      const response = await axios.get(url);
+      const result = await response.data
+      return result?.data[0]?.timings
   } catch (error) {
       console.error(error);
   }

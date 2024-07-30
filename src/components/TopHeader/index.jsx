@@ -23,7 +23,7 @@ import httpRequest from "../../axios/index.js";
 const LanguageArr = [
   {
     lang: "English",
-    img: "https://dedevelopers.org/devolta/resources/frontend/images/english.png",
+    img: "https://w7.pngwing.com/pngs/64/514/png-transparent-flag-of-great-britain-flag-of-the-united-kingdom-english-flag-miscellaneous-angle-english-thumbnail.png",
     code: "en",
   },
   {
@@ -183,35 +183,35 @@ const TopHeader = () => {
                     <td>
                       <FontAwesomeIcon icon={faSun} /> {t("fajr")}
                     </td>
-                    <td>{ namazTimings?.timings?.Fajr}</td>
+                    <td>{ namazTimings?.Fajr}</td>
                     {/* <td>5:30 AM</td> */}
                   </tr>
                   <tr>
                     <td>
                       <FontAwesomeIcon icon={faSun} /> {t("zuhr")}
                     </td>
-                    <td>{namazTimings?.timings?.Dhuhr}</td>
+                    <td>{namazTimings?.Dhuhr}</td>
                     {/* <td>1:30 PM</td> */}
                   </tr>
                   <tr>
                     <td>
                       <FontAwesomeIcon icon={faSun} /> {t("asr")}
                     </td>
-                    <td>{namazTimings?.timings?.Asr}</td>
+                    <td>{namazTimings?.Asr}</td>
                     {/* <td>6:00 PM</td> */}
                   </tr>
                   <tr>
                     <td>
                       <FontAwesomeIcon icon={faMoon} /> {t("maghrib")}
                     </td>
-                    <td>{namazTimings?.timings?.Maghrib}</td>
+                    <td>{namazTimings?.Maghrib}</td>
                     {/* <td>7:30 PM</td> */}
                   </tr>
                   <tr>
                     <td>
                       <FontAwesomeIcon icon={faMoon} /> {t("isha")}
                     </td>
-                    <td>{namazTimings?.timings?.Isha}</td>
+                    <td>{namazTimings?.Isha}</td>
                     {/* <td>9:00 PM</td> */}
                   </tr>
                 </tbody>
