@@ -56,7 +56,7 @@ export const getNamazTimings = async () => {
   //         Accept: 'application/json'
   //     }
   // };
-  const url = ` http://api.aladhan.com/v1/calendarByCity/${date.year}/${date.month}?city=${city}&country=${country}&method=2`
+  const url = ` https://api.aladhan.com/v1/calendarByCity/${date.year}/${date.month}?city=${city}&country=${country}&method=2`
   
   try {
       const response = await axios.get(url);
